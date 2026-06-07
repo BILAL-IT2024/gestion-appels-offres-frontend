@@ -74,13 +74,29 @@
     }
 
     <table border="1" width="100%" style="margin-top:20px">
+
       <tr>
         <th>Référence</th>
+        <th>Objet</th>
         <th>Client</th>
         <th>Montant</th>
         <th>Date Limite</th>
         <th>Statut</th>
       </tr>
+
+      @for (ao of appelsOffres; track ao.id) {
+
+        <tr>
+          <td>{{ ao.reference }}</td>
+          <td>{{ ao.objet }}</td>
+          <td>{{ ao.clientNom }}</td>
+          <td>{{ ao.montantEstime }}</td>
+          <td>{{ ao.dateLimite }}</td>
+          <td>{{ ao.statut }}</td>
+        </tr>
+
+      }
+
     </table>
 
   </div>

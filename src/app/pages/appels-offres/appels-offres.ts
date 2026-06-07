@@ -17,6 +17,7 @@ export class AppelsOffresComponent implements OnInit {
   showForm = false;
 
   clients: Client[] = [];
+  appelsOffres: any[] = [];
 
   nouvelAppelOffre = {
     reference: '',
@@ -37,6 +38,7 @@ export class AppelsOffresComponent implements OnInit {
 
   ngOnInit(): void {
     this.chargerClients();
+    this.chargerAppelsOffres();
   }
 
   ouvrirFormulaire(): void {
@@ -59,11 +61,25 @@ export class AppelsOffresComponent implements OnInit {
       next: () => {
         alert('Appel d’offre enregistré ✅');
         this.showForm = false;
+        this.chargerAppelsOffres();
       },
       error: (err) => {
         console.log('Erreur enregistrement AO', err);
         alert('Erreur lors de l’enregistrement');
       }
     });
+  }
+
+  chargerAppelsOffres(): void {
+
+    this.appelOffresService.getAppelsOffres().subscribe({
+      next: (data) => {
+        this.appelsOffres = data;
+      },
+      error: (err) => {
+        console.log('Erreur chargement AO', err);
+      }
+    });
+
   }
 }

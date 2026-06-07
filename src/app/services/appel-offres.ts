@@ -38,4 +38,18 @@ export class AppelOffresService {
       }
     );
   }
+
+  getAppelsOffres(): Observable<any[]> {
+
+    const token = localStorage.getItem('token');
+
+    return this.http.get<any[]>(
+      this.apiUrl,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+  }
 }
