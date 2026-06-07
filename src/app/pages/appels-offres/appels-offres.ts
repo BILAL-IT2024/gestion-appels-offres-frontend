@@ -1,0 +1,69 @@
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { SidebarComponent } from '../../layout/sidebar/sidebar';
+import { Client, ClientService } from '../../services/client';
+import { AppelOffresService } from '../../services/appel-offres';
+
+@Component({
+  selector: 'app-appels-offres',
+  standalone: true,
+  imports: [SidebarComponent, FormsModule],
+  templateUrl: './appels-offres.html',
+  styleUrl: './appels-offres.css',
+})
+export class AppelsOffresComponent implements OnInit {
+
+  showForm = false;
+
+  clients: Client[] = [];
+
+  nouvelAppelOffre = {
+    reference: '',
+    objet: '',
+    datePublication: '',
+    dateLimite: '',
+    montantEstime: 0,
+    statut: 'EN_COURS',
+    client: {
+      id: 0
+    }
+  };
+
+  constructor(
+    private clientService: ClientService,
+    private appelOffresService: AppelOffresService
+  ) {}
+
+  ngOnInit(): void {
+    this.chargerClients();
+  }
+
+  ouvrirFormulaire(): void {
+    this.showForm = true;
+  }
+
+  chargerClients(): void {
+    this.clientService.getClients().subscribe({
+      next: (data) => {
+        this.clients = data;
+      },
+      error: (err) => {
+        console.log('Erreur chargement clients', err);
+      }
+    });
+  }
+
+  enregistrerAppelOffre(): void {
+    this.appelOffresService.saveAppelOffre(this.nouvelAppelOffre).subscribe({
+      next: () => {
+        alert('Appel d’offre enregistré ✅');
+        this.showForm = false;
+      },
+      error: (err) => {
+        console.log('Erreur enregistrement AO', err);
+        alert('Erreur lors de l’enregistrement');
+      }
+    });
+  }
+}

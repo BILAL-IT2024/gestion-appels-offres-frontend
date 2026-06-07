@@ -1,0 +1,88 @@
+<div style="display:flex;">
+
+  <app-sidebar></app-sidebar>
+
+  <div style="padding:20px; flex:1;">
+
+    <h1>Gestion des Appels d'Offres</h1>
+
+    <button (click)="ouvrirFormulaire()">
+      + Nouvel Appel d'Offres
+    </button>
+
+    @if (showForm) {
+      <div style="margin-top:20px; padding:20px; border:1px solid #ccc;">
+
+        <h3>Nouveau Appel d'Offres</h3>
+
+        <input
+          type="text"
+          placeholder="Référence"
+          [(ngModel)]="nouvelAppelOffre.reference"
+        >
+        <br><br>
+
+        <input
+          type="text"
+          placeholder="Objet"
+          [(ngModel)]="nouvelAppelOffre.objet"
+        >
+        <br><br>
+
+        <input
+          type="date"
+          [(ngModel)]="nouvelAppelOffre.datePublication"
+        >
+        <br><br>
+
+        <input
+          type="date"
+          [(ngModel)]="nouvelAppelOffre.dateLimite"
+        >
+        <br><br>
+
+        <input
+          type="number"
+          placeholder="Montant estimé"
+          [(ngModel)]="nouvelAppelOffre.montantEstime"
+        >
+        <br><br>
+
+        <select [(ngModel)]="nouvelAppelOffre.statut">
+          <option value="EN_COURS">EN_COURS</option>
+          <option value="ADJUGE">ADJUGE</option>
+          <option value="ANNULE">ANNULE</option>
+        </select>
+        <br><br>
+
+        <select [(ngModel)]="nouvelAppelOffre.client.id">
+          <option [ngValue]="0">-- Choisir un client --</option>
+
+          @for (client of clients; track client.id) {
+            <option [ngValue]="client.id">
+              {{ client.raisonSociale }}
+            </option>
+          }
+        </select>
+        <br><br>
+
+        <button (click)="enregistrerAppelOffre()">
+          Enregistrer
+        </button>
+
+      </div>
+    }
+
+    <table border="1" width="100%" style="margin-top:20px">
+      <tr>
+        <th>Référence</th>
+        <th>Client</th>
+        <th>Montant</th>
+        <th>Date Limite</th>
+        <th>Statut</th>
+      </tr>
+    </table>
+
+  </div>
+
+</div>

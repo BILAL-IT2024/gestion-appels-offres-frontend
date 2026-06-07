@@ -1,0 +1,35 @@
+.sidebar {
+  width: 230px;
+  height: 100vh;
+  background: #0b1f4d;
+  color: white;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 5px;
+}
+
+.sidebar a:hover {
+  background: #153a80;
+}
+
+.sidebar button {
+  width: 100%;
+  margin-top: 30px;
+  padding: 10px;
+  background: crimson;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
