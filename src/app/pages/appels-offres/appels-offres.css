@@ -1,0 +1,26 @@
+.content {
+  padding: 20px;
+  flex: 1;
+}
+
+.ao-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.ao-table th,
+.ao-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.ao-table th {
+  background-color: #0b1f4d;
+  color: white;
+}
+
+.ao-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}

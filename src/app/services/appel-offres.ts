@@ -25,31 +25,13 @@ export class AppelOffresService {
   constructor(private http: HttpClient) {}
 
   saveAppelOffre(appelOffre: AppelOffre): Observable<AppelOffre> {
-
-    const token = localStorage.getItem('token');
-
     return this.http.post<AppelOffre>(
       this.apiUrl,
-      appelOffre,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
+      appelOffre
     );
   }
 
   getAppelsOffres(): Observable<any[]> {
-
-    const token = localStorage.getItem('token');
-
-    return this.http.get<any[]>(
-      this.apiUrl,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
+    return this.http.get<any[]>(this.apiUrl);
   }
 }

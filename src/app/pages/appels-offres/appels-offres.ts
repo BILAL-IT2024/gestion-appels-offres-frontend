@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
@@ -33,7 +33,8 @@ export class AppelsOffresComponent implements OnInit {
 
   constructor(
     private clientService: ClientService,
-    private appelOffresService: AppelOffresService
+    private appelOffresService: AppelOffresService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -74,12 +75,15 @@ export class AppelsOffresComponent implements OnInit {
 
     this.appelOffresService.getAppelsOffres().subscribe({
       next: (data) => {
+        console.log('AO reçus = ', data);
         this.appelsOffres = data;
+        this.cd.detectChanges();
       },
       error: (err) => {
-        console.log('Erreur chargement AO', err);
+        console.log('Erreur chargement AO = ', err);
       }
     });
 
   }
+
 }
