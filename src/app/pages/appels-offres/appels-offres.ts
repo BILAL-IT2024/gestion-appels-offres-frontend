@@ -86,4 +86,22 @@ export class AppelsOffresComponent implements OnInit {
 
   }
 
+  supprimerAppelOffre(id: number): void {
+
+    if (confirm('Voulez-vous vraiment supprimer cet appel d’offre ?')) {
+
+      this.appelOffresService.deleteAppelOffre(id).subscribe({
+        next: () => {
+          alert('Appel d’offre supprimé ✅');
+          this.chargerAppelsOffres();
+        },
+        error: (err) => {
+          console.log('Erreur suppression AO', err);
+          alert('Erreur lors de la suppression');
+        }
+      });
+
+    }
+  }
+
 }

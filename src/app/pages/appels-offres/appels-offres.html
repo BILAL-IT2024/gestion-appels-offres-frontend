@@ -82,6 +82,7 @@
         <th>Montant</th>
         <th>Date Limite</th>
         <th>Statut</th>
+        <th>Actions</th>
       </tr>
 
       @for (ao of appelsOffres; track ao.id) {
@@ -93,6 +94,11 @@
           <td>{{ ao.montantEstime }}</td>
           <td>{{ ao.dateLimite }}</td>
           <td>{{ ao.statut }}</td>
+          <td>
+            <button (click)="supprimerAppelOffre(ao.id)">
+              Supprimer
+            </button>
+          </td>
         </tr>
 
       }
