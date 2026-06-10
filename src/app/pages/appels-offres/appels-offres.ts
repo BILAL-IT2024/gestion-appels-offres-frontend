@@ -15,6 +15,8 @@ import { AppelOffresService } from '../../services/appel-offres';
 export class AppelsOffresComponent implements OnInit {
 
   showForm = false;
+  modeEdition = false;
+  idAppelOffreEnCours?: number;
 
   clients: Client[] = [];
   appelsOffres: any[] = [];
@@ -102,6 +104,26 @@ export class AppelsOffresComponent implements OnInit {
       });
 
     }
+  }
+
+  modifierAppelOffre(ao: any): void {
+
+    this.modeEdition = true;
+    this.idAppelOffreEnCours = ao.id;
+    this.showForm = true;
+
+    this.nouvelAppelOffre = {
+      reference: ao.reference,
+      objet: ao.objet,
+      datePublication: ao.datePublication,
+      dateLimite: ao.dateLimite,
+      montantEstime: ao.montantEstime,
+      statut: ao.statut,
+      client: {
+        id: ao.clientId
+      }
+    };
+
   }
 
 }

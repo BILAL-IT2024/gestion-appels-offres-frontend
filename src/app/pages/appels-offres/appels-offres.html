@@ -95,9 +95,15 @@
           <td>{{ ao.dateLimite }}</td>
           <td>{{ ao.statut }}</td>
           <td>
+
+            <button (click)="modifierAppelOffre(ao)">
+              Modifier
+            </button>
+
             <button (click)="supprimerAppelOffre(ao.id)">
               Supprimer
             </button>
+
           </td>
         </tr>
 

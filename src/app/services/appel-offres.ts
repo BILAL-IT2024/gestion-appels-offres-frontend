@@ -40,4 +40,12 @@ export class AppelOffresService {
       `${this.apiUrl}/${id}`
     );
   }
+
+  updateAppelOffre(id: number, appelOffre: AppelOffre): Observable<AppelOffre> {
+    return this.http.put<AppelOffre>(
+      `${this.apiUrl}/${id}`,
+      appelOffre
+    );
+  }
+
 }
