@@ -48,4 +48,10 @@ export class AppelOffresService {
     );
   }
 
+  searchAppelsOffres(keyword: string): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/search?keyword=${keyword}`
+    );
+  }
+
 }

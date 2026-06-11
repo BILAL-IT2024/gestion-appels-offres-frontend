@@ -5,6 +5,23 @@
   <div class="content">
 
     <h1>Gestion des Appels d'Offres</h1>
+    <br>
+
+    <input
+      type="text"
+      placeholder="Rechercher par référence..."
+      [(ngModel)]="keyword"
+    >
+
+    <button (click)="rechercherAppelsOffres()">
+      Rechercher
+    </button>
+
+    <button (click)="reinitialiserRecherche()">
+      Réinitialiser
+    </button>
+
+    <br><br>
 
     <button (click)="ouvrirFormulaire()">
       + Nouvel Appel d'Offres

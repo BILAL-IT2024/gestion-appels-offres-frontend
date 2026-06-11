@@ -20,6 +20,7 @@ export class AppelsOffresComponent implements OnInit {
 
   clients: Client[] = [];
   appelsOffres: any[] = [];
+  keyword = '';
 
   nouvelAppelOffre = {
     reference: '',
@@ -124,6 +125,30 @@ export class AppelsOffresComponent implements OnInit {
       }
     };
 
+  }
+
+  rechercherAppelsOffres(): void {
+
+    if (this.keyword.trim() === '') {
+      this.chargerAppelsOffres();
+      return;
+    }
+
+    this.appelOffresService.searchAppelsOffres(this.keyword).subscribe({
+      next: (data) => {
+        this.appelsOffres = data;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
+        console.log('Erreur recherche AO', err);
+      }
+    });
+
+  }
+
+  reinitialiserRecherche(): void {
+    this.keyword = '';
+    this.chargerAppelsOffres();
   }
 
 }
