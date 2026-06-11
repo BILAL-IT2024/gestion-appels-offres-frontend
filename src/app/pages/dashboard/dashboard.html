@@ -3,13 +3,49 @@
   <app-sidebar></app-sidebar>
 
   <div style="padding:20px; flex:1;">
+
     <h1>Dashboard</h1>
 
-    <h2>Bienvenue Admin 🎉</h2>
+    @if (stats) {
 
-    <p>
-      Application de gestion des appels d'offres
-    </p>
+      <div style="display:grid;
+                  grid-template-columns: repeat(3, 1fr);
+                  gap:20px;
+                  margin-top:20px;">
+
+        <div class="card">
+          <h3>Total AO</h3>
+          <h2>{{ stats.totalAppelsOffres }}</h2>
+        </div>
+
+        <div class="card">
+          <h3>AO Adjugés</h3>
+          <h2>{{ stats.aoAdjuges }}</h2>
+        </div>
+
+        <div class="card">
+          <h3>AO En cours</h3>
+          <h2>{{ stats.aoEnCours }}</h2>
+        </div>
+
+        <div class="card">
+          <h3>AO Annulés</h3>
+          <h2>{{ stats.aoAnnules }}</h2>
+        </div>
+
+        <div class="card">
+          <h3>Montant Total AO</h3>
+          <h2>{{ stats.montantTotalAO }}</h2>
+        </div>
+
+        <div class="card">
+          <h3>Taux Réussite</h3>
+          <h2>{{ stats.tauxReussite }} %</h2>
+        </div>
+
+      </div>
+
+    }
 
   </div>
 
