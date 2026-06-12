@@ -35,12 +35,27 @@
 
         <div class="card">
           <h3>Montant Total AO</h3>
-          <h2>{{ stats.montantTotalAO }}</h2>
+          <h2>{{ stats.montantTotalAO | number }} DH</h2>
         </div>
 
         <div class="card">
           <h3>Taux Réussite</h3>
           <h2>{{ stats.tauxReussite }} %</h2>
+        </div>
+
+        <div class="card">
+          <h3>Top Client</h3>
+          <h2>{{ stats.topClient }}</h2>
+        </div>
+
+        <div class="card">
+          <h3>AO Urgents</h3>
+          <h2>{{ stats.aoUrgents }}</h2>
+        </div>
+
+        <div class="card">
+          <h3>AO En Retard</h3>
+          <h2>{{ stats.aoEnRetard }}</h2>
         </div>
 
       </div>
