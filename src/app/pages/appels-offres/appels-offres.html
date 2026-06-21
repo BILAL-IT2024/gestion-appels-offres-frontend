@@ -72,7 +72,7 @@
         </select>
         <br><br>
 
-        <select [(ngModel)]="nouvelAppelOffre.client.id">
+        <select [(ngModel)]="nouvelAppelOffre.client.id" name="client">
           <option [ngValue]="0">-- Choisir un client --</option>
 
           @for (client of clients; track client.id) {
@@ -107,7 +107,7 @@
         <tr>
           <td>{{ ao.reference }}</td>
           <td>{{ ao.objet }}</td>
-          <td>{{ ao.clientNom }}</td>
+          <td>{{ ao.client?.raisonSociale || ao.clientNom }}</td>
           <td>{{ ao.montantEstime }}</td>
           <td>{{ ao.dateLimite }}</td>
           <td>{{ ao.statut }}</td>

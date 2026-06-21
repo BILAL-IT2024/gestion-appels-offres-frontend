@@ -46,6 +46,22 @@ export class AppelsOffresComponent implements OnInit {
   }
 
   ouvrirFormulaire(): void {
+
+    this.modeEdition = false;
+    this.idAppelOffreEnCours = undefined;
+
+    this.nouvelAppelOffre = {
+      reference: '',
+      objet: '',
+      datePublication: '',
+      dateLimite: '',
+      montantEstime: 0,
+      statut: 'EN_COURS',
+      client: {
+        id: 0
+      }
+    };
+
     this.showForm = true;
   }
 
@@ -61,17 +77,41 @@ export class AppelsOffresComponent implements OnInit {
   }
 
   enregistrerAppelOffre(): void {
-    this.appelOffresService.saveAppelOffre(this.nouvelAppelOffre).subscribe({
-      next: () => {
-        alert('Appel d’offre enregistré ✅');
-        this.showForm = false;
-        this.chargerAppelsOffres();
-      },
-      error: (err) => {
-        console.log('Erreur enregistrement AO', err);
-        alert('Erreur lors de l’enregistrement');
-      }
-    });
+
+    if (this.modeEdition && this.idAppelOffreEnCours) {
+
+      this.appelOffresService.updateAppelOffre(
+        this.idAppelOffreEnCours,
+        this.nouvelAppelOffre
+      ).subscribe({
+        next: () => {
+          alert('Appel d’offre modifié ✅');
+          this.showForm = false;
+          this.modeEdition = false;
+          this.idAppelOffreEnCours = undefined;
+          this.chargerAppelsOffres();
+        },
+        error: (err) => {
+          console.log('Erreur modification AO', err);
+          alert('Erreur lors de la modification');
+        }
+      });
+
+    } else {
+
+      this.appelOffresService.saveAppelOffre(this.nouvelAppelOffre).subscribe({
+        next: () => {
+          alert('Appel d’offre enregistré ✅');
+          this.showForm = false;
+          this.chargerAppelsOffres();
+        },
+        error: (err) => {
+          console.log('Erreur enregistrement AO', err);
+          alert('Erreur lors de l’enregistrement');
+        }
+      });
+
+    }
   }
 
   chargerAppelsOffres(): void {
@@ -121,7 +161,7 @@ export class AppelsOffresComponent implements OnInit {
       montantEstime: ao.montantEstime,
       statut: ao.statut,
       client: {
-        id: ao.clientId
+        id: Number(ao.client?.id ?? ao.clientId)
       }
     };
 
