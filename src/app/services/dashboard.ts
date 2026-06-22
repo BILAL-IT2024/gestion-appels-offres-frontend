@@ -20,6 +20,11 @@ export interface DashboardStats {
   aoUrgents: number;
 }
 
+export interface ChiffreAffaireMensuel {
+  mois: number;
+  total: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -34,4 +39,12 @@ export class DashboardService {
       `${this.apiUrl}/stats`
     );
   }
+
+getChiffreAffaireMensuel(): Observable<ChiffreAffaireMensuel[]> {
+
+  return this.http.get<ChiffreAffaireMensuel[]>(
+    `${this.apiUrl}/chiffre-affaire-mensuel`
+  );
+
+}
 }

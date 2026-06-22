@@ -14,3 +14,8 @@
 .card h2 {
   color: #0b1f4d;
 }
+
+canvas {
+  max-width: 100%;
+  margin-top: 20px;
+}
