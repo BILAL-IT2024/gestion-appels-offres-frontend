@@ -25,6 +25,16 @@ export interface ChiffreAffaireMensuel {
   total: number;
 }
 
+export interface AlerteAppelOffre {
+  id: number;
+  reference: string;
+  objet: string;
+  dateLimite: string;
+  joursRestants: number;
+  statut: string;
+  etatAlerte: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -47,4 +57,13 @@ getChiffreAffaireMensuel(): Observable<ChiffreAffaireMensuel[]> {
   );
 
 }
+
+getAlertesAppelsOffres(): Observable<AlerteAppelOffre[]> {
+
+  return this.http.get<AlerteAppelOffre[]>(
+    `${this.apiUrl}/alertes/appels-offres`
+  );
+
+}
+
 }

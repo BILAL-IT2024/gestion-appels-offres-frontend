@@ -70,6 +70,36 @@
       <canvas id="caMensuelChart"></canvas>
     </div>
 
+    <br><br>
+
+    <div class="card">
+      <h3>Alertes Appels d'Offres</h3>
+
+      <table class="alertes-table">
+
+        <tr>
+          <th>Référence</th>
+          <th>Objet</th>
+          <th>Date limite</th>
+          <th>Jours restants</th>
+          <th>État</th>
+        </tr>
+
+        @for (alerte of alertes; track alerte.id) {
+
+        <tr>
+          <td>{{ alerte.reference }}</td>
+          <td>{{ alerte.objet }}</td>
+          <td>{{ alerte.dateLimite }}</td>
+          <td>{{ alerte.joursRestants }}</td>
+          <td>{{ alerte.etatAlerte }}</td>
+        </tr>
+
+        }
+
+      </table>
+    </div>
+
   </div>
 
 </div>

@@ -1,7 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
-import { DashboardService, DashboardStats } from '../../services/dashboard';
+import {
+  DashboardService,
+  DashboardStats,
+  AlerteAppelOffre
+} from '../../services/dashboard';
 import Chart from 'chart.js/auto';
 
 @Component({
@@ -14,6 +18,7 @@ import Chart from 'chart.js/auto';
 export class DashboardComponent implements OnInit {
 
   stats?: DashboardStats;
+  alertes: AlerteAppelOffre[] = [];
   chart: any;
 
   constructor(
@@ -25,6 +30,7 @@ export class DashboardComponent implements OnInit {
     setTimeout(() => {
       this.chargerStats();
       this.chargerChiffreAffaireMensuel();
+      this.chargerAlertes();
     }, 100);
   }
 
@@ -77,4 +83,17 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
+
+chargerAlertes(): void {
+  this.dashboardService.getAlertesAppelsOffres().subscribe({
+    next: (data) => {
+      this.alertes = data;
+      this.cd.detectChanges();
+    },
+    error: (err) => {
+      console.log('Erreur alertes AO', err);
+    }
+  });
+}
+
 }

@@ -19,3 +19,21 @@ canvas {
   max-width: 100%;
   margin-top: 20px;
 }
+
+.alertes-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.alertes-table th,
+.alertes-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.alertes-table th {
+  background-color: #0b1f4d;
+  color: white;
+}
