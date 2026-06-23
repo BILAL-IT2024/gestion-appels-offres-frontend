@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   stats?: DashboardStats;
   alertes: AlerteAppelOffre[] = [];
   chart: any;
+  statutChart: any;
 
   constructor(
     private dashboardService: DashboardService,
@@ -39,6 +40,7 @@ export class DashboardComponent implements OnInit {
       next: (data) => {
         console.log('STATS DASHBOARD = ', data);
         this.stats = data;
+        this.creerGraphiqueStatuts(data);
         this.cd.detectChanges();
       },
       error: (err) => {
@@ -94,6 +96,34 @@ chargerAlertes(): void {
       console.log('Erreur alertes AO', err);
     }
   });
+}
+
+creerGraphiqueStatuts(stats: DashboardStats): void {
+
+  setTimeout(() => {
+
+    if (this.statutChart) {
+      this.statutChart.destroy();
+    }
+
+    this.statutChart = new Chart('statutChart', {
+      type: 'pie',
+      data: {
+        labels: ['Adjugés', 'En cours', 'Annulés'],
+        datasets: [
+          {
+            label: 'Appels d’offres',
+            data: [
+              stats.aoAdjuges,
+              stats.aoEnCours,
+              stats.aoAnnules
+            ]
+          }
+        ]
+      }
+    });
+
+  }, 500);
 }
 
 }
