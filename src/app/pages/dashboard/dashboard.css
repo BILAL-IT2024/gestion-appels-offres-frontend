@@ -37,3 +37,24 @@ canvas {
   background-color: #0b1f4d;
   color: white;
 }
+
+.EN_RETARD {
+  color: white;
+  background-color: #dc3545;
+  padding: 6px 10px;
+  border-radius: 5px;
+}
+
+.URGENT {
+  color: white;
+  background-color: #fd7e14;
+  padding: 6px 10px;
+  border-radius: 5px;
+}
+
+.NORMAL {
+  color: white;
+  background-color: #198754;
+  padding: 6px 10px;
+  border-radius: 5px;
+}

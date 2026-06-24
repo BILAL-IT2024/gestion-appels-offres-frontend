@@ -83,6 +83,14 @@
     <br><br>
 
     <div class="card">
+      <h3>Top 5 Clients par Chiffre d'Affaires</h3>
+
+      <canvas id="topClientsChart"></canvas>
+    </div>
+
+    <br><br>
+
+    <div class="card">
       <h3>Alertes Appels d'Offres</h3>
 
       <table class="alertes-table">
@@ -102,7 +110,11 @@
           <td>{{ alerte.objet }}</td>
           <td>{{ alerte.dateLimite }}</td>
           <td>{{ alerte.joursRestants }}</td>
-          <td>{{ alerte.etatAlerte }}</td>
+          <td>
+             <span [class]="alerte.etatAlerte">
+                {{ alerte.etatAlerte }}
+             </span>
+          </td>
         </tr>
 
         }

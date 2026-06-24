@@ -4,7 +4,8 @@ import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import {
   DashboardService,
   DashboardStats,
-  AlerteAppelOffre
+  AlerteAppelOffre,
+  TopClient
 } from '../../services/dashboard';
 import Chart from 'chart.js/auto';
 
@@ -19,6 +20,8 @@ export class DashboardComponent implements OnInit {
 
   stats?: DashboardStats;
   alertes: AlerteAppelOffre[] = [];
+  topClients: TopClient[] = [];
+  topClientsChart: any;
   chart: any;
   statutChart: any;
 
@@ -32,6 +35,7 @@ export class DashboardComponent implements OnInit {
       this.chargerStats();
       this.chargerChiffreAffaireMensuel();
       this.chargerAlertes();
+      this.chargerTopClients();
     }, 100);
   }
 
@@ -124,6 +128,47 @@ creerGraphiqueStatuts(stats: DashboardStats): void {
     });
 
   }, 500);
+}
+
+chargerTopClients(): void {
+
+  this.dashboardService.getTopClients().subscribe({
+    next: (data) => {
+
+      console.log('TOP CLIENTS = ', data);
+
+      this.topClients = data;
+
+      const labels = data.map(c => c.client);
+      const valeurs = data.map(c => c.total);
+
+      setTimeout(() => {
+
+        if (this.topClientsChart) {
+          this.topClientsChart.destroy();
+        }
+
+        this.topClientsChart = new Chart('topClientsChart', {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Top Clients',
+                data: valeurs
+              }
+            ]
+          }
+        });
+
+      }, 500);
+
+    },
+    error: (err) => {
+      console.log('Erreur top clients', err);
+    }
+  });
+
 }
 
 }

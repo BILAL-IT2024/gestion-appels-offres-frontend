@@ -35,6 +35,11 @@ export interface AlerteAppelOffre {
   etatAlerte: string;
 }
 
+export interface TopClient {
+  client: string;
+  total: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -64,6 +69,12 @@ getAlertesAppelsOffres(): Observable<AlerteAppelOffre[]> {
     `${this.apiUrl}/alertes/appels-offres`
   );
 
+}
+
+getTopClients(): Observable<TopClient[]> {
+  return this.http.get<TopClient[]>(
+    `${this.apiUrl}/top-clients`
+  );
 }
 
 }
