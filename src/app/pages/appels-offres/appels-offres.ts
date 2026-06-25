@@ -191,4 +191,48 @@ export class AppelsOffresComponent implements OnInit {
     this.chargerAppelsOffres();
   }
 
+exporterExcel(): void {
+
+  this.appelOffresService.exportExcel().subscribe({
+    next: (blob) => {
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'appels_offres.xlsx';
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => {
+      console.log('Erreur export Excel', err);
+      alert('Erreur lors de l’export Excel');
+    }
+  });
+
+}
+
+exporterPdf(id: number): void {
+
+  this.appelOffresService.exportPdf(id).subscribe({
+    next: (blob) => {
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'appel_offre_' + id + '.pdf';
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => {
+      console.log('Erreur export PDF', err);
+      alert('Erreur lors de l’export PDF');
+    }
+  });
+
+}
+
 }

@@ -27,6 +27,10 @@
       + Nouvel Appel d'Offres
     </button>
 
+    <button (click)="exporterExcel()">
+      Exporter Excel
+    </button>
+
     @if (showForm) {
       <div style="margin-top:20px; padding:20px; border:1px solid #ccc;">
 
@@ -119,6 +123,10 @@
 
             <button (click)="supprimerAppelOffre(ao.id)">
               Supprimer
+            </button>
+
+            <button (click)="exporterPdf(ao.id)">
+              PDF
             </button>
 
           </td>

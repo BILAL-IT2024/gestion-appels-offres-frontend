@@ -54,4 +54,22 @@ export class AppelOffresService {
     );
   }
 
+exportExcel(): Observable<Blob> {
+  return this.http.get(
+    `${this.apiUrl}/export/excel`,
+    {
+      responseType: 'blob'
+    }
+  );
+}
+
+exportPdf(id: number): Observable<Blob> {
+  return this.http.get(
+    `${this.apiUrl}/${id}/pdf`,
+    {
+      responseType: 'blob'
+    }
+  );
+}
+
 }
