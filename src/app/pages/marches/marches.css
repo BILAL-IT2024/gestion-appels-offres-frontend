@@ -1,0 +1,25 @@
+.content {
+  padding: 20px;
+  flex: 1;
+  overflow-x: auto;
+}
+
+.marche-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  background: white;
+}
+
+.marche-table th,
+.marche-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.marche-table th {
+  background-color: #0b1f4d;
+  color: white;
+}
