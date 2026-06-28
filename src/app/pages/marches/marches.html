@@ -6,8 +6,30 @@
 
     <h1>Gestion des Marchés</h1>
 
+    <br>
+
+    <input
+      type="text"
+      placeholder="Rechercher par numéro..."
+      [(ngModel)]="keyword"
+    >
+
+    <button (click)="rechercherMarches()">
+      Rechercher
+    </button>
+
+    <button (click)="reinitialiserRecherche()">
+      Réinitialiser
+    </button>
+
+    <br><br>
+
     <button (click)="ouvrirFormulaire()">
       + Nouveau Marché
+    </button>
+
+    <button (click)="exporterExcel()">
+      Exporter Excel
     </button>
 
     @if (showForm) {
@@ -85,6 +107,10 @@
 
           <button (click)="supprimerMarche(marche.id)">
             Supprimer
+          </button>
+
+          <button (click)="exporterPdf(marche.id)">
+            PDF
           </button>
 
         </td>

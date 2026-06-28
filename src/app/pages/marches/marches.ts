@@ -19,6 +19,7 @@ export class Marches implements OnInit {
   idMarcheEnCours?: number;
 
   marches: any[] = [];
+  keyword = '';
   appelsOffres: any[] = [];
 
   nouveauMarche: Marche = {
@@ -160,6 +161,74 @@ modifierMarche(marche: any): void {
       id: Number(marche.appelDoffres?.id)
     }
   };
+
+}
+
+rechercherMarches(): void {
+
+  if (this.keyword.trim() === '') {
+    this.chargerMarches();
+    return;
+  }
+
+  this.marcheService.searchMarches(this.keyword).subscribe({
+    next: (data) => {
+      this.marches = data;
+      this.cd.detectChanges();
+    },
+    error: (err) => {
+      console.log('Erreur recherche marchés', err);
+    }
+  });
+
+}
+
+reinitialiserRecherche(): void {
+  this.keyword = '';
+  this.chargerMarches();
+}
+
+exporterExcel(): void {
+
+  this.marcheService.exportExcel().subscribe({
+    next: (blob) => {
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'marches.xlsx';
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => {
+      console.log('Erreur export Excel Marchés', err);
+      alert('Erreur lors de l’export Excel');
+    }
+  });
+
+}
+
+exporterPdf(id: number): void {
+
+  this.marcheService.exportPdf(id).subscribe({
+    next: (blob) => {
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'marche_' + id + '.pdf';
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => {
+      console.log('Erreur export PDF Marché', err);
+      alert('Erreur lors de l’export PDF');
+    }
+  });
 
 }
 

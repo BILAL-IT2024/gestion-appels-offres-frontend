@@ -44,4 +44,29 @@ export class MarcheService {
       `${this.apiUrl}/${id}`
     );
   }
+
+searchMarches(keyword: string) {
+  return this.http.get<any[]>(
+    `${this.apiUrl}/search?keyword=${keyword}`
+  );
+}
+
+exportExcel(): Observable<Blob> {
+  return this.http.get(
+    `${this.apiUrl}/export/excel`,
+    {
+      responseType: 'blob'
+    }
+  );
+}
+
+exportPdf(id: number): Observable<Blob> {
+  return this.http.get(
+    `${this.apiUrl}/${id}/pdf`,
+    {
+      responseType: 'blob'
+    }
+  );
+}
+
 }
