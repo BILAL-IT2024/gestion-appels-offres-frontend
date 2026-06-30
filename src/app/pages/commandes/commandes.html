@@ -1,0 +1,112 @@
+<div style="display:flex;">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="content">
+
+    <h1>Gestion des Commandes</h1>
+
+    <br>
+
+    <input
+      type="text"
+      placeholder="Rechercher par numéro..."
+      [(ngModel)]="keyword"
+    >
+
+    <button (click)="rechercherCommandes()">
+      Rechercher
+    </button>
+
+    <button (click)="reinitialiserRecherche()">
+      Réinitialiser
+    </button>
+
+    <br><br>
+
+    <button (click)="ouvrirFormulaire()">
+      + Nouvelle Commande
+    </button>
+
+    <button (click)="exporterExcel()">
+      Exporter Excel
+    </button>
+
+    @if (showForm) {
+    <div style="margin-top:20px; padding:20px; border:1px solid #ccc;">
+
+      <h3>Nouvelle Commande</h3>
+
+      <input type="text" placeholder="N° Commande" [(ngModel)]="nouvelleCommande.numeroCommande">
+      <br><br>
+
+      <input type="date" [(ngModel)]="nouvelleCommande.dateCommande">
+      <br><br>
+
+      <input type="number" placeholder="Montant commande" [(ngModel)]="nouvelleCommande.montantCommande">
+      <br><br>
+
+      <select [(ngModel)]="nouvelleCommande.statut">
+        <option value="EN_COURS">EN_COURS</option>
+        <option value="LIVREE">LIVREE</option>
+        <option value="ANNULEE">ANNULEE</option>
+      </select>
+      <br><br>
+
+      <select [(ngModel)]="nouvelleCommande.marche.id">
+        <option [ngValue]="0">-- Choisir un marché --</option>
+
+        @for (marche of marches; track marche.id) {
+        <option [ngValue]="marche.id">
+          {{ marche.numeroMarche }}
+        </option>
+        }
+      </select>
+      <br><br>
+
+      <button (click)="enregistrerCommande()">
+        Enregistrer
+      </button>
+
+    </div>
+    }
+
+    <table class="commande-table">
+
+      <tr>
+        <th>N° Commande</th>
+        <th>Marché</th>
+        <th>Date Commande</th>
+        <th>Montant</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+
+      @for (commande of commandes; track commande.id) {
+      <tr>
+        <td>{{ commande.numeroCommande }}</td>
+        <td>{{ commande.marche?.numeroMarche }}</td>
+        <td>{{ commande.dateCommande }}</td>
+        <td>{{ commande.montantCommande }}</td>
+        <td>{{ commande.statut }}</td>
+
+        <td>
+
+          <button (click)="modifierCommande(commande)">
+            Modifier
+          </button>
+
+          <button (click)="supprimerCommande(commande.id)">
+            Supprimer
+          </button>
+
+        </td>
+
+      </tr>
+      }
+
+    </table>
+
+  </div>
+
+</div>
