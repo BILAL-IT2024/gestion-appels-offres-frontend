@@ -208,5 +208,27 @@ exporterExcel(): void {
 
 }
 
+exporterPdf(id: number): void {
+
+  this.commandeService.exportPdf(id).subscribe({
+    next: (blob) => {
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'commande_' + id + '.pdf';
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => {
+      console.log('Erreur export PDF Commande', err);
+      alert('Erreur lors de l’export PDF');
+    }
+  });
+
+}
+
 
 }
