@@ -1,0 +1,114 @@
+<div style="display:flex;">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="content">
+
+    <h1>Gestion des Paiements</h1>
+
+    <br>
+
+    <input
+      type="text"
+      placeholder="Rechercher par référence..."
+      [(ngModel)]="keyword"
+    >
+
+    <button (click)="rechercherPaiements()">
+      Rechercher
+    </button>
+
+    <button (click)="reinitialiserRecherche()">
+      Réinitialiser
+    </button>
+
+    <br><br>
+
+    <button (click)="ouvrirFormulaire()">
+      + Nouveau Paiement
+    </button>
+
+    <button (click)="exporterExcel()">
+      Exporter Excel
+    </button>
+
+    @if (showForm) {
+    <div style="margin-top:20px; padding:20px; border:1px solid #ccc;">
+
+      <h3>Nouveau Paiement</h3>
+
+      <input type="date" [(ngModel)]="nouveauPaiement.datePaiement">
+      <br><br>
+
+      <input type="number" placeholder="Montant paiement" [(ngModel)]="nouveauPaiement.montantPaiement">
+      <br><br>
+
+      <select [(ngModel)]="nouveauPaiement.modePaiement">
+        <option value="VIREMENT">VIREMENT</option>
+        <option value="CHEQUE">CHEQUE</option>
+        <option value="ESPECES">ESPECES</option>
+      </select>
+      <br><br>
+
+      <input type="text" placeholder="Référence paiement" [(ngModel)]="nouveauPaiement.referencePaiement">
+      <br><br>
+
+      <select [(ngModel)]="nouveauPaiement.commande.id">
+        <option [ngValue]="0">-- Choisir une commande --</option>
+
+        @for (commande of commandes; track commande.id) {
+        <option [ngValue]="commande.id">
+          {{ commande.numeroCommande }}
+        </option>
+        }
+      </select>
+      <br><br>
+
+      <button (click)="enregistrerPaiement()">
+        Enregistrer
+      </button>
+
+    </div>
+    }
+
+    <table class="paiement-table">
+
+      <tr>
+        <th>Date</th>
+        <th>Montant</th>
+        <th>Mode</th>
+        <th>Référence</th>
+        <th>Commande</th>
+        <th>Actions</th>
+      </tr>
+
+      @for (paiement of paiements; track paiement.id) {
+      <tr>
+        <td>{{ paiement.datePaiement }}</td>
+        <td>{{ paiement.montantPaiement }}</td>
+        <td>{{ paiement.modePaiement }}</td>
+        <td>{{ paiement.referencePaiement }}</td>
+        <td>{{ paiement.commande?.numeroCommande }}</td>
+        <td>
+
+          <button (click)="modifierPaiement(paiement)">
+            Modifier
+          </button>
+
+          <button (click)="supprimerPaiement(paiement.id)">
+            Supprimer
+          </button>
+
+          <button (click)="exporterPdf(paiement.id)">
+            PDF
+          </button>
+
+        </td>
+      </tr>
+      }
+
+    </table>
+
+  </div>
+
+</div>
