@@ -1,0 +1,105 @@
+<div style="display:flex;">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="content">
+
+    <h1>Gestion des Clients</h1>
+
+    <br>
+
+    <input
+      type="text"
+      placeholder="Rechercher par raison sociale..."
+      [(ngModel)]="keyword"
+    >
+
+    <button (click)="rechercherClients()">
+      Rechercher
+    </button>
+
+    <button (click)="reinitialiserRecherche()">
+      Réinitialiser
+    </button>
+
+    <br><br>
+
+    <button (click)="ouvrirFormulaire()">
+      + Nouveau Client
+    </button>
+
+    <button (click)="exporterExcel()">
+      Exporter Excel
+    </button>
+
+    @if (showForm) {
+    <div style="margin-top:20px; padding:20px; border:1px solid #ccc;">
+
+      <h3>Nouveau Client</h3>
+
+      <input type="text" placeholder="Raison sociale" [(ngModel)]="nouveauClient.raisonSociale">
+      <br><br>
+
+      <input type="text" placeholder="Adresse" [(ngModel)]="nouveauClient.adresse">
+      <br><br>
+
+      <input type="text" placeholder="Téléphone" [(ngModel)]="nouveauClient.telephone">
+      <br><br>
+
+      <input type="email" placeholder="Email" [(ngModel)]="nouveauClient.email">
+      <br><br>
+
+      <select [(ngModel)]="nouveauClient.typeClient">
+        <option value="PUBLIC">PUBLIC</option>
+        <option value="PRIVE">PRIVE</option>
+      </select>
+      <br><br>
+
+      <button (click)="enregistrerClient()">
+        Enregistrer
+      </button>
+
+    </div>
+    }
+
+    <table class="client-table">
+
+      <tr>
+        <th>Raison sociale</th>
+        <th>Adresse</th>
+        <th>Téléphone</th>
+        <th>Email</th>
+        <th>Type</th>
+        <th>Actions</th>
+      </tr>
+
+      @for (client of clients; track client.id) {
+      <tr>
+        <td>{{ client.raisonSociale }}</td>
+        <td>{{ client.adresse }}</td>
+        <td>{{ client.telephone }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.typeClient }}</td>
+        <td>
+
+          <button (click)="modifierClient(client)">
+            Modifier
+          </button>
+
+          <button (click)="supprimerClient(client.id!)">
+            Supprimer
+          </button>
+
+          <button (click)="exporterPdf(client.id!)">
+            PDF
+          </button>
+
+        </td>
+      </tr>
+      }
+
+    </table>
+
+  </div>
+
+</div>

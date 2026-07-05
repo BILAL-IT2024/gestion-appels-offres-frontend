@@ -5,6 +5,7 @@ import { AppelsOffresComponent } from './pages/appels-offres/appels-offres';
 import { Marches } from './pages/marches/marches';
 import { Commandes } from './pages/commandes/commandes';
 import { Paiements } from './pages/paiements/paiements';
+import { Clients } from './pages/clients/clients';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: 'appels-offres', component: AppelsOffresComponent },
   { path: 'marches', component: Marches },
   { path: 'commandes', component: Commandes },
-  { path: 'paiements', component: Paiements }
+  { path: 'paiements', component: Paiements },
+  { path: 'clients', component: Clients }
 ];
