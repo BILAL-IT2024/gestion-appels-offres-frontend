@@ -6,6 +6,7 @@ import { Marches } from './pages/marches/marches';
 import { Commandes } from './pages/commandes/commandes';
 import { Paiements } from './pages/paiements/paiements';
 import { Clients } from './pages/clients/clients';
+import { Consultations } from './pages/consultations/consultations';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'marches', component: Marches },
   { path: 'commandes', component: Commandes },
   { path: 'paiements', component: Paiements },
-  { path: 'clients', component: Clients }
+  { path: 'clients', component: Clients },
+  { path: 'consultations', component: Consultations }
 ];

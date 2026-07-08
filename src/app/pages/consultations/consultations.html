@@ -1,0 +1,123 @@
+<div style="display:flex;">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="content">
+
+    <h1>Gestion des Consultations</h1>
+
+    <br>
+
+    <input
+      type="text"
+      placeholder="Rechercher par référence..."
+      [(ngModel)]="keyword"
+    >
+
+    <button (click)="rechercherConsultations()">
+      Rechercher
+    </button>
+
+    <button (click)="reinitialiserRecherche()">
+      Réinitialiser
+    </button>
+
+    <br><br>
+
+    <button (click)="ouvrirFormulaire()">
+      + Nouvelle Consultation
+    </button>
+
+    <button (click)="exporterExcel()">
+      Exporter Excel
+    </button>
+
+    @if (showForm) {
+    <div style="margin-top:20px; padding:20px; border:1px solid #ccc;">
+
+      <h3>Nouvelle Consultation</h3>
+
+      <input type="text" placeholder="Référence" [(ngModel)]="nouvelleConsultation.reference">
+      <br><br>
+
+      <input type="text" placeholder="Objet" [(ngModel)]="nouvelleConsultation.objet">
+      <br><br>
+
+      <input type="date" [(ngModel)]="nouvelleConsultation.dateReception">
+      <br><br>
+
+      <input type="number" placeholder="Montant proposé" [(ngModel)]="nouvelleConsultation.montantPropose">
+      <br><br>
+
+      <select [(ngModel)]="nouvelleConsultation.statut">
+        <option value="EN_COURS">EN_COURS</option>
+        <option value="RETENUE">RETENUE</option>
+        <option value="REFUSEE">REFUSEE</option>
+      </select>
+      <br><br>
+
+      <select [(ngModel)]="nouvelleConsultation.client.id">
+        <option [ngValue]="0">-- Choisir un client --</option>
+
+        @for (client of clients; track client.id) {
+        <option [ngValue]="client.id">
+          {{ client.raisonSociale }}
+        </option>
+        }
+      </select>
+      <br><br>
+
+      <button (click)="enregistrerConsultation()">
+        Enregistrer
+      </button>
+
+    </div>
+    }
+
+    <div class="table-container">
+
+      <table class="consultation-table">
+
+      <tr>
+        <th>Référence</th>
+        <th>Objet</th>
+        <th>Date réception</th>
+        <th>Montant proposé</th>
+        <th>Statut</th>
+        <th>Client</th>
+        <th>Actions</th>
+      </tr>
+
+      @for (consultation of consultations; track consultation.id) {
+      <tr>
+        <td>{{ consultation.reference }}</td>
+        <td>{{ consultation.objet }}</td>
+        <td>{{ consultation.dateReception }}</td>
+        <td>{{ consultation.montantPropose }}</td>
+        <td>{{ consultation.statut }}</td>
+        <td>{{ consultation.client?.raisonSociale }}</td>
+        <td>
+
+          <button (click)="modifierConsultation(consultation)">
+            Modifier
+          </button>
+
+          <button (click)="supprimerConsultation(consultation.id)">
+            Supprimer
+          </button>
+
+          <button (click)="exporterPdf(consultation.id)">
+            PDF
+          </button>
+
+        </td>
+      </tr>
+      }
+
+    </table>
+
+    </div>
+
+  </div>
+
+</div>
