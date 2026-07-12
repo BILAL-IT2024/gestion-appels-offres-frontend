@@ -1,123 +1,310 @@
-<div style="display:flex;">
+<div class="page-layout">
 
   <app-sidebar></app-sidebar>
 
-  <div class="content">
+  <main class="content">
 
     <h1>Gestion des Consultations</h1>
 
-    <br>
+    <!-- Recherche -->
+    <div class="search-bar">
 
-    <input
-      type="text"
-      placeholder="Rechercher par référence..."
-      [(ngModel)]="keyword"
-    >
+      <input
+        type="text"
+        placeholder="Rechercher par référence..."
+        [(ngModel)]="keyword"
+      >
 
-    <button (click)="rechercherConsultations()">
-      Rechercher
-    </button>
+      <button
+        class="btn-primary"
+        type="button"
+        (click)="rechercherConsultations()"
+      >
+        Rechercher
+      </button>
 
-    <button (click)="reinitialiserRecherche()">
-      Réinitialiser
-    </button>
-
-    <br><br>
-
-    <button (click)="ouvrirFormulaire()">
-      + Nouvelle Consultation
-    </button>
-
-    <button (click)="exporterExcel()">
-      Exporter Excel
-    </button>
-
-    @if (showForm) {
-    <div style="margin-top:20px; padding:20px; border:1px solid #ccc;">
-
-      <h3>Nouvelle Consultation</h3>
-
-      <input type="text" placeholder="Référence" [(ngModel)]="nouvelleConsultation.reference">
-      <br><br>
-
-      <input type="text" placeholder="Objet" [(ngModel)]="nouvelleConsultation.objet">
-      <br><br>
-
-      <input type="date" [(ngModel)]="nouvelleConsultation.dateReception">
-      <br><br>
-
-      <input type="number" placeholder="Montant proposé" [(ngModel)]="nouvelleConsultation.montantPropose">
-      <br><br>
-
-      <select [(ngModel)]="nouvelleConsultation.statut">
-        <option value="EN_COURS">EN_COURS</option>
-        <option value="RETENUE">RETENUE</option>
-        <option value="REFUSEE">REFUSEE</option>
-      </select>
-      <br><br>
-
-      <select [(ngModel)]="nouvelleConsultation.client.id">
-        <option [ngValue]="0">-- Choisir un client --</option>
-
-        @for (client of clients; track client.id) {
-        <option [ngValue]="client.id">
-          {{ client.raisonSociale }}
-        </option>
-        }
-      </select>
-      <br><br>
-
-      <button (click)="enregistrerConsultation()">
-        Enregistrer
+      <button
+        class="btn-secondary"
+        type="button"
+        (click)="reinitialiserRecherche()"
+      >
+        Réinitialiser
       </button>
 
     </div>
-    }
 
-    <div class="table-container">
+    <!-- Actions principales -->
+    <div class="actions-bar">
 
-      <table class="consultation-table">
+      <button
+        class="btn-success"
+        type="button"
+        (click)="ouvrirFormulaire()"
+      >
+        + Nouvelle Consultation
+      </button>
 
-      <tr>
-        <th>Référence</th>
-        <th>Objet</th>
-        <th>Date réception</th>
-        <th>Montant proposé</th>
-        <th>Statut</th>
-        <th>Client</th>
-        <th>Actions</th>
-      </tr>
-
-      @for (consultation of consultations; track consultation.id) {
-      <tr>
-        <td>{{ consultation.reference }}</td>
-        <td>{{ consultation.objet }}</td>
-        <td>{{ consultation.dateReception }}</td>
-        <td>{{ consultation.montantPropose }}</td>
-        <td>{{ consultation.statut }}</td>
-        <td>{{ consultation.client?.raisonSociale }}</td>
-        <td>
-
-          <button (click)="modifierConsultation(consultation)">
-            Modifier
-          </button>
-
-          <button (click)="supprimerConsultation(consultation.id)">
-            Supprimer
-          </button>
-
-          <button (click)="exporterPdf(consultation.id)">
-            PDF
-          </button>
-
-        </td>
-      </tr>
-      }
-
-    </table>
+      <button
+        class="btn-light"
+        type="button"
+        (click)="exporterExcel()"
+      >
+        Exporter Excel
+      </button>
 
     </div>
 
-  </div>
+    <!-- Formulaire -->
+    @if (showForm) {
+
+    <div class="form-card">
+
+      <h3>
+        {{ modeEdition
+        ? 'Modifier la consultation'
+        : 'Nouvelle consultation'
+        }}
+      </h3>
+
+      <div class="form-group">
+        <label for="reference">Référence</label>
+
+        <input
+          id="reference"
+          type="text"
+          placeholder="Référence"
+          [(ngModel)]="nouvelleConsultation.reference"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="objet">Objet</label>
+
+        <input
+          id="objet"
+          type="text"
+          placeholder="Objet"
+          [(ngModel)]="nouvelleConsultation.objet"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="dateReception">Date de réception</label>
+
+        <input
+          id="dateReception"
+          type="date"
+          [(ngModel)]="nouvelleConsultation.dateReception"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="montantPropose">Montant proposé</label>
+
+        <input
+          id="montantPropose"
+          type="number"
+          placeholder="Montant proposé"
+          [(ngModel)]="nouvelleConsultation.montantPropose"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="statut">Statut</label>
+
+        <select
+          id="statut"
+          [(ngModel)]="nouvelleConsultation.statut"
+        >
+          <option value="EN_COURS">EN_COURS</option>
+          <option value="RETENUE">RETENUE</option>
+          <option value="REFUSEE">REFUSEE</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="client">Client</label>
+
+        <select
+          id="client"
+          [(ngModel)]="nouvelleConsultation.client.id"
+        >
+
+          <option [ngValue]="0">
+            -- Choisir un client --
+          </option>
+
+          @for (client of clients; track client.id) {
+
+          <option [ngValue]="client.id">
+            {{ client.raisonSociale }}
+          </option>
+
+          }
+
+        </select>
+      </div>
+
+      <div class="actions-bar">
+
+        <button
+          class="btn-success"
+          type="button"
+          (click)="enregistrerConsultation()"
+        >
+          {{
+          modeEdition
+          ? 'Enregistrer les modifications'
+          : 'Enregistrer'
+          }}
+        </button>
+
+        <button
+          class="btn-secondary"
+          type="button"
+          (click)="showForm = false"
+        >
+          Annuler
+        </button>
+
+      </div>
+
+    </div>
+
+    }
+
+    <!-- Tableau -->
+    <div class="table-container" #tableContainer>
+
+      <table class="consultation-table">
+
+        <thead>
+
+        <tr>
+          <th>Référence</th>
+          <th>Objet</th>
+          <th>Date réception</th>
+          <th>Montant proposé</th>
+          <th>Statut</th>
+          <th>Client</th>
+          <th>Actions</th>
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        @for (
+        consultation of consultations;
+        track consultation.id
+        ) {
+
+        <tr>
+
+          <td>
+            {{ consultation.reference }}
+          </td>
+
+          <td>
+            {{ consultation.objet }}
+          </td>
+
+          <td>
+            {{ consultation.dateReception }}
+          </td>
+
+          <td>
+            {{ consultation.montantPropose }} DH
+          </td>
+
+          <td>
+
+            @if (consultation.statut === 'RETENUE') {
+
+            <span class="status-badge status-success">
+                    RETENUE
+                  </span>
+
+            } @else if (
+            consultation.statut === 'EN_COURS'
+            ) {
+
+            <span class="status-badge status-warning">
+                    EN_COURS
+                  </span>
+
+            } @else if (
+            consultation.statut === 'REFUSEE'
+            ) {
+
+            <span class="status-badge status-danger">
+                    REFUSEE
+                  </span>
+
+            } @else {
+
+            <span class="status-badge status-neutral">
+                    {{ consultation.statut }}
+                  </span>
+
+            }
+
+          </td>
+
+          <td>
+            {{ consultation.client?.raisonSociale }}
+          </td>
+
+          <td>
+
+            <div class="table-actions">
+
+              <button
+                class="btn-primary"
+                type="button"
+                (click)="modifierConsultation(consultation)"
+              >
+                Modifier
+              </button>
+
+              <button
+                class="btn-danger"
+                type="button"
+                (click)="supprimerConsultation(consultation.id)"
+              >
+                Supprimer
+              </button>
+
+              <button
+                class="btn-light"
+                type="button"
+                (click)="exporterPdf(consultation.id)"
+              >
+                PDF
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+        } @empty {
+
+        <tr>
+          <td colspan="7" style="text-align: center;">
+            Aucune consultation trouvée.
+          </td>
+        </tr>
+
+        }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </main>
 
 </div>

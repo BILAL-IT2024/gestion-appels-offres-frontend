@@ -111,7 +111,7 @@ creerGraphiqueStatuts(stats: DashboardStats): void {
     }
 
     this.statutChart = new Chart('statutChart', {
-      type: 'pie',
+      type: 'doughnut',
       data: {
         labels: ['Adjugés', 'En cours', 'Annulés'],
         datasets: [
@@ -121,7 +121,14 @@ creerGraphiqueStatuts(stats: DashboardStats): void {
               stats.aoAdjuges,
               stats.aoEnCours,
               stats.aoAnnules
-            ]
+            ],
+            backgroundColor: [
+              '#22c55e',
+              '#f59e0b',
+              '#ef4444'
+            ],
+            borderWidth: 2,
+            hoverOffset: 20
           }
         ]
       }
@@ -150,20 +157,36 @@ chargerTopClients(): void {
 
         this.topClientsChart = new Chart('topClientsChart', {
           type: 'bar',
+
           data: {
             labels: labels,
+
             datasets: [
               {
                 label: 'Top Clients',
-                data: valeurs
+                data: valeurs,
+                backgroundColor: '#2563eb',
+                borderRadius: 12,
+                borderSkipped: false
               }
             ]
+          },
+
+          options: {
+            responsive: true,
+
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
           }
         });
 
       }, 500);
 
     },
+
     error: (err) => {
       console.log('Erreur top clients', err);
     }

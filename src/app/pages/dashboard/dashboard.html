@@ -1,127 +1,198 @@
-<div style="display:flex;">
+<div class="page-layout">
 
   <app-sidebar></app-sidebar>
 
-  <div style="padding:20px; flex:1;">
+  <main class="dashboard-page">
 
-    <h1>Dashboard</h1>
+    <header class="dashboard-header">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Vue d’ensemble de l’activité</p>
+      </div>
+    </header>
 
     @if (stats) {
 
-      <div style="display:grid;
-                  grid-template-columns: repeat(3, 1fr);
-                  gap:20px;
-                  margin-top:20px;">
+    <section class="kpi-grid">
 
-        <div class="card">
-          <h3>Total AO</h3>
-          <h2>{{ stats.totalAppelsOffres }}</h2>
-        </div>
+      <article class="kpi-card">
+        <span class="kpi-label">Total AO</span>
+        <strong class="kpi-value">
+          {{ stats.totalAppelsOffres }}
+        </strong>
+      </article>
 
-        <div class="card">
-          <h3>AO Adjugés</h3>
-          <h2>{{ stats.aoAdjuges }}</h2>
-        </div>
+      <article class="kpi-card">
+        <span class="kpi-label">AO adjugés</span>
+        <strong class="kpi-value">
+          {{ stats.aoAdjuges }}
+        </strong>
+      </article>
 
-        <div class="card">
-          <h3>AO En cours</h3>
-          <h2>{{ stats.aoEnCours }}</h2>
-        </div>
+      <article class="kpi-card">
+        <span class="kpi-label">AO en cours</span>
+        <strong class="kpi-value">
+          {{ stats.aoEnCours }}
+        </strong>
+      </article>
 
-        <div class="card">
-          <h3>AO Annulés</h3>
-          <h2>{{ stats.aoAnnules }}</h2>
-        </div>
+      <article class="kpi-card">
+        <span class="kpi-label">AO annulés</span>
+        <strong class="kpi-value">
+          {{ stats.aoAnnules }}
+        </strong>
+      </article>
 
-        <div class="card">
-          <h3>Montant Total AO</h3>
-          <h2>{{ stats.montantTotalAO | number }} DH</h2>
-        </div>
+      <article class="kpi-card">
+        <span class="kpi-label">Montant total AO</span>
+        <strong class="kpi-value kpi-value-small">
+          {{ stats.montantTotalAO | number }} DH
+        </strong>
+      </article>
 
-        <div class="card">
-          <h3>Taux Réussite</h3>
-          <h2>{{ stats.tauxReussite }} %</h2>
-        </div>
+      <article class="kpi-card">
+        <span class="kpi-label">Taux de réussite</span>
+        <strong class="kpi-value">
+          {{ stats.tauxReussite }} %
+        </strong>
+      </article>
 
-        <div class="card">
-          <h3>Top Client</h3>
-          <h2>{{ stats.topClient }}</h2>
-        </div>
+      <article class="kpi-card">
+        <span class="kpi-label">Top client</span>
+        <strong class="kpi-value kpi-value-small">
+          {{ stats.topClient || '—' }}
+        </strong>
+      </article>
 
-        <div class="card">
-          <h3>AO Urgents</h3>
-          <h2>{{ stats.aoUrgents }}</h2>
-        </div>
+      <article class="kpi-card kpi-warning">
+        <span class="kpi-label">AO urgents</span>
+        <strong class="kpi-value">
+          {{ stats.aoUrgents }}
+        </strong>
+      </article>
 
-        <div class="card">
-          <h3>AO En Retard</h3>
-          <h2>{{ stats.aoEnRetard }}</h2>
-        </div>
+      <article class="kpi-card kpi-danger">
+        <span class="kpi-label">AO en retard</span>
+        <strong class="kpi-value">
+          {{ stats.aoEnRetard }}
+        </strong>
+      </article>
 
-      </div>
+    </section>
 
     }
 
-    <br><br>
+    <section class="charts-grid">
 
-    <div class="card">
-      <h3>Chiffre d'Affaires Mensuel</h3>
+      <article class="dashboard-card chart-card chart-wide">
 
-      <canvas id="caMensuelChart"></canvas>
-    </div>
+        <div class="card-header">
+          <div>
+            <h2>Chiffre d’affaires mensuel</h2>
+            <p>Évolution des paiements par mois</p>
+          </div>
+        </div>
 
-    <br><br>
+        <div class="chart-wrapper chart-wrapper-large">
+          <canvas id="caMensuelChart"></canvas>
+        </div>
 
-    <div class="card">
-      <h3>Répartition des Appels d'Offres par Statut</h3>
+      </article>
 
-      <div style="width:400px; margin:auto;">
-        <canvas id="statutChart"></canvas>
+      <article class="dashboard-card chart-card">
+
+        <div class="card-header">
+          <div>
+            <h2>Répartition des AO</h2>
+            <p>Par statut</p>
+          </div>
+        </div>
+
+        <div class="chart-wrapper chart-wrapper-pie">
+          <canvas id="statutChart"></canvas>
+        </div>
+
+      </article>
+
+      <article class="dashboard-card chart-card">
+
+        <div class="card-header">
+          <div>
+            <h2>Top 5 clients</h2>
+            <p>Par chiffre d’affaires</p>
+          </div>
+        </div>
+
+        <div class="chart-wrapper">
+          <canvas id="topClientsChart"></canvas>
+        </div>
+
+      </article>
+
+    </section>
+
+    <section class="dashboard-card alerts-card">
+
+      <div class="card-header">
+        <div>
+          <h2>Alertes appels d’offres</h2>
+          <p>Échéances urgentes ou dépassées</p>
+        </div>
       </div>
-    </div>
 
-    <br><br>
+      <div class="alerts-table-wrapper">
 
-    <div class="card">
-      <h3>Top 5 Clients par Chiffre d'Affaires</h3>
+        <table class="alertes-table">
 
-      <canvas id="topClientsChart"></canvas>
-    </div>
+          <thead>
+          <tr>
+            <th>Référence</th>
+            <th>Objet</th>
+            <th>Date limite</th>
+            <th>Jours restants</th>
+            <th>État</th>
+          </tr>
+          </thead>
 
-    <br><br>
+          <tbody>
 
-    <div class="card">
-      <h3>Alertes Appels d'Offres</h3>
+          @for (alerte of alertes; track alerte.id) {
 
-      <table class="alertes-table">
+          <tr>
+            <td>{{ alerte.reference }}</td>
+            <td>{{ alerte.objet }}</td>
+            <td>{{ alerte.dateLimite }}</td>
+            <td>{{ alerte.joursRestants }}</td>
+            <td>
+                  <span
+                    class="alert-badge"
+                    [class.EN_RETARD]="alerte.etatAlerte === 'EN_RETARD'"
+                    [class.URGENT]="alerte.etatAlerte === 'URGENT'"
+                    [class.NORMAL]="alerte.etatAlerte === 'NORMAL'"
+                  >
+                    {{ alerte.etatAlerte }}
+                  </span>
+            </td>
+          </tr>
 
-        <tr>
-          <th>Référence</th>
-          <th>Objet</th>
-          <th>Date limite</th>
-          <th>Jours restants</th>
-          <th>État</th>
-        </tr>
+          } @empty {
 
-        @for (alerte of alertes; track alerte.id) {
+          <tr>
+            <td colspan="5" class="empty-state">
+              Aucune alerte disponible.
+            </td>
+          </tr>
 
-        <tr>
-          <td>{{ alerte.reference }}</td>
-          <td>{{ alerte.objet }}</td>
-          <td>{{ alerte.dateLimite }}</td>
-          <td>{{ alerte.joursRestants }}</td>
-          <td>
-             <span [class]="alerte.etatAlerte">
-                {{ alerte.etatAlerte }}
-             </span>
-          </td>
-        </tr>
+          }
 
-        }
+          </tbody>
 
-      </table>
-    </div>
+        </table>
 
-  </div>
+      </div>
+
+    </section>
+
+  </main>
 
 </div>

@@ -1,41 +1,96 @@
-.content {
-  flex: 1;
-  padding: 20px;
-  overflow-x: auto;
+:host {
+  display: block;
+  width: 100%;
 }
 
+/* Le tableau peut défiler uniquement quand l'espace manque */
 .table-container {
   width: 100%;
   overflow-x: auto;
 }
 
+/* Largeur suffisante pour éviter les chevauchements */
 .consultation-table {
   width: 100%;
-  min-width: 1100px;
-  margin-top: 20px;
+  min-width: 1250px;
+  table-layout: auto;
   border-collapse: collapse;
-  background: white;
 }
 
-.consultation-table th,
-.consultation-table td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: left;
+/* Référence */
+.consultation-table th:nth-child(1),
+.consultation-table td:nth-child(1) {
+  width: 120px;
+  min-width: 120px;
+  white-space: normal;
+}
+
+/* Objet */
+.consultation-table th:nth-child(2),
+.consultation-table td:nth-child(2) {
+  width: 290px;
+  min-width: 290px;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+/* Date réception */
+.consultation-table th:nth-child(3),
+.consultation-table td:nth-child(3) {
+  width: 170px;
+  min-width: 170px;
   white-space: nowrap;
 }
 
-.consultation-table th {
-  background-color: #0b1f4d;
-  color: white;
+/* Montant proposé */
+.consultation-table th:nth-child(4),
+.consultation-table td:nth-child(4) {
+  width: 175px;
+  min-width: 175px;
+  white-space: nowrap;
 }
 
-.consultation-table td:last-child,
-.consultation-table th:last-child {
-  min-width: 230px;
+/* Statut */
+.consultation-table th:nth-child(5),
+.consultation-table td:nth-child(5) {
+  width: 155px;
+  min-width: 155px;
+  white-space: nowrap;
 }
 
-.table-container {
-  width: 100%;
-  overflow-x: auto;
+/* Client */
+.consultation-table th:nth-child(6),
+.consultation-table td:nth-child(6) {
+  width: 170px;
+  min-width: 170px;
+  white-space: normal;
+}
+
+/* Actions */
+.consultation-table th:nth-child(7),
+.consultation-table td:nth-child(7) {
+  width: 270px;
+  min-width: 270px;
+  white-space: nowrap;
+}
+
+/* Garder les boutons sur une seule ligne */
+.table-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+.table-actions button {
+  min-height: 36px;
+  padding: 8px 11px;
+  font-size: 12px;
+}
+
+/* Adaptation aux petits écrans */
+@media (max-width: 1100px) {
+  .consultation-table {
+    min-width: 1250px;
+  }
 }

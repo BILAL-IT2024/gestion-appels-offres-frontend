@@ -1,14 +1,45 @@
-<div class="sidebar">
+<aside class="sidebar">
+
   <h2>Appels d'Offres</h2>
 
-  <a routerLink="/dashboard">Dashboard</a>
-  <a routerLink="/appels-offres">Appels d'offres</a>
-  <a routerLink="/marches">Marchés</a>
-  <a routerLink="/commandes">Commandes</a>
-  <a routerLink="/paiements">Paiements</a>
-  <a routerLink="/consultations">Consultations</a>
-  <a routerLink="/clients">Clients</a>
-  <a routerLink="/statistiques">Statistiques</a>
+  <nav>
 
-  <button>Déconnexion</button>
-</div>
+    <a routerLink="/dashboard">
+      Dashboard
+    </a>
+
+    <a routerLink="/appels-offres">
+      Appels d'offres
+    </a>
+
+    <a routerLink="/marches">
+      Marchés
+    </a>
+
+    <a routerLink="/commandes">
+      Commandes
+    </a>
+
+    <a routerLink="/paiements">
+      Paiements
+    </a>
+
+    <a routerLink="/consultations">
+      Consultations
+    </a>
+
+    <a routerLink="/clients">
+      Clients
+    </a>
+
+    <a routerLink="/statistiques">
+      Statistiques
+    </a>
+
+  </nav>
+
+  <button type="button" (click)="logout()">
+    Déconnexion
+  </button>
+
+</aside>
