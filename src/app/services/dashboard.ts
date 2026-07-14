@@ -6,6 +6,11 @@ export interface DashboardStats {
   totalClients: number;
   totalAppelsOffres: number;
   totalConsultations: number;
+
+  consultationsRetenues: number;
+  consultationsEnCours: number;
+  consultationsRefusees: number;
+
   totalMarches: number;
   totalCommandes: number;
   totalPaiements: number;

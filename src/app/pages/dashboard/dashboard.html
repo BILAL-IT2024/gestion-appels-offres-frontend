@@ -78,6 +78,34 @@
         </strong>
       </article>
 
+      <article class="kpi-card">
+        <span class="kpi-label">Total consultations</span>
+        <strong class="kpi-value">
+          {{ stats.totalConsultations }}
+        </strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Consultations retenues</span>
+        <strong class="kpi-value">
+          {{ stats.consultationsRetenues }}
+        </strong>
+      </article>
+
+      <article class="kpi-card kpi-warning">
+        <span class="kpi-label">Consultations en cours</span>
+        <strong class="kpi-value">
+          {{ stats.consultationsEnCours }}
+        </strong>
+      </article>
+
+      <article class="kpi-card kpi-danger">
+        <span class="kpi-label">Consultations refusées</span>
+        <strong class="kpi-value">
+          {{ stats.consultationsRefusees }}
+        </strong>
+      </article>
+
     </section>
 
     }
