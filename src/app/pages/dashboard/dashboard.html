@@ -106,6 +106,34 @@
         </strong>
       </article>
 
+      <article class="kpi-card">
+        <span class="kpi-label">Total marchés</span>
+        <strong class="kpi-value">
+          {{ stats.totalMarches }}
+        </strong>
+      </article>
+
+      <article class="kpi-card kpi-warning">
+        <span class="kpi-label">Marchés en cours</span>
+        <strong class="kpi-value">
+          {{ stats.marchesEnCours }}
+        </strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Marchés terminés</span>
+        <strong class="kpi-value">
+          {{ stats.marchesTermines }}
+        </strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Montant total marchés</span>
+        <strong class="kpi-value kpi-value-small">
+          {{ stats.montantTotalMarches | number }} DH
+        </strong>
+      </article>
+
     </section>
 
     }

@@ -12,9 +12,14 @@ export interface DashboardStats {
   consultationsRefusees: number;
 
   totalMarches: number;
+  marchesEnCours: number;
+  marchesTermines: number;
+  montantTotalMarches: number;
+
   totalCommandes: number;
   totalPaiements: number;
   chiffreAffaireTotal: number;
+
   aoAdjuges: number;
   tauxReussite: number;
   aoEnCours: number;
