@@ -17,6 +17,10 @@ export interface DashboardStats {
   montantTotalMarches: number;
 
   totalCommandes: number;
+  commandesEnCours: number;
+  commandesLivrees: number;
+  montantTotalCommandes: number;
+
   totalPaiements: number;
   chiffreAffaireTotal: number;
 

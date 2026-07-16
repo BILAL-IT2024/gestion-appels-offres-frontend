@@ -134,6 +134,34 @@
         </strong>
       </article>
 
+      <article class="kpi-card">
+        <span class="kpi-label">Total commandes</span>
+        <strong class="kpi-value">
+          {{ stats.totalCommandes }}
+        </strong>
+      </article>
+
+      <article class="kpi-card kpi-warning">
+        <span class="kpi-label">Commandes en cours</span>
+        <strong class="kpi-value">
+          {{ stats.commandesEnCours }}
+        </strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Commandes livrées</span>
+        <strong class="kpi-value">
+          {{ stats.commandesLivrees }}
+        </strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Montant total commandes</span>
+        <strong class="kpi-value kpi-value-small">
+          {{ stats.montantTotalCommandes | number }} DH
+        </strong>
+      </article>
+
     </section>
 
     }
