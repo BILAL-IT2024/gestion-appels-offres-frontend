@@ -35,7 +35,9 @@
     @if (showForm) {
     <div style="margin-top:20px; padding:20px; border:1px solid #ccc;">
 
-      <h3>Nouveau Paiement</h3>
+      <h3>
+        {{ modeEdition ? 'Modifier le Paiement' : 'Nouveau Paiement' }}
+      </h3>
 
       <input type="date" [(ngModel)]="nouveauPaiement.datePaiement">
 
@@ -76,7 +78,20 @@
       <br><br>
 
       <button (click)="enregistrerPaiement()">
-        Enregistrer
+
+        {{ modeEdition
+        ? 'Enregistrer les modifications'
+        : 'Enregistrer'
+        }}
+
+      </button>
+
+      <button
+        type="button"
+        (click)="showForm = false">
+
+        Annuler
+
       </button>
 
     </div>

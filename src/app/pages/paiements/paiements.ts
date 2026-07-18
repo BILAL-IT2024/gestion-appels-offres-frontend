@@ -88,7 +88,10 @@ export class Paiements implements OnInit {
 
 enregistrerPaiement(): void {
 
-  if (this.modeEdition && this.idPaiementEnCours) {
+  if (
+    this.modeEdition &&
+    this.idPaiementEnCours !== undefined
+  ) {
 
     this.paiementService.updatePaiement(
       this.idPaiementEnCours,
@@ -138,7 +141,7 @@ modifierPaiement(paiement: any): void {
     referencePaiement: paiement.referencePaiement,
     statut: paiement.statut ?? 'EN_ATTENTE',
     commande: {
-      id: Number(paiement.commande?.id)
+      id: Number(paiement.commande?.id ?? 0)
     }
   };
 
