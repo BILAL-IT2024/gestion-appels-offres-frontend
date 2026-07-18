@@ -27,6 +27,7 @@ export class Paiements implements OnInit {
     montantPaiement: 0,
     modePaiement: 'VIREMENT',
     referencePaiement: '',
+    statut: 'EN_ATTENTE',
     commande: {
       id: 0
     }
@@ -76,6 +77,7 @@ export class Paiements implements OnInit {
       montantPaiement: 0,
       modePaiement: 'VIREMENT',
       referencePaiement: '',
+      statut: 'EN_ATTENTE',
       commande: {
         id: 0
       }
@@ -134,6 +136,7 @@ modifierPaiement(paiement: any): void {
     montantPaiement: paiement.montantPaiement,
     modePaiement: paiement.modePaiement,
     referencePaiement: paiement.referencePaiement,
+    statut: paiement.statut ?? 'EN_ATTENTE',
     commande: {
       id: Number(paiement.commande?.id)
     }

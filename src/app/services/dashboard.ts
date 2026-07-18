@@ -22,6 +22,11 @@ export interface DashboardStats {
   montantTotalCommandes: number;
 
   totalPaiements: number;
+  paiementsValides: number;
+  paiementsEnAttente: number;
+  paiementsAnnules: number;
+  paiementMoyen: number;
+
   chiffreAffaireTotal: number;
 
   aoAdjuges: number;

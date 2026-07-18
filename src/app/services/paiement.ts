@@ -8,6 +8,7 @@ export interface Paiement {
   montantPaiement: number;
   modePaiement: string;
   referencePaiement: string;
+  statut: string;
   commande: {
     id: number;
   };

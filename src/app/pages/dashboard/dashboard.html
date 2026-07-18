@@ -162,6 +162,48 @@
         </strong>
       </article>
 
+      <article class="kpi-card">
+        <span class="kpi-label">Total paiements</span>
+        <strong class="kpi-value">
+          {{ stats.totalPaiements }}
+        </strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Paiements validés</span>
+        <strong class="kpi-value">
+          {{ stats.paiementsValides }}
+        </strong>
+      </article>
+
+      <article class="kpi-card kpi-warning">
+        <span class="kpi-label">Paiements en attente</span>
+        <strong class="kpi-value">
+          {{ stats.paiementsEnAttente }}
+        </strong>
+      </article>
+
+      <article class="kpi-card kpi-danger">
+        <span class="kpi-label">Paiements annulés</span>
+        <strong class="kpi-value">
+          {{ stats.paiementsAnnules }}
+        </strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Paiement moyen</span>
+        <strong class="kpi-value kpi-value-small">
+          {{ stats.paiementMoyen | number }} DH
+        </strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Chiffre d’affaires total</span>
+        <strong class="kpi-value kpi-value-small">
+          {{ stats.chiffreAffaireTotal | number }} DH
+        </strong>
+      </article>
+
     </section>
 
     }

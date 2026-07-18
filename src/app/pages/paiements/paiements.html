@@ -38,6 +38,7 @@
       <h3>Nouveau Paiement</h3>
 
       <input type="date" [(ngModel)]="nouveauPaiement.datePaiement">
+
       <br><br>
 
       <input type="number" placeholder="Montant paiement" [(ngModel)]="nouveauPaiement.montantPaiement">
@@ -48,6 +49,15 @@
         <option value="CHEQUE">CHEQUE</option>
         <option value="ESPECES">ESPECES</option>
       </select>
+
+      <br><br>
+
+      <select [(ngModel)]="nouveauPaiement.statut">
+        <option value="EN_ATTENTE">EN_ATTENTE</option>
+        <option value="VALIDE">VALIDE</option>
+        <option value="ANNULE">ANNULE</option>
+      </select>
+
       <br><br>
 
       <input type="text" placeholder="Référence paiement" [(ngModel)]="nouveauPaiement.referencePaiement">
@@ -62,6 +72,7 @@
         </option>
         }
       </select>
+
       <br><br>
 
       <button (click)="enregistrerPaiement()">
@@ -77,6 +88,7 @@
         <th>Date</th>
         <th>Montant</th>
         <th>Mode</th>
+        <th>Statut</th>
         <th>Référence</th>
         <th>Commande</th>
         <th>Actions</th>
@@ -87,6 +99,7 @@
         <td>{{ paiement.datePaiement }}</td>
         <td>{{ paiement.montantPaiement }}</td>
         <td>{{ paiement.modePaiement }}</td>
+        <td>{{ paiement.statut }}</td>
         <td>{{ paiement.referencePaiement }}</td>
         <td>{{ paiement.commande?.numeroCommande }}</td>
         <td>
