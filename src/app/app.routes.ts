@@ -7,10 +7,12 @@ import { Commandes } from './pages/commandes/commandes';
 import { Paiements } from './pages/paiements/paiements';
 import { Clients } from './pages/clients/clients';
 import { Consultations } from './pages/consultations/consultations';
+import { Notifications } from './pages/notifications/notifications';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'notifications', component: Notifications },
   { path: 'appels-offres', component: AppelsOffresComponent },
   { path: 'marches', component: Marches },
   { path: 'commandes', component: Commandes },

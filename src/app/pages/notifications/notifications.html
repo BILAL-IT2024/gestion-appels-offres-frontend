@@ -1,0 +1,226 @@
+<div class="page-layout">
+
+  <app-sidebar></app-sidebar>
+
+  <main class="notifications-page">
+
+    <header class="notifications-header">
+
+      <div>
+        <h1>Notifications</h1>
+
+        <p>
+          Suivi des appels d’offres urgents et des paiements en attente
+        </p>
+      </div>
+
+      <div class="notification-counter">
+        {{ nombreTotalNotifications }}
+      </div>
+
+    </header>
+
+    @if (chargement) {
+
+    <div class="loading-card">
+      Chargement des notifications...
+    </div>
+
+    } @else {
+
+    <!-- Alertes appels d'offres -->
+    <section class="notification-section">
+
+      <div class="section-header">
+
+        <div>
+          <h2>Alertes Appels d’Offres</h2>
+
+          <p>
+            Échéances urgentes ou dépassées
+          </p>
+        </div>
+
+        <span class="section-count">
+            {{ alertesAO.length }}
+          </span>
+
+      </div>
+
+      <div class="notification-list">
+
+        @for (alerte of alertesAO; track alerte.id) {
+
+        <article
+          class="notification-card"
+          [class.notification-danger]="alerte.etatAlerte === 'EN_RETARD'"
+          [class.notification-warning]="alerte.etatAlerte === 'URGENT'"
+          [class.notification-success]="alerte.etatAlerte === 'NORMAL'"
+        >
+
+          <div class="notification-icon">
+            @if (alerte.etatAlerte === 'EN_RETARD') {
+            !
+            } @else if (alerte.etatAlerte === 'URGENT') {
+            ⏳
+            } @else {
+            ✓
+            }
+          </div>
+
+          <div class="notification-content">
+
+            <div class="notification-title">
+              {{ alerte.reference }}
+            </div>
+
+            <div class="notification-message">
+              {{ alerte.objet }}
+            </div>
+
+            <div class="notification-details">
+
+                  <span>
+                    Date limite :
+                    <strong>{{ alerte.dateLimite }}</strong>
+                  </span>
+
+              @if (alerte.joursRestants < 0) {
+
+              <span>
+    Retard :
+    <strong>
+      {{ -alerte.joursRestants }} jour(s)
+    </strong>
+  </span>
+
+              } @else {
+
+              <span>
+    Jours restants :
+    <strong>
+      {{ alerte.joursRestants }}
+    </strong>
+  </span>
+
+              }
+
+            </div>
+
+          </div>
+
+          <span
+            class="notification-status"
+            [class.status-danger]="alerte.etatAlerte === 'EN_RETARD'"
+            [class.status-warning]="alerte.etatAlerte === 'URGENT'"
+            [class.status-success]="alerte.etatAlerte === 'NORMAL'"
+          >
+                {{ alerte.etatAlerte }}
+              </span>
+
+        </article>
+
+        } @empty {
+
+        <div class="empty-state">
+          Aucune alerte d’appel d’offres.
+        </div>
+
+        }
+
+      </div>
+
+    </section>
+
+    <!-- Paiements en attente -->
+    <section class="notification-section">
+
+      <div class="section-header">
+
+        <div>
+          <h2>Paiements en attente</h2>
+
+          <p>
+            Paiements nécessitant une validation
+          </p>
+        </div>
+
+        <span class="section-count">
+            {{ paiementsEnAttente.length }}
+          </span>
+
+      </div>
+
+      <div class="notification-list">
+
+        @for (
+        paiement of paiementsEnAttente;
+        track paiement.id
+        ) {
+
+        <article class="notification-card notification-warning">
+
+          <div class="notification-icon">
+            ₣
+          </div>
+
+          <div class="notification-content">
+
+            <div class="notification-title">
+              {{ paiement.referencePaiement }}
+            </div>
+
+            <div class="notification-message">
+              Paiement en attente de validation
+            </div>
+
+            <div class="notification-details">
+
+                  <span>
+                    Montant :
+                    <strong>
+                      {{ paiement.montantPaiement }} DH
+                    </strong>
+                  </span>
+
+              <span>
+                    Date :
+                    <strong>
+                      {{ paiement.datePaiement }}
+                    </strong>
+                  </span>
+
+              <span>
+                    Commande :
+                    <strong>
+                      {{ paiement.commande?.numeroCommande }}
+                    </strong>
+                  </span>
+
+            </div>
+
+          </div>
+
+          <span class="notification-status status-warning">
+                EN_ATTENTE
+              </span>
+
+        </article>
+
+        } @empty {
+
+        <div class="empty-state">
+          Aucun paiement en attente.
+        </div>
+
+        }
+
+      </div>
+
+    </section>
+
+    }
+
+  </main>
+
+</div>

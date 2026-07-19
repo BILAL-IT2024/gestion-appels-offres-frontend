@@ -32,13 +32,28 @@
       Clients
     </a>
 
+    <!-- Nouvelle entrée -->
+    <a routerLink="/notifications" class="notification-link">
+
+      🔔 Notifications
+
+      @if (nombreNotifications > 0) {
+      <span class="notification-badge">
+          {{ nombreNotifications }}
+        </span>
+      }
+
+    </a>
+
     <a routerLink="/statistiques">
       Statistiques
     </a>
 
   </nav>
 
-  <button type="button" (click)="logout()">
+  <button
+    type="button"
+    (click)="logout()">
     Déconnexion
   </button>
 
