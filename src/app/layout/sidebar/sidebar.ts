@@ -1,11 +1,12 @@
 import {
+  ChangeDetectorRef,
   Component,
   OnInit
 } from '@angular/core';
 
-import {
-  RouterLink
-} from '@angular/router';
+import { RouterLink } from '@angular/router';
+
+import { forkJoin } from 'rxjs';
 
 import {
   DashboardService
@@ -18,7 +19,9 @@ import {
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [RouterLink],
+  imports: [
+    RouterLink
+  ],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'
 })
@@ -28,7 +31,8 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
-    private paiementService: PaiementService
+    private paiementService: PaiementService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -37,48 +41,61 @@ export class SidebarComponent implements OnInit {
 
   chargerNotifications(): void {
 
-    let alertesAO = 0;
-    let paiementsEnAttente = 0;
+    forkJoin({
+      alertesAO:
+        this.dashboardService.getAlertesAppelsOffres(),
 
-    this.dashboardService
-      .getAlertesAppelsOffres()
-      .subscribe({
-        next: (data) => {
+      paiements:
+        this.paiementService.getPaiements()
+    }).subscribe({
 
-          alertesAO = data.length;
+      next: ({ alertesAO, paiements }) => {
 
-          this.nombreNotifications =
-            alertesAO + paiementsEnAttente;
-        },
-        error: (err) => {
-          console.log(
-            'Erreur chargement alertes AO',
-            err
-          );
-        }
-      });
+        const nombreAlertesAO =
+          alertesAO.length;
 
-    this.paiementService
-      .getPaiements()
-      .subscribe({
-        next: (data) => {
+        const nombrePaiementsEnAttente =
+          paiements.filter(
+            paiement =>
+              paiement.statut
+                ?.trim()
+                .toUpperCase() === 'EN_ATTENTE'
+          ).length;
 
-          paiementsEnAttente =
-            data.filter(
-              paiement =>
-                paiement.statut === 'EN_ATTENTE'
-            ).length;
+        this.nombreNotifications =
+          nombreAlertesAO +
+          nombrePaiementsEnAttente;
 
-          this.nombreNotifications =
-            alertesAO + paiementsEnAttente;
-        },
-        error: (err) => {
-          console.log(
-            'Erreur chargement paiements',
-            err
-          );
-        }
-      });
+        console.log(
+          'Alertes AO :',
+          nombreAlertesAO
+        );
+
+        console.log(
+          'Paiements en attente :',
+          nombrePaiementsEnAttente
+        );
+
+        console.log(
+          'Total notifications :',
+          this.nombreNotifications
+        );
+
+        this.cd.detectChanges();
+      },
+
+      error: (err) => {
+
+        console.error(
+          'Erreur chargement notifications sidebar',
+          err
+        );
+
+        this.nombreNotifications = 0;
+
+        this.cd.detectChanges();
+      }
+    });
   }
 
   logout(): void {

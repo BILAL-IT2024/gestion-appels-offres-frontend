@@ -4,6 +4,8 @@ import {
   OnInit
 } from '@angular/core';
 
+import { RouterLink } from '@angular/router';
+
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 
 import {
@@ -19,7 +21,8 @@ import {
   selector: 'app-notifications',
   standalone: true,
   imports: [
-    SidebarComponent
+    SidebarComponent,
+    RouterLink
   ],
   templateUrl: './notifications.html',
   styleUrl: './notifications.css'

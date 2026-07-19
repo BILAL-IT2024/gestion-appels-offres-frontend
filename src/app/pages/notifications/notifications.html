@@ -4,6 +4,7 @@
 
   <main class="notifications-page">
 
+    <!-- En-tête -->
     <header class="notifications-header">
 
       <div>
@@ -14,8 +15,20 @@
         </p>
       </div>
 
-      <div class="notification-counter">
-        {{ nombreTotalNotifications }}
+      <div class="notifications-header-actions">
+
+        <button
+          type="button"
+          class="refresh-button"
+          (click)="chargerNotifications()"
+        >
+          Actualiser
+        </button>
+
+        <div class="notification-counter">
+          {{ nombreTotalNotifications }}
+        </div>
+
       </div>
 
     </header>
@@ -28,7 +41,10 @@
 
     } @else {
 
-    <!-- Alertes appels d'offres -->
+    <!-- =================================================
+         ALERTES APPELS D’OFFRES
+    ================================================== -->
+
     <section class="notification-section">
 
       <div class="section-header">
@@ -53,21 +69,37 @@
 
         <article
           class="notification-card"
-          [class.notification-danger]="alerte.etatAlerte === 'EN_RETARD'"
-          [class.notification-warning]="alerte.etatAlerte === 'URGENT'"
-          [class.notification-success]="alerte.etatAlerte === 'NORMAL'"
+          [class.notification-danger]="
+                alerte.etatAlerte === 'EN_RETARD'
+              "
+          [class.notification-warning]="
+                alerte.etatAlerte === 'URGENT'
+              "
+          [class.notification-success]="
+                alerte.etatAlerte === 'NORMAL'
+              "
         >
 
+          <!-- Icône -->
           <div class="notification-icon">
+
             @if (alerte.etatAlerte === 'EN_RETARD') {
-            !
+
+            ⚠
+
             } @else if (alerte.etatAlerte === 'URGENT') {
+
             ⏳
+
             } @else {
+
             ✓
+
             }
+
           </div>
 
+          <!-- Contenu -->
           <div class="notification-content">
 
             <div class="notification-title">
@@ -82,38 +114,54 @@
 
                   <span>
                     Date limite :
-                    <strong>{{ alerte.dateLimite }}</strong>
+                    <strong>
+                      {{ alerte.dateLimite }}
+                    </strong>
                   </span>
 
               @if (alerte.joursRestants < 0) {
 
               <span>
-    Retard :
-    <strong>
-      {{ -alerte.joursRestants }} jour(s)
-    </strong>
-  </span>
+                      Retard :
+                      <strong>
+                        {{ -alerte.joursRestants }} jour(s)
+                      </strong>
+                    </span>
 
               } @else {
 
               <span>
-    Jours restants :
-    <strong>
-      {{ alerte.joursRestants }}
-    </strong>
-  </span>
+                      Jours restants :
+                      <strong>
+                        {{ alerte.joursRestants }}
+                      </strong>
+                    </span>
 
               }
 
             </div>
 
+            <a
+              class="notification-action"
+              routerLink="/appels-offres"
+            >
+              Voir
+            </a>
+
           </div>
 
+          <!-- Statut -->
           <span
             class="notification-status"
-            [class.status-danger]="alerte.etatAlerte === 'EN_RETARD'"
-            [class.status-warning]="alerte.etatAlerte === 'URGENT'"
-            [class.status-success]="alerte.etatAlerte === 'NORMAL'"
+            [class.status-danger]="
+                  alerte.etatAlerte === 'EN_RETARD'
+                "
+            [class.status-warning]="
+                  alerte.etatAlerte === 'URGENT'
+                "
+            [class.status-success]="
+                  alerte.etatAlerte === 'NORMAL'
+                "
           >
                 {{ alerte.etatAlerte }}
               </span>
@@ -132,7 +180,10 @@
 
     </section>
 
-    <!-- Paiements en attente -->
+    <!-- =================================================
+         PAIEMENTS EN ATTENTE
+    ================================================== -->
+
     <section class="notification-section">
 
       <div class="section-header">
@@ -158,12 +209,16 @@
         track paiement.id
         ) {
 
-        <article class="notification-card notification-warning">
+        <article
+          class="notification-card notification-warning"
+        >
 
+          <!-- Icône -->
           <div class="notification-icon">
-            ₣
+            DH
           </div>
 
+          <!-- Contenu -->
           <div class="notification-content">
 
             <div class="notification-title">
@@ -193,15 +248,28 @@
               <span>
                     Commande :
                     <strong>
-                      {{ paiement.commande?.numeroCommande }}
+                      {{
+                        paiement.commande?.numeroCommande
+                          || 'Non renseignée'
+                      }}
                     </strong>
                   </span>
 
             </div>
 
+            <a
+              class="notification-action"
+              routerLink="/paiements"
+            >
+              Voir
+            </a>
+
           </div>
 
-          <span class="notification-status status-warning">
+          <!-- Statut -->
+          <span
+            class="notification-status status-warning"
+          >
                 EN_ATTENTE
               </span>
 
