@@ -1,0 +1,149 @@
+:host {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast-container {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 30px;
+  align-items: center;
+  gap: 12px;
+
+  width: min(420px, calc(100vw - 32px));
+  min-height: 64px;
+  padding: 14px 14px 14px 16px;
+
+  border: 1px solid transparent;
+  border-radius: 12px;
+
+  background: #ffffff;
+  color: #172033;
+
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+
+  pointer-events: auto;
+
+  animation: toast-enter 0.25s ease;
+}
+
+.toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 50%;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.toast-message {
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.toast-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+  padding: 0;
+
+  border: none;
+  border-radius: 7px;
+
+  background: transparent;
+  color: #64748b;
+
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.toast-close:hover {
+  background: rgba(15, 23, 42, 0.06);
+  color: #172033;
+}
+
+/* Succès */
+
+.toast-success {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+}
+
+.toast-success .toast-icon {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* Erreur */
+
+.toast-error {
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.toast-error .toast-icon {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Avertissement */
+
+.toast-warning {
+  border-color: #fde68a;
+  background: #fffbeb;
+}
+
+.toast-warning .toast-icon {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Information */
+
+.toast-info {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+}
+
+.toast-info .toast-icon {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) translateX(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+}
+
+@media (max-width: 600px) {
+  :host {
+    top: 16px;
+    right: 16px;
+    left: 16px;
+  }
+
+  .toast-container {
+    width: 100%;
+  }
+}

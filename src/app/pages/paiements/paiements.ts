@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Paiement, PaiementService } from '../../services/paiement';
 import { CommandeService } from '../../services/commande';
+import { ToastService } from '../../services/toast';
 
 @Component({
   selector: 'app-paiements',
@@ -36,7 +37,8 @@ export class Paiements implements OnInit {
   constructor(
     private paiementService: PaiementService,
     private commandeService: CommandeService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -114,13 +116,17 @@ enregistrerPaiement(): void {
 
     this.paiementService.savePaiement(this.nouveauPaiement).subscribe({
       next: () => {
-        alert('Paiement enregistré ✅');
+        this.toastService.success(
+          'Paiement enregistré avec succès'
+        );
         this.showForm = false;
         this.chargerPaiements();
       },
       error: (err) => {
         console.log('Erreur enregistrement paiement', err);
-        alert('Erreur lors de l’enregistrement');
+        this.toastService.error(
+          'Erreur lors de l’enregistrement du paiement'
+        );
       }
     });
 
