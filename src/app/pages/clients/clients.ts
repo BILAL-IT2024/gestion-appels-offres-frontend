@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ToastService } from '../../services/toast';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Client, ClientService } from '../../services/client';
@@ -30,7 +31,8 @@ export class Clients implements OnInit {
 
   constructor(
     private clientService: ClientService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+     private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -66,41 +68,72 @@ export class Clients implements OnInit {
 
 enregistrerClient(): void {
 
-  if (this.modeEdition && this.idClientEnCours) {
+  if (
+    this.modeEdition &&
+    this.idClientEnCours !== undefined
+  ) {
 
     this.clientService.updateClient(
       this.idClientEnCours,
       this.nouveauClient
     ).subscribe({
+
       next: () => {
-        alert('Client modifié ✅');
+
+        this.toastService.success(
+          'Client modifié avec succès'
+        );
+
         this.showForm = false;
         this.modeEdition = false;
         this.idClientEnCours = undefined;
+
         this.chargerClients();
       },
+
       error: (err) => {
-        console.log('Erreur modification client', err);
-        alert('Erreur lors de la modification');
+
+        console.error(
+          'Erreur modification client',
+          err
+        );
+
+        this.toastService.error(
+          'Erreur lors de la modification du client'
+        );
       }
     });
 
   } else {
 
-    this.clientService.saveClient(this.nouveauClient).subscribe({
+    this.clientService.saveClient(
+      this.nouveauClient
+    ).subscribe({
+
       next: () => {
-        alert('Client enregistré ✅');
+
+        this.toastService.success(
+          'Client enregistré avec succès'
+        );
+
         this.showForm = false;
+
         this.chargerClients();
       },
+
       error: (err) => {
-        console.log('Erreur enregistrement client', err);
-        alert('Erreur lors de l’enregistrement');
+
+        console.error(
+          'Erreur enregistrement client',
+          err
+        );
+
+        this.toastService.error(
+          'Erreur lors de l’enregistrement du client'
+        );
       }
     });
-
   }
-
 }
 
 modifierClient(client: Client): void {
@@ -121,40 +154,76 @@ modifierClient(client: Client): void {
 
 supprimerClient(id: number): void {
 
-  if (confirm('Voulez-vous vraiment supprimer ce client ?')) {
+  if (
+    confirm(
+      'Voulez-vous vraiment supprimer ce client ?'
+    )
+  ) {
 
     this.clientService.deleteClient(id).subscribe({
+
       next: () => {
-        alert('Client supprimé ✅');
+
+        this.toastService.success(
+          'Client supprimé avec succès'
+        );
+
         this.chargerClients();
       },
+
       error: (err) => {
-        console.log('Erreur suppression client', err);
-        alert('Erreur lors de la suppression');
+
+        console.error(
+          'Erreur suppression client',
+          err
+        );
+
+        this.toastService.error(
+          'Erreur lors de la suppression du client'
+        );
       }
     });
-
   }
-
 }
 
 rechercherClients(): void {
 
-  if (this.keyword.trim() === '') {
+  const recherche = this.keyword.trim();
+
+  if (recherche === '') {
     this.chargerClients();
     return;
   }
 
-  this.clientService.searchClients(this.keyword).subscribe({
+  this.clientService.searchClients(
+    recherche
+  ).subscribe({
+
     next: (data) => {
+
       this.clients = data;
+
       this.cd.detectChanges();
+
+      if (data.length === 0) {
+        this.toastService.info(
+          'Aucun client trouvé'
+        );
+      }
     },
+
     error: (err) => {
-      console.log('Erreur recherche clients', err);
+
+      console.error(
+        'Erreur recherche clients',
+        err
+      );
+
+      this.toastService.error(
+        'Erreur lors de la recherche des clients'
+      );
     }
   });
-
 }
 
 reinitialiserRecherche(): void {
@@ -165,47 +234,77 @@ reinitialiserRecherche(): void {
 exporterExcel(): void {
 
   this.clientService.exportExcel().subscribe({
+
     next: (blob) => {
 
-      const url = window.URL.createObjectURL(blob);
+      const url =
+        window.URL.createObjectURL(blob);
 
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'clients.xlsx';
-      a.click();
+      const lien =
+        document.createElement('a');
+
+      lien.href = url;
+      lien.download = 'clients.xlsx';
+
+      lien.click();
 
       window.URL.revokeObjectURL(url);
 
+      this.toastService.success(
+        'Export Excel téléchargé avec succès'
+      );
     },
+
     error: (err) => {
-      console.log('Erreur export Excel Clients', err);
-      alert('Erreur lors de l’export Excel');
+
+      console.error(
+        'Erreur export Excel Clients',
+        err
+      );
+
+      this.toastService.error(
+        'Erreur lors de l’export Excel des clients'
+      );
     }
   });
-
 }
 
 exporterPdf(id: number): void {
 
   this.clientService.exportPdf(id).subscribe({
+
     next: (blob) => {
 
-      const url = window.URL.createObjectURL(blob);
+      const url =
+        window.URL.createObjectURL(blob);
 
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'client_' + id + '.pdf';
-      a.click();
+      const lien =
+        document.createElement('a');
+
+      lien.href = url;
+      lien.download = `client_${id}.pdf`;
+
+      lien.click();
 
       window.URL.revokeObjectURL(url);
 
+      this.toastService.success(
+        'PDF téléchargé avec succès'
+      );
     },
+
     error: (err) => {
-      console.log('Erreur export PDF Client', err);
-      alert('Erreur lors de l’export PDF');
+
+      console.error(
+        'Erreur export PDF Client',
+        err
+      );
+
+      this.toastService.error(
+        'Erreur lors de l’export PDF du client'
+      );
     }
   });
-
 }
 
 }
