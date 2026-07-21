@@ -100,7 +100,9 @@ enregistrerPaiement(): void {
       this.nouveauPaiement
     ).subscribe({
       next: () => {
-        alert('Paiement modifié ✅');
+        this.toastService.success(
+          'Paiement modifié avec succès'
+        );
         this.showForm = false;
         this.modeEdition = false;
         this.idPaiementEnCours = undefined;
@@ -108,7 +110,9 @@ enregistrerPaiement(): void {
       },
       error: (err) => {
         console.log('Erreur modification paiement', err);
-        alert('Erreur lors de la modification');
+        this.toastService.error(
+          'Erreur lors de la modification du paiement'
+        );
       }
     });
 
@@ -159,12 +163,16 @@ supprimerPaiement(id: number): void {
 
     this.paiementService.deletePaiement(id).subscribe({
       next: () => {
-        alert('Paiement supprimé ✅');
+        this.toastService.success(
+          'Paiement supprimé avec succès'
+        );
         this.chargerPaiements();
       },
       error: (err) => {
         console.log('Erreur suppression paiement', err);
-        alert('Erreur lors de la suppression');
+        this.toastService.error(
+          'Erreur lors de la suppression du paiement'
+        );
       }
     });
 
@@ -179,13 +187,36 @@ rechercherPaiements(): void {
   }
 
   this.paiementService.searchPaiements(this.keyword).subscribe({
+
     next: (data) => {
+
       this.paiements = data;
+
       this.cd.detectChanges();
+
+      if (data.length === 0) {
+
+        this.toastService.info(
+          'Aucun paiement trouvé'
+        );
+
+      }
+
     },
+
     error: (err) => {
-      console.log('Erreur recherche paiements', err);
+
+      console.error(
+        'Erreur recherche paiements',
+        err
+      );
+
+      this.toastService.error(
+        'Erreur lors de la recherche des paiements'
+      );
+
     }
+
   });
 
 }
@@ -198,22 +229,39 @@ reinitialiserRecherche(): void {
 exporterExcel(): void {
 
   this.paiementService.exportExcel().subscribe({
+
     next: (blob) => {
 
       const url = window.URL.createObjectURL(blob);
 
       const a = document.createElement('a');
+
       a.href = url;
       a.download = 'paiements.xlsx';
+
       a.click();
 
       window.URL.revokeObjectURL(url);
 
+      this.toastService.success(
+        'Export Excel téléchargé avec succès'
+      );
+
     },
+
     error: (err) => {
-      console.log('Erreur export Excel Paiements', err);
-      alert('Erreur lors de l’export Excel');
+
+      console.error(
+        'Erreur export Excel Paiements',
+        err
+      );
+
+      this.toastService.error(
+        'Erreur lors de l’export Excel des paiements'
+      );
+
     }
+
   });
 
 }
@@ -221,22 +269,39 @@ exporterExcel(): void {
 exporterPdf(id: number): void {
 
   this.paiementService.exportPdf(id).subscribe({
+
     next: (blob) => {
 
       const url = window.URL.createObjectURL(blob);
 
       const a = document.createElement('a');
+
       a.href = url;
       a.download = 'paiement_' + id + '.pdf';
+
       a.click();
 
       window.URL.revokeObjectURL(url);
 
+      this.toastService.success(
+        'PDF téléchargé avec succès'
+      );
+
     },
+
     error: (err) => {
-      console.log('Erreur export PDF Paiement', err);
-      alert('Erreur lors de l’export PDF');
+
+      console.error(
+        'Erreur export PDF Paiement',
+        err
+      );
+
+      this.toastService.error(
+        'Erreur lors de l’export PDF du paiement'
+      );
+
     }
+
   });
 
 }
