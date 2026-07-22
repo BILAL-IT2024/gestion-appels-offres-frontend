@@ -21,6 +21,9 @@ import {
   ClientService
 } from '../../services/client';
 
+import { ToastService
+  } from '../../services/toast';
+
 @Component({
   selector: 'app-consultations',
   standalone: true,
@@ -52,7 +55,8 @@ export class Consultations implements OnInit, AfterViewInit {
   constructor(
     private consultationService: ConsultationService,
     private clientService: ClientService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -135,8 +139,8 @@ export class Consultations implements OnInit, AfterViewInit {
       this.nouvelleConsultation.montantPropose <= 0 ||
       this.nouvelleConsultation.client.id === 0
     ) {
-      alert(
-        'Veuillez remplir correctement tous les champs.'
+      this.toastService.warning(
+        'Veuillez remplir correctement tous les champs'
       );
       return;
     }
@@ -154,7 +158,10 @@ export class Consultations implements OnInit, AfterViewInit {
         .subscribe({
 
           next: () => {
-            alert('Consultation modifiée ✅');
+
+            this.toastService.success(
+              'Consultation modifiée avec succès'
+            );
 
             this.showForm = false;
             this.modeEdition = false;
@@ -164,16 +171,16 @@ export class Consultations implements OnInit, AfterViewInit {
           },
 
           error: (err) => {
+
             console.error(
               'Erreur modification consultation',
               err
             );
 
-            alert(
-              'Erreur lors de la modification'
+            this.toastService.error(
+              'Erreur lors de la modification de la consultation'
             );
           }
-
         });
 
       return;
@@ -186,7 +193,10 @@ export class Consultations implements OnInit, AfterViewInit {
       .subscribe({
 
         next: () => {
-          alert('Consultation enregistrée ✅');
+
+          this.toastService.success(
+            'Consultation enregistrée avec succès'
+          );
 
           this.showForm = false;
 
@@ -194,16 +204,16 @@ export class Consultations implements OnInit, AfterViewInit {
         },
 
         error: (err) => {
+
           console.error(
             'Erreur enregistrement consultation',
             err
           );
 
-          alert(
-            'Erreur lors de l’enregistrement'
+          this.toastService.error(
+            'Erreur lors de l’enregistrement de la consultation'
           );
         }
-
       });
   }
 
@@ -239,9 +249,7 @@ export class Consultations implements OnInit, AfterViewInit {
     });
   }
 
-  supprimerConsultation(
-    id: number
-  ): void {
+  supprimerConsultation(id: number): void {
 
     const confirmation = confirm(
       'Voulez-vous vraiment supprimer cette consultation ?'
@@ -256,29 +264,31 @@ export class Consultations implements OnInit, AfterViewInit {
       .subscribe({
 
         next: () => {
-          alert('Consultation supprimée ✅');
+
+          this.toastService.success(
+            'Consultation supprimée avec succès'
+          );
 
           this.chargerConsultations();
         },
 
         error: (err) => {
+
           console.error(
             'Erreur suppression consultation',
             err
           );
 
-          alert(
-            'Erreur lors de la suppression'
+          this.toastService.error(
+            'Erreur lors de la suppression de la consultation'
           );
         }
-
       });
   }
 
   rechercherConsultations(): void {
 
-    const recherche =
-      this.keyword.trim();
+    const recherche = this.keyword.trim();
 
     if (!recherche) {
       this.chargerConsultations();
@@ -290,17 +300,29 @@ export class Consultations implements OnInit, AfterViewInit {
       .subscribe({
 
         next: (data) => {
+
           this.consultations = data;
+
           this.cd.detectChanges();
+
+          if (data.length === 0) {
+            this.toastService.info(
+              'Aucune consultation trouvée'
+            );
+          }
         },
 
         error: (err) => {
+
           console.error(
             'Erreur recherche consultations',
             err
           );
-        }
 
+          this.toastService.error(
+            'Erreur lors de la recherche des consultations'
+          );
+        }
       });
   }
 
@@ -326,25 +348,28 @@ export class Consultations implements OnInit, AfterViewInit {
             document.createElement('a');
 
           lien.href = url;
-          lien.download =
-            'consultations.xlsx';
+          lien.download = 'consultations.xlsx';
 
           lien.click();
 
           window.URL.revokeObjectURL(url);
+
+          this.toastService.success(
+            'Export Excel téléchargé avec succès'
+          );
         },
 
         error: (err) => {
+
           console.error(
             'Erreur export Excel Consultations',
             err
           );
 
-          alert(
-            'Erreur lors de l’export Excel'
+          this.toastService.error(
+            'Erreur lors de l’export Excel des consultations'
           );
         }
-
       });
   }
 
@@ -363,25 +388,28 @@ export class Consultations implements OnInit, AfterViewInit {
             document.createElement('a');
 
           lien.href = url;
-          lien.download =
-            `consultation_${id}.pdf`;
+          lien.download = `consultation_${id}.pdf`;
 
           lien.click();
 
           window.URL.revokeObjectURL(url);
+
+          this.toastService.success(
+            'PDF téléchargé avec succès'
+          );
         },
 
         error: (err) => {
+
           console.error(
             'Erreur export PDF Consultation',
             err
           );
 
-          alert(
-            'Erreur lors de l’export PDF'
+          this.toastService.error(
+            'Erreur lors de l’export PDF de la consultation'
           );
         }
-
       });
   }
 
