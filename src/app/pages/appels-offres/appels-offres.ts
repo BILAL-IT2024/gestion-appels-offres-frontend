@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Client, ClientService } from '../../services/client';
 import { AppelOffresService } from '../../services/appel-offres';
+import { ToastService } from '../../services/toast';
 
 @Component({
   selector: 'app-appels-offres',
@@ -37,7 +38,8 @@ export class AppelsOffresComponent implements OnInit {
   constructor(
     private clientService: ClientService,
     private appelOffresService: AppelOffresService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -78,40 +80,74 @@ export class AppelsOffresComponent implements OnInit {
 
   enregistrerAppelOffre(): void {
 
-    if (this.modeEdition && this.idAppelOffreEnCours) {
+    if (
+      this.modeEdition &&
+      this.idAppelOffreEnCours !== undefined
+    ) {
 
-      this.appelOffresService.updateAppelOffre(
-        this.idAppelOffreEnCours,
-        this.nouvelAppelOffre
-      ).subscribe({
-        next: () => {
-          alert('Appel d’offre modifié ✅');
-          this.showForm = false;
-          this.modeEdition = false;
-          this.idAppelOffreEnCours = undefined;
-          this.chargerAppelsOffres();
-        },
-        error: (err) => {
-          console.log('Erreur modification AO', err);
-          alert('Erreur lors de la modification');
-        }
-      });
+      this.appelOffresService
+        .updateAppelOffre(
+          this.idAppelOffreEnCours,
+          this.nouvelAppelOffre
+        )
+        .subscribe({
 
-    } else {
+          next: () => {
 
-      this.appelOffresService.saveAppelOffre(this.nouvelAppelOffre).subscribe({
-        next: () => {
-          alert('Appel d’offre enregistré ✅');
-          this.showForm = false;
-          this.chargerAppelsOffres();
-        },
-        error: (err) => {
-          console.log('Erreur enregistrement AO', err);
-          alert('Erreur lors de l’enregistrement');
-        }
-      });
+            this.toastService.success(
+              'Appel d’offre modifié avec succès'
+            );
 
+            this.showForm = false;
+            this.modeEdition = false;
+            this.idAppelOffreEnCours = undefined;
+
+            this.chargerAppelsOffres();
+          },
+
+          error: (err) => {
+
+            console.error(
+              'Erreur modification appel d’offre',
+              err
+            );
+
+            this.toastService.error(
+              'Erreur lors de la modification de l’appel d’offre'
+            );
+          }
+        });
+
+      return;
     }
+
+    this.appelOffresService
+      .saveAppelOffre(this.nouvelAppelOffre)
+      .subscribe({
+
+        next: () => {
+
+          this.toastService.success(
+            'Appel d’offre enregistré avec succès'
+          );
+
+          this.showForm = false;
+
+          this.chargerAppelsOffres();
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Erreur enregistrement appel d’offre',
+            err
+          );
+
+          this.toastService.error(
+            'Erreur lors de l’enregistrement de l’appel d’offre'
+          );
+        }
+      });
   }
 
   chargerAppelsOffres(): void {
@@ -131,20 +167,39 @@ export class AppelsOffresComponent implements OnInit {
 
   supprimerAppelOffre(id: number): void {
 
-    if (confirm('Voulez-vous vraiment supprimer cet appel d’offre ?')) {
+    const confirmation = confirm(
+      'Voulez-vous vraiment supprimer cet appel d’offre ?'
+    );
 
-      this.appelOffresService.deleteAppelOffre(id).subscribe({
+    if (!confirmation) {
+      return;
+    }
+
+    this.appelOffresService
+      .deleteAppelOffre(id)
+      .subscribe({
+
         next: () => {
-          alert('Appel d’offre supprimé ✅');
+
+          this.toastService.success(
+            'Appel d’offre supprimé avec succès'
+          );
+
           this.chargerAppelsOffres();
         },
+
         error: (err) => {
-          console.log('Erreur suppression AO', err);
-          alert('Erreur lors de la suppression');
+
+          console.error(
+            'Erreur suppression appel d’offre',
+            err
+          );
+
+          this.toastService.error(
+            'Erreur lors de la suppression de l’appel d’offre'
+          );
         }
       });
-
-    }
   }
 
   modifierAppelOffre(ao: any): void {
@@ -161,7 +216,11 @@ export class AppelsOffresComponent implements OnInit {
       montantEstime: ao.montantEstime,
       statut: ao.statut,
       client: {
-        id: Number(ao.client?.id ?? ao.clientId)
+        id: Number(
+          ao.client?.id ??
+          ao.clientId ??
+          0
+        )
       }
     };
 
@@ -169,21 +228,42 @@ export class AppelsOffresComponent implements OnInit {
 
   rechercherAppelsOffres(): void {
 
-    if (this.keyword.trim() === '') {
+    const recherche = this.keyword.trim();
+
+    if (!recherche) {
       this.chargerAppelsOffres();
       return;
     }
 
-    this.appelOffresService.searchAppelsOffres(this.keyword).subscribe({
-      next: (data) => {
-        this.appelsOffres = data;
-        this.cd.detectChanges();
-      },
-      error: (err) => {
-        console.log('Erreur recherche AO', err);
-      }
-    });
+    this.appelOffresService
+      .searchAppelsOffres(recherche)
+      .subscribe({
 
+        next: (data) => {
+
+          this.appelsOffres = data;
+
+          this.cd.detectChanges();
+
+          if (data.length === 0) {
+            this.toastService.info(
+              'Aucun appel d’offre trouvé'
+            );
+          }
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Erreur recherche appels d’offres',
+            err
+          );
+
+          this.toastService.error(
+            'Erreur lors de la recherche des appels d’offres'
+          );
+        }
+      });
   }
 
   reinitialiserRecherche(): void {
@@ -193,46 +273,82 @@ export class AppelsOffresComponent implements OnInit {
 
 exporterExcel(): void {
 
-  this.appelOffresService.exportExcel().subscribe({
-    next: (blob) => {
+  this.appelOffresService
+    .exportExcel()
+    .subscribe({
 
-      const url = window.URL.createObjectURL(blob);
+      next: (blob) => {
 
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'appels_offres.xlsx';
-      a.click();
+        const url =
+          window.URL.createObjectURL(blob);
 
-      window.URL.revokeObjectURL(url);
-    },
-    error: (err) => {
-      console.log('Erreur export Excel', err);
-      alert('Erreur lors de l’export Excel');
-    }
-  });
+        const lien =
+          document.createElement('a');
 
+        lien.href = url;
+        lien.download = 'appels_offres.xlsx';
+
+        lien.click();
+
+        window.URL.revokeObjectURL(url);
+
+        this.toastService.success(
+          'Export Excel téléchargé avec succès'
+        );
+      },
+
+      error: (err) => {
+
+        console.error(
+          'Erreur export Excel appels d’offres',
+          err
+        );
+
+        this.toastService.error(
+          'Erreur lors de l’export Excel des appels d’offres'
+        );
+      }
+    });
 }
 
 exporterPdf(id: number): void {
 
-  this.appelOffresService.exportPdf(id).subscribe({
-    next: (blob) => {
+  this.appelOffresService
+    .exportPdf(id)
+    .subscribe({
 
-      const url = window.URL.createObjectURL(blob);
+      next: (blob) => {
 
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'appel_offre_' + id + '.pdf';
-      a.click();
+        const url =
+          window.URL.createObjectURL(blob);
 
-      window.URL.revokeObjectURL(url);
-    },
-    error: (err) => {
-      console.log('Erreur export PDF', err);
-      alert('Erreur lors de l’export PDF');
-    }
-  });
+        const lien =
+          document.createElement('a');
 
+        lien.href = url;
+        lien.download = `appel_offre_${id}.pdf`;
+
+        lien.click();
+
+        window.URL.revokeObjectURL(url);
+
+        this.toastService.success(
+          'PDF téléchargé avec succès'
+        );
+      },
+
+      error: (err) => {
+
+        console.error(
+          'Erreur export PDF appel d’offre',
+          err
+        );
+
+        this.toastService.error(
+          'Erreur lors de l’export PDF de l’appel d’offre'
+        );
+      }
+    });
 }
 
 }

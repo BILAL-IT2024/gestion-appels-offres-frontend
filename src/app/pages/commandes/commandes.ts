@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Commande, CommandeService } from '../../services/commande';
 import { MarcheService } from '../../services/marche';
+import { ToastService } from '../../services/toast';
 
 @Component({
   selector: 'app-commandes',
@@ -35,7 +36,8 @@ export class Commandes implements OnInit {
   constructor(
     private commandeService: CommandeService,
     private marcheService: MarcheService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -86,43 +88,74 @@ export class Commandes implements OnInit {
 
 enregistrerCommande(): void {
 
-  if (this.modeEdition && this.idCommandeEnCours) {
+  if (
+    this.modeEdition &&
+    this.idCommandeEnCours !== undefined
+  ) {
 
-    this.commandeService.updateCommande(
-      this.idCommandeEnCours,
-      this.nouvelleCommande
-    ).subscribe({
-      next: () => {
-        alert('Commande modifiée ✅');
-        this.showForm = false;
-        this.modeEdition = false;
-        this.idCommandeEnCours = undefined;
-        this.chargerCommandes();
-      },
-      error: (err) => {
-        console.log('Erreur modification commande', err);
-        alert('Erreur lors de la modification');
-      }
-    });
+    this.commandeService
+      .updateCommande(
+        this.idCommandeEnCours,
+        this.nouvelleCommande
+      )
+      .subscribe({
 
-  } else {
+        next: () => {
 
-    this.commandeService.saveCommande(
-      this.nouvelleCommande
-    ).subscribe({
-      next: () => {
-        alert('Commande enregistrée ✅');
-        this.showForm = false;
-        this.chargerCommandes();
-      },
-      error: (err) => {
-        console.log('Erreur enregistrement commande', err);
-        alert('Erreur lors de l’enregistrement');
-      }
-    });
+          this.toastService.success(
+            'Commande modifiée avec succès'
+          );
 
+          this.showForm = false;
+          this.modeEdition = false;
+          this.idCommandeEnCours = undefined;
+
+          this.chargerCommandes();
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Erreur modification commande',
+            err
+          );
+
+          this.toastService.error(
+            'Erreur lors de la modification de la commande'
+          );
+        }
+      });
+
+    return;
   }
 
+  this.commandeService
+    .saveCommande(this.nouvelleCommande)
+    .subscribe({
+
+      next: () => {
+
+        this.toastService.success(
+          'Commande enregistrée avec succès'
+        );
+
+        this.showForm = false;
+
+        this.chargerCommandes();
+      },
+
+      error: (err) => {
+
+        console.error(
+          'Erreur enregistrement commande',
+          err
+        );
+
+        this.toastService.error(
+          'Erreur lors de l’enregistrement de la commande'
+        );
+      }
+    });
 }
 
 modifierCommande(commande: any): void {
@@ -137,7 +170,7 @@ modifierCommande(commande: any): void {
     montantCommande: commande.montantCommande,
     statut: commande.statut,
     marche: {
-      id: Number(commande.marche?.id)
+      id: Number(commande.marche?.id ?? 0)
     }
   };
 
@@ -145,39 +178,79 @@ modifierCommande(commande: any): void {
 
 supprimerCommande(id: number): void {
 
-  if (confirm('Voulez-vous vraiment supprimer cette commande ?')) {
+  const confirmation = confirm(
+    'Voulez-vous vraiment supprimer cette commande ?'
+  );
 
-    this.commandeService.deleteCommande(id).subscribe({
+  if (!confirmation) {
+    return;
+  }
+
+  this.commandeService
+    .deleteCommande(id)
+    .subscribe({
+
       next: () => {
-        alert('Commande supprimée ✅');
+
+        this.toastService.success(
+          'Commande supprimée avec succès'
+        );
+
         this.chargerCommandes();
       },
+
       error: (err) => {
-        console.log('Erreur suppression commande', err);
-        alert('Erreur lors de la suppression');
+
+        console.error(
+          'Erreur suppression commande',
+          err
+        );
+
+        this.toastService.error(
+          'Erreur lors de la suppression de la commande'
+        );
       }
     });
-
-  }
 }
 
 rechercherCommandes(): void {
 
-  if (this.keyword.trim() === '') {
+  const recherche = this.keyword.trim();
+
+  if (!recherche) {
     this.chargerCommandes();
     return;
   }
 
-  this.commandeService.searchCommandes(this.keyword).subscribe({
-    next: (data) => {
-      this.commandes = data;
-      this.cd.detectChanges();
-    },
-    error: (err) => {
-      console.log('Erreur recherche commandes', err);
-    }
-  });
+  this.commandeService
+    .searchCommandes(recherche)
+    .subscribe({
 
+      next: (data) => {
+
+        this.commandes = data;
+
+        this.cd.detectChanges();
+
+        if (data.length === 0) {
+          this.toastService.info(
+            'Aucune commande trouvée'
+          );
+        }
+      },
+
+      error: (err) => {
+
+        console.error(
+          'Erreur recherche commandes',
+          err
+        );
+
+        this.toastService.error(
+          'Erreur lors de la recherche des commandes'
+        );
+      }
+    });
 }
 
 reinitialiserRecherche(): void {
@@ -187,47 +260,82 @@ reinitialiserRecherche(): void {
 
 exporterExcel(): void {
 
-  this.commandeService.exportExcel().subscribe({
-    next: (blob) => {
+  this.commandeService
+    .exportExcel()
+    .subscribe({
 
-      const url = window.URL.createObjectURL(blob);
+      next: (blob) => {
 
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'commandes.xlsx';
-      a.click();
+        const url =
+          window.URL.createObjectURL(blob);
 
-      window.URL.revokeObjectURL(url);
+        const lien =
+          document.createElement('a');
 
-    },
-    error: (err) => {
-      console.log('Erreur export Excel Commandes', err);
-      alert('Erreur lors de l’export Excel');
-    }
-  });
+        lien.href = url;
+        lien.download = 'commandes.xlsx';
 
+        lien.click();
+
+        window.URL.revokeObjectURL(url);
+
+        this.toastService.success(
+          'Export Excel téléchargé avec succès'
+        );
+      },
+
+      error: (err) => {
+
+        console.error(
+          'Erreur export Excel Commandes',
+          err
+        );
+
+        this.toastService.error(
+          'Erreur lors de l’export Excel des commandes'
+        );
+      }
+    });
 }
 
 exporterPdf(id: number): void {
 
-  this.commandeService.exportPdf(id).subscribe({
-    next: (blob) => {
+  this.commandeService
+    .exportPdf(id)
+    .subscribe({
 
-      const url = window.URL.createObjectURL(blob);
+      next: (blob) => {
 
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'commande_' + id + '.pdf';
-      a.click();
+        const url =
+          window.URL.createObjectURL(blob);
 
-      window.URL.revokeObjectURL(url);
-    },
-    error: (err) => {
-      console.log('Erreur export PDF Commande', err);
-      alert('Erreur lors de l’export PDF');
-    }
-  });
+        const lien =
+          document.createElement('a');
 
+        lien.href = url;
+        lien.download = `commande_${id}.pdf`;
+
+        lien.click();
+
+        window.URL.revokeObjectURL(url);
+
+        this.toastService.success(
+          'PDF téléchargé avec succès'
+        );
+      },
+
+      error: (err) => {
+
+        console.error(
+          'Erreur export PDF Commande',
+          err
+        );
+
+        this.toastService.error(
+          'Erreur lors de l’export PDF de la commande'
+        );
+      }
+    });
 }
 
 
