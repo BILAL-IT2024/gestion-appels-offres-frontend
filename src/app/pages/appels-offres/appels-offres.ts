@@ -5,6 +5,7 @@ import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Client, ClientService } from '../../services/client';
 import { AppelOffresService } from '../../services/appel-offres';
 import { ToastService } from '../../services/toast';
+import { ConfirmDialogService } from '../../services/confirm-dialog';
 
 @Component({
   selector: 'app-appels-offres',
@@ -39,7 +40,8 @@ export class AppelsOffresComponent implements OnInit {
     private clientService: ClientService,
     private appelOffresService: AppelOffresService,
     private cd: ChangeDetectorRef,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private confirmDialogService: ConfirmDialogService
   ) {}
 
   ngOnInit(): void {
@@ -167,39 +169,46 @@ export class AppelsOffresComponent implements OnInit {
 
   supprimerAppelOffre(id: number): void {
 
-    const confirmation = confirm(
-      'Voulez-vous vraiment supprimer cet appel d’offre ?'
-    );
+    this.confirmDialogService.open({
 
-    if (!confirmation) {
-      return;
-    }
+      title: 'Supprimer l’appel d’offres',
 
-    this.appelOffresService
-      .deleteAppelOffre(id)
-      .subscribe({
+      message:
+        'Voulez-vous vraiment supprimer cet appel d’offres ? Cette action est irréversible.',
 
-        next: () => {
+      confirmText: 'Supprimer',
 
-          this.toastService.success(
-            'Appel d’offre supprimé avec succès'
-          );
+      cancelText: 'Annuler',
 
-          this.chargerAppelsOffres();
-        },
+      onConfirm: () => {
 
-        error: (err) => {
+        this.appelOffresService
+          .deleteAppelOffre(id)
+          .subscribe({
 
-          console.error(
-            'Erreur suppression appel d’offre',
-            err
-          );
+            next: () => {
 
-          this.toastService.error(
-            'Erreur lors de la suppression de l’appel d’offre'
-          );
-        }
-      });
+              this.toastService.success(
+                'Appel d’offres supprimé avec succès'
+              );
+
+              this.chargerAppelsOffres();
+            },
+
+            error: (err) => {
+
+              console.error(
+                'Erreur suppression appel d’offres',
+                err
+              );
+
+              this.toastService.error(
+                'Erreur lors de la suppression de l’appel d’offres'
+              );
+            }
+          });
+      }
+    });
   }
 
   modifierAppelOffre(ao: any): void {

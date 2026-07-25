@@ -5,6 +5,7 @@ import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Paiement, PaiementService } from '../../services/paiement';
 import { CommandeService } from '../../services/commande';
 import { ToastService } from '../../services/toast';
+import { ConfirmDialogService } from '../../services/confirm-dialog';
 
 @Component({
   selector: 'app-paiements',
@@ -38,7 +39,8 @@ export class Paiements implements OnInit {
     private paiementService: PaiementService,
     private commandeService: CommandeService,
     private cd: ChangeDetectorRef,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private confirmDialogService: ConfirmDialogService
   ) {}
 
   ngOnInit(): void {
@@ -159,24 +161,48 @@ modifierPaiement(paiement: any): void {
 
 supprimerPaiement(id: number): void {
 
-  if (confirm('Voulez-vous vraiment supprimer ce paiement ?')) {
+  this.confirmDialogService.open({
 
-    this.paiementService.deletePaiement(id).subscribe({
-      next: () => {
-        this.toastService.success(
-          'Paiement supprimé avec succès'
-        );
-        this.chargerPaiements();
-      },
-      error: (err) => {
-        console.log('Erreur suppression paiement', err);
-        this.toastService.error(
-          'Erreur lors de la suppression du paiement'
-        );
-      }
-    });
+    title: 'Supprimer le paiement',
 
-  }
+    message:
+      'Voulez-vous vraiment supprimer ce paiement ? Cette action est irréversible.',
+
+    confirmText: 'Supprimer',
+
+    cancelText: 'Annuler',
+
+    onConfirm: () => {
+
+      this.paiementService
+        .deletePaiement(id)
+        .subscribe({
+
+          next: () => {
+
+            this.toastService.success(
+              'Paiement supprimé avec succès'
+            );
+
+            this.chargerPaiements();
+          },
+
+          error: (err) => {
+
+            console.error(
+              'Erreur suppression paiement',
+              err
+            );
+
+            this.toastService.error(
+              'Erreur lors de la suppression du paiement'
+            );
+          }
+
+        });
+    }
+
+  });
 }
 
 rechercherPaiements(): void {

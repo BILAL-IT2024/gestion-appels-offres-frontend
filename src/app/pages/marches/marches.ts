@@ -5,6 +5,7 @@ import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Marche, MarcheService } from '../../services/marche';
 import { AppelOffresService } from '../../services/appel-offres';
 import { ToastService } from '../../services/toast';
+import { ConfirmDialogService } from '../../services/confirm-dialog';
 
 @Component({
   selector: 'app-marches',
@@ -39,7 +40,8 @@ export class Marches implements OnInit {
     private marcheService: MarcheService,
     private appelOffresService: AppelOffresService,
     private cd: ChangeDetectorRef,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private confirmDialogService: ConfirmDialogService
   ) {}
 
   ngOnInit(): void {
@@ -164,39 +166,46 @@ enregistrerMarche(): void {
 
 supprimerMarche(id: number): void {
 
-  const confirmation = confirm(
-    'Voulez-vous vraiment supprimer ce marché ?'
-  );
+  this.confirmDialogService.open({
 
-  if (!confirmation) {
-    return;
-  }
+    title: 'Supprimer le marché',
 
-  this.marcheService
-    .deleteMarche(id)
-    .subscribe({
+    message:
+      'Voulez-vous vraiment supprimer ce marché ? Cette action est irréversible.',
 
-      next: () => {
+    confirmText: 'Supprimer',
 
-        this.toastService.success(
-          'Marché supprimé avec succès'
-        );
+    cancelText: 'Annuler',
 
-        this.chargerMarches();
-      },
+    onConfirm: () => {
 
-      error: (err) => {
+      this.marcheService
+        .deleteMarche(id)
+        .subscribe({
 
-        console.error(
-          'Erreur suppression marché',
-          err
-        );
+          next: () => {
 
-        this.toastService.error(
-          'Erreur lors de la suppression du marché'
-        );
-      }
-    });
+            this.toastService.success(
+              'Marché supprimé avec succès'
+            );
+
+            this.chargerMarches();
+          },
+
+          error: (err) => {
+
+            console.error(
+              'Erreur suppression marché',
+              err
+            );
+
+            this.toastService.error(
+              'Erreur lors de la suppression du marché'
+            );
+          }
+        });
+    }
+  });
 }
 
 modifierMarche(marche: any): void {

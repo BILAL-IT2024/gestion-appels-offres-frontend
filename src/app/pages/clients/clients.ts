@@ -4,6 +4,7 @@ import { ToastService } from '../../services/toast';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Client, ClientService } from '../../services/client';
+import { ConfirmDialogService } from '../../services/confirm-dialog';
 
 @Component({
   selector: 'app-clients',
@@ -32,7 +33,8 @@ export class Clients implements OnInit {
   constructor(
     private clientService: ClientService,
     private cd: ChangeDetectorRef,
-     private toastService: ToastService
+    private toastService: ToastService,
+    private confirmDialogService: ConfirmDialogService
   ) {}
 
   ngOnInit(): void {
@@ -154,36 +156,46 @@ modifierClient(client: Client): void {
 
 supprimerClient(id: number): void {
 
-  if (
-    confirm(
-      'Voulez-vous vraiment supprimer ce client ?'
-    )
-  ) {
+  this.confirmDialogService.open({
 
-    this.clientService.deleteClient(id).subscribe({
+    title: 'Supprimer le client',
 
-      next: () => {
+    message:
+      'Voulez-vous vraiment supprimer ce client ? Cette action est irréversible.',
 
-        this.toastService.success(
-          'Client supprimé avec succès'
-        );
+    confirmText: 'Supprimer',
 
-        this.chargerClients();
-      },
+    cancelText: 'Annuler',
 
-      error: (err) => {
+    onConfirm: () => {
 
-        console.error(
-          'Erreur suppression client',
-          err
-        );
+      this.clientService
+        .deleteClient(id)
+        .subscribe({
 
-        this.toastService.error(
-          'Erreur lors de la suppression du client'
-        );
-      }
-    });
-  }
+          next: () => {
+
+            this.toastService.success(
+              'Client supprimé avec succès'
+            );
+
+            this.chargerClients();
+          },
+
+          error: (err) => {
+
+            console.error(
+              'Erreur suppression client',
+              err
+            );
+
+            this.toastService.error(
+              'Erreur lors de la suppression du client'
+            );
+          }
+        });
+    }
+  });
 }
 
 rechercherClients(): void {

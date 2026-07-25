@@ -24,6 +24,10 @@ import {
 import { ToastService
   } from '../../services/toast';
 
+import {
+  ConfirmDialogService
+} from '../../services/confirm-dialog';
+
 @Component({
   selector: 'app-consultations',
   standalone: true,
@@ -56,7 +60,8 @@ export class Consultations implements OnInit, AfterViewInit {
     private consultationService: ConsultationService,
     private clientService: ClientService,
     private cd: ChangeDetectorRef,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private confirmDialogService: ConfirmDialogService
   ) {}
 
   ngOnInit(): void {
@@ -251,39 +256,46 @@ export class Consultations implements OnInit, AfterViewInit {
 
   supprimerConsultation(id: number): void {
 
-    const confirmation = confirm(
-      'Voulez-vous vraiment supprimer cette consultation ?'
-    );
+    this.confirmDialogService.open({
 
-    if (!confirmation) {
-      return;
-    }
+      title: 'Supprimer la consultation',
 
-    this.consultationService
-      .deleteConsultation(id)
-      .subscribe({
+      message:
+        'Voulez-vous vraiment supprimer cette consultation ? Cette action est irréversible.',
 
-        next: () => {
+      confirmText: 'Supprimer',
 
-          this.toastService.success(
-            'Consultation supprimée avec succès'
-          );
+      cancelText: 'Annuler',
 
-          this.chargerConsultations();
-        },
+      onConfirm: () => {
 
-        error: (err) => {
+        this.consultationService
+          .deleteConsultation(id)
+          .subscribe({
 
-          console.error(
-            'Erreur suppression consultation',
-            err
-          );
+            next: () => {
 
-          this.toastService.error(
-            'Erreur lors de la suppression de la consultation'
-          );
-        }
-      });
+              this.toastService.success(
+                'Consultation supprimée avec succès'
+              );
+
+              this.chargerConsultations();
+            },
+
+            error: (err) => {
+
+              console.error(
+                'Erreur suppression consultation',
+                err
+              );
+
+              this.toastService.error(
+                'Erreur lors de la suppression de la consultation'
+              );
+            }
+          });
+      }
+    });
   }
 
   rechercherConsultations(): void {

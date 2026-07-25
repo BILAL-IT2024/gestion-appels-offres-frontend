@@ -1,0 +1,49 @@
+@if (dialog) {
+
+<div class="dialog-overlay">
+
+  <div class="dialog-card">
+
+    <div class="dialog-header">
+
+      <div class="dialog-icon">
+        🗑️
+      </div>
+
+      <h2>
+        {{ dialog.title }}
+      </h2>
+
+    </div>
+
+    <div class="dialog-body">
+
+      {{ dialog.message }}
+
+    </div>
+
+    <div class="dialog-footer">
+
+      <button
+        class="cancel-button"
+        (click)="annuler()">
+
+        {{ dialog.cancelText || 'Annuler' }}
+
+      </button>
+
+      <button
+        class="confirm-button"
+        (click)="confirmer()">
+
+        {{ dialog.confirmText || 'Supprimer' }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+}

@@ -5,6 +5,7 @@ import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Commande, CommandeService } from '../../services/commande';
 import { MarcheService } from '../../services/marche';
 import { ToastService } from '../../services/toast';
+import { ConfirmDialogService } from '../../services/confirm-dialog';
 
 @Component({
   selector: 'app-commandes',
@@ -37,7 +38,8 @@ export class Commandes implements OnInit {
     private commandeService: CommandeService,
     private marcheService: MarcheService,
     private cd: ChangeDetectorRef,
-    private toastService: ToastService
+    private toastService: ToastService,
+     private confirmDialogService: ConfirmDialogService
   ) {}
 
   ngOnInit(): void {
@@ -178,39 +180,46 @@ modifierCommande(commande: any): void {
 
 supprimerCommande(id: number): void {
 
-  const confirmation = confirm(
-    'Voulez-vous vraiment supprimer cette commande ?'
-  );
+  this.confirmDialogService.open({
 
-  if (!confirmation) {
-    return;
-  }
+    title: 'Supprimer la commande',
 
-  this.commandeService
-    .deleteCommande(id)
-    .subscribe({
+    message:
+      'Voulez-vous vraiment supprimer cette commande ? Cette action est irréversible.',
 
-      next: () => {
+    confirmText: 'Supprimer',
 
-        this.toastService.success(
-          'Commande supprimée avec succès'
-        );
+    cancelText: 'Annuler',
 
-        this.chargerCommandes();
-      },
+    onConfirm: () => {
 
-      error: (err) => {
+      this.commandeService
+        .deleteCommande(id)
+        .subscribe({
 
-        console.error(
-          'Erreur suppression commande',
-          err
-        );
+          next: () => {
 
-        this.toastService.error(
-          'Erreur lors de la suppression de la commande'
-        );
-      }
-    });
+            this.toastService.success(
+              'Commande supprimée avec succès'
+            );
+
+            this.chargerCommandes();
+          },
+
+          error: (err) => {
+
+            console.error(
+              'Erreur suppression commande',
+              err
+            );
+
+            this.toastService.error(
+              'Erreur lors de la suppression de la commande'
+            );
+          }
+        });
+    }
+  });
 }
 
 rechercherCommandes(): void {
