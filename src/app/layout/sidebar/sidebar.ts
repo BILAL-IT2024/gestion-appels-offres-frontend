@@ -4,7 +4,10 @@ import {
   OnInit
 } from '@angular/core';
 
-import { RouterLink } from '@angular/router';
+import {
+  RouterLink,
+  RouterLinkActive
+} from '@angular/router';
 
 import { forkJoin } from 'rxjs';
 
@@ -20,7 +23,8 @@ import {
   selector: 'app-sidebar',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'
@@ -43,13 +47,18 @@ export class SidebarComponent implements OnInit {
 
     forkJoin({
       alertesAO:
-        this.dashboardService.getAlertesAppelsOffres(),
+        this.dashboardService
+          .getAlertesAppelsOffres(),
 
       paiements:
-        this.paiementService.getPaiements()
+        this.paiementService
+          .getPaiements()
     }).subscribe({
 
-      next: ({ alertesAO, paiements }) => {
+      next: ({
+        alertesAO,
+        paiements
+      }) => {
 
         const nombreAlertesAO =
           alertesAO.length;
@@ -59,27 +68,13 @@ export class SidebarComponent implements OnInit {
             paiement =>
               paiement.statut
                 ?.trim()
-                .toUpperCase() === 'EN_ATTENTE'
+                .toUpperCase() ===
+              'EN_ATTENTE'
           ).length;
 
         this.nombreNotifications =
           nombreAlertesAO +
           nombrePaiementsEnAttente;
-
-        console.log(
-          'Alertes AO :',
-          nombreAlertesAO
-        );
-
-        console.log(
-          'Paiements en attente :',
-          nombrePaiementsEnAttente
-        );
-
-        console.log(
-          'Total notifications :',
-          this.nombreNotifications
-        );
 
         this.cd.detectChanges();
       },

@@ -1,29 +1,79 @@
-<div class="login-container">
-  <h2>Connexion</h2>
+<div class="login-page">
 
-  <form (ngSubmit)="login()">
+  <div class="login-card">
 
-    <input
-      type="text"
-      name="username"
-      placeholder="Nom d'utilisateur"
-      [(ngModel)]="username"
-    >
+    <div class="login-header">
 
-    <input
-      type="password"
-      name="password"
-      placeholder="Mot de passe"
-      [(ngModel)]="password"
-    >
+      <div class="logo">
+        📋
+      </div>
 
-    <button type="submit">Se connecter</button>
+      <h1>Gestion des Appels d'Offres</h1>
 
-  </form>
+      <p>
+        Connectez-vous pour accéder à votre espace de travail
+      </p>
 
-  @if (errorMessage) {
-    <p class="error">
+    </div>
+
+    <form
+      class="login-form"
+      (ngSubmit)="login()">
+
+      <div class="form-group">
+
+        <label>
+          Nom d'utilisateur
+        </label>
+
+        <input
+          type="text"
+          name="username"
+          placeholder="Saisissez votre nom d'utilisateur"
+          [(ngModel)]="username">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          Mot de passe
+        </label>
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Saisissez votre mot de passe"
+          [(ngModel)]="password">
+
+      </div>
+
+      <button
+        type="submit"
+        class="login-button">
+
+        Se connecter
+
+      </button>
+
+    </form>
+
+    @if (errorMessage) {
+
+    <div class="error-box">
+
       {{ errorMessage }}
-    </p>
-  }
+
+    </div>
+
+    }
+
+    <div class="login-footer">
+
+      Master BDCC • Projet de Fin d'Études
+
+    </div>
+
+  </div>
+
 </div>

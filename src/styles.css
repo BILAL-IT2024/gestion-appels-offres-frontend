@@ -1,3 +1,5 @@
+@import "./styles/theme.css";
+
 /* =========================================================
    CONFIGURATION GLOBALE
 ========================================================= */
@@ -18,9 +20,13 @@ body {
 
 body {
   overflow-x: hidden;
-  background-color: #f4f7fc;
-  color: #172033;
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family:
+    Inter,
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 
 button,
@@ -38,12 +44,9 @@ textarea {
   display: flex;
   width: 100%;
   min-height: 100vh;
+  background-color: var(--color-bg);
 }
 
-/*
-  Cette règle réserve réellement la largeur de la sidebar
-  dans le conteneur flex.
-*/
 app-sidebar {
   display: block;
   flex: 0 0 280px;
@@ -51,25 +54,33 @@ app-sidebar {
   min-width: 280px;
 }
 
-.content {
+.content,
+.page-content {
   flex: 1;
   min-width: 0;
   padding: 32px;
   overflow: hidden;
-  background-color: #f4f7fc;
+  background-color: var(--color-bg);
 }
 
-.content h1 {
+.content h1,
+.page-title {
   margin: 0 0 30px;
-  color: #0b2a63;
+  color: var(--color-primary-dark);
   font-size: 40px;
   line-height: 1.2;
 }
 
 .content h3 {
   margin: 0 0 22px;
-  color: #0b2a63;
+  color: var(--color-primary-dark);
   font-size: 22px;
+}
+
+.page-subtitle {
+  margin: -20px 0 26px;
+  color: var(--color-text-muted);
+  font-size: 15px;
 }
 
 /* =========================================================
@@ -77,7 +88,8 @@ app-sidebar {
 ========================================================= */
 
 .search-bar,
-.actions-bar {
+.actions-bar,
+.toolbar {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -98,62 +110,83 @@ app-sidebar {
 
 input,
 select,
-textarea {
+textarea,
+.form-control {
   min-height: 44px;
   padding: 10px 14px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
   outline: none;
-  background-color: #ffffff;
-  color: #172033;
+  background-color: var(--color-surface);
+  color: var(--color-text);
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 input:focus,
 select:focus,
-textarea:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+textarea:focus,
+.form-control:focus {
+  border-color: var(--color-primary);
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.14);
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: #64748b;
+  color: var(--color-text-muted);
 }
 
 /* =========================================================
    BOUTONS
 ========================================================= */
 
-button {
+button,
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
   min-height: 42px;
   padding: 9px 16px;
+
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
+
   cursor: pointer;
+
   font-weight: 700;
+  text-decoration: none;
   white-space: nowrap;
+
   transition:
-    transform 0.15s ease,
-    opacity 0.15s ease,
-    box-shadow 0.15s ease;
+    transform var(--transition-fast),
+    opacity var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
-button:hover {
-  opacity: 0.92;
+button:hover,
+.btn:hover {
+  opacity: 0.94;
   transform: translateY(-1px);
 }
 
-button:active {
+button:active,
+.btn:active {
   transform: translateY(0);
 }
 
 .btn-primary {
-  border-color: #2563eb;
-  background-color: #2563eb;
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
   color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
 }
 
 .btn-secondary {
@@ -163,42 +196,53 @@ button:active {
 }
 
 .btn-success {
-  border-color: #16a34a;
-  background-color: #16a34a;
+  border-color: var(--color-success);
+  background-color: var(--color-success);
   color: #ffffff;
 }
 
 .btn-danger {
-  border-color: #dc2626;
-  background-color: #dc2626;
+  border-color: var(--color-danger);
+  background-color: var(--color-danger);
   color: #ffffff;
 }
 
 .btn-warning {
-  border-color: #f59e0b;
-  background-color: #f59e0b;
+  border-color: var(--color-warning);
+  background-color: var(--color-warning);
   color: #ffffff;
 }
 
-.btn-light {
-  border-color: #cbd5e1;
-  background-color: #ffffff;
-  color: #172033;
+.btn-light,
+.btn-outline {
+  border-color: var(--color-border-strong);
+  background-color: var(--color-surface);
+  color: var(--color-text);
 }
 
 /* =========================================================
-   CARTE DE FORMULAIRE
+   CARTES
 ========================================================= */
+
+.card,
+.app-card,
+.form-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.card,
+.app-card {
+  padding: 22px;
+}
 
 .form-card {
   width: 100%;
   max-width: 760px;
   margin: 24px 0;
   padding: 26px;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  background-color: #ffffff;
-  box-shadow: 0 5px 18px rgba(15, 31, 77, 0.08);
 }
 
 .form-group {
@@ -208,7 +252,8 @@ button:active {
   margin-bottom: 17px;
 }
 
-.form-group label {
+.form-group label,
+.form-label {
   color: #334155;
   font-size: 14px;
   font-weight: 700;
@@ -230,10 +275,14 @@ button:active {
   max-width: 100%;
   margin-top: 24px;
   overflow-x: hidden;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  background-color: #ffffff;
-  box-shadow: 0 5px 18px rgba(15, 31, 77, 0.08);
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  background-color: var(--color-surface);
+
+  box-shadow: var(--shadow-sm);
+
   scrollbar-width: thin;
   scrollbar-color: #94a3b8 #e2e8f0;
 }
@@ -255,38 +304,50 @@ button:active {
    TABLEAUX
 ========================================================= */
 
-table {
+table,
+.app-table {
   width: 100%;
   border-collapse: collapse;
 }
 
 table th,
-table td {
+table td,
+.app-table th,
+.app-table td {
   padding: 14px 15px;
+
   border-right: 1px solid #d7dce5;
   border-bottom: 1px solid #d7dce5;
+
   text-align: left;
   vertical-align: middle;
 }
 
 table th:last-child,
-table td:last-child {
+table td:last-child,
+.app-table th:last-child,
+.app-table td:last-child {
   border-right: none;
 }
 
-table tbody tr:last-child td {
+table tbody tr:last-child td,
+.app-table tbody tr:last-child td {
   border-bottom: none;
 }
 
-table th {
-  background-color: #0b285f;
+table th,
+.app-table th {
+  background-color: var(--color-primary-dark);
   color: #ffffff;
+
   font-size: 14px;
   font-weight: 700;
+
   white-space: nowrap;
 }
 
-table tbody tr:hover {
+table tbody tr:hover,
+.app-table tbody tr:hover {
   background-color: #f8fafc;
 }
 
@@ -294,7 +355,8 @@ table tbody tr:hover {
    ACTIONS DES TABLEAUX
 ========================================================= */
 
-.table-actions {
+.table-actions,
+.actions-group {
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
@@ -312,11 +374,17 @@ table tbody tr:hover {
 ========================================================= */
 
 .status-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   padding: 6px 11px;
+
   border-radius: 999px;
+
   font-size: 12px;
   font-weight: 700;
+
   white-space: nowrap;
 }
 
@@ -335,6 +403,11 @@ table tbody tr:hover {
   color: #991b1b;
 }
 
+.status-info {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
 .status-neutral {
   background-color: #e2e8f0;
   color: #334155;
@@ -344,6 +417,12 @@ table tbody tr:hover {
    RESPONSIVE
 ========================================================= */
 
+@media (max-width: 1100px) {
+  .table-container {
+    overflow-x: auto;
+  }
+}
+
 @media (max-width: 1000px) {
   app-sidebar {
     flex-basis: 240px;
@@ -351,16 +430,19 @@ table tbody tr:hover {
     min-width: 240px;
   }
 
-  .content {
+  .content,
+  .page-content {
     padding: 22px;
   }
 
-  .content h1 {
+  .content h1,
+  .page-title {
     font-size: 31px;
   }
 
   .search-bar,
-  .actions-bar {
+  .actions-bar,
+  .toolbar {
     align-items: stretch;
   }
 
@@ -380,26 +462,24 @@ table tbody tr:hover {
     min-width: 100%;
   }
 
-  .content {
+  .content,
+  .page-content {
     padding: 16px;
   }
 
-  .content h1 {
+  .content h1,
+  .page-title {
     font-size: 26px;
   }
 
   .search-bar button,
-  .actions-bar button {
+  .actions-bar button,
+  .toolbar button,
+  .btn {
     width: 100%;
   }
 
   .form-card {
     padding: 18px;
-  }
-}
-
-@media (max-width: 1100px) {
-  .table-container {
-    overflow-x: auto;
   }
 }

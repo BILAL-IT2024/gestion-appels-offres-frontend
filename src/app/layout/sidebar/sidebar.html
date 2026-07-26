@@ -1,60 +1,172 @@
 <aside class="sidebar">
 
-  <h2>Appels d'Offres</h2>
+  <header class="sidebar-brand">
 
-  <nav>
+    <div class="brand-logo">
+      AO
+    </div>
 
-    <a routerLink="/dashboard">
-      Dashboard
+    <div class="brand-text">
+      <strong>Gestion AO</strong>
+      <span>Appels d’offres</span>
+    </div>
+
+  </header>
+
+  <div class="sidebar-separator"></div>
+
+  <nav class="sidebar-nav">
+
+    <span class="nav-section-title">
+      Navigation
+    </span>
+
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{
+        exact: true
+      }"
+      class="nav-link"
+    >
+      <span class="nav-icon">⌂</span>
+
+      <span class="nav-label">
+        Dashboard
+      </span>
     </a>
 
-    <a routerLink="/appels-offres">
-      Appels d'offres
+    <a
+      routerLink="/appels-offres"
+      routerLinkActive="active"
+      class="nav-link"
+    >
+      <span class="nav-icon">📑</span>
+
+      <span class="nav-label">
+        Appels d’offres
+      </span>
     </a>
 
-    <a routerLink="/marches">
-      Marchés
+    <a
+      routerLink="/marches"
+      routerLinkActive="active"
+      class="nav-link"
+    >
+      <span class="nav-icon">📁</span>
+
+      <span class="nav-label">
+        Marchés
+      </span>
     </a>
 
-    <a routerLink="/commandes">
-      Commandes
+    <a
+      routerLink="/commandes"
+      routerLinkActive="active"
+      class="nav-link"
+    >
+      <span class="nav-icon">🛒</span>
+
+      <span class="nav-label">
+        Commandes
+      </span>
     </a>
 
-    <a routerLink="/paiements">
-      Paiements
+    <a
+      routerLink="/paiements"
+      routerLinkActive="active"
+      class="nav-link"
+    >
+      <span class="nav-icon">💳</span>
+
+      <span class="nav-label">
+        Paiements
+      </span>
     </a>
 
-    <a routerLink="/consultations">
-      Consultations
+    <a
+      routerLink="/consultations"
+      routerLinkActive="active"
+      class="nav-link"
+    >
+      <span class="nav-icon">📄</span>
+
+      <span class="nav-label">
+        Consultations
+      </span>
     </a>
 
-    <a routerLink="/clients">
-      Clients
+    <a
+      routerLink="/clients"
+      routerLinkActive="active"
+      class="nav-link"
+    >
+      <span class="nav-icon">👥</span>
+
+      <span class="nav-label">
+        Clients
+      </span>
     </a>
 
-    <!-- Nouvelle entrée -->
-    <a routerLink="/notifications" class="notification-link">
+    <a
+      routerLink="/notifications"
+      routerLinkActive="active"
+      class="nav-link notification-link"
+    >
+      <span class="nav-icon">🔔</span>
 
-      🔔 Notifications
+      <span class="nav-label">
+        Notifications
+      </span>
 
       @if (nombreNotifications > 0) {
+
       <span class="notification-badge">
           {{ nombreNotifications }}
         </span>
+
       }
 
     </a>
 
-    <a routerLink="/statistiques">
-      Statistiques
+    <a
+      routerLink="/statistiques"
+      routerLinkActive="active"
+      class="nav-link"
+    >
+      <span class="nav-icon">📊</span>
+
+      <span class="nav-label">
+        Statistiques
+      </span>
     </a>
 
   </nav>
 
-  <button
-    type="button"
-    (click)="logout()">
-    Déconnexion
-  </button>
+  <footer class="sidebar-footer">
+
+    <div class="user-card">
+
+      <div class="user-avatar">
+        B
+      </div>
+
+      <div class="user-info">
+        <strong>Bilal</strong>
+        <span>Utilisateur connecté</span>
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="logout-button"
+      (click)="logout()"
+    >
+      <span>↪</span>
+      Déconnexion
+    </button>
+
+  </footer>
 
 </aside>
