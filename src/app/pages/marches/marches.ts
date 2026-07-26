@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Marche, MarcheService } from '../../services/marche';
@@ -10,7 +11,7 @@ import { ConfirmDialogService } from '../../services/confirm-dialog';
 @Component({
   selector: 'app-marches',
   standalone: true,
-  imports: [SidebarComponent, FormsModule],
+  imports: [SidebarComponent, FormsModule,  DecimalPipe],
   templateUrl: './marches.html',
   styleUrl: './marches.css',
 })

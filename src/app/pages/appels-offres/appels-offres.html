@@ -1,141 +1,421 @@
-<div style="display:flex;">
+<div class="page-layout">
 
   <app-sidebar></app-sidebar>
 
-  <div class="content">
+  <main class="ao-page">
 
-    <h1>Gestion des Appels d'Offres</h1>
-    <br>
+    <!-- En-tête -->
+    <header class="ao-header">
 
-    <input
-      type="text"
-      placeholder="Rechercher par référence..."
-      [(ngModel)]="keyword"
-    >
+      <div>
+        <h1>Gestion des Appels d’Offres</h1>
 
-    <button (click)="rechercherAppelsOffres()">
-      Rechercher
-    </button>
+        <p>
+          Suivez les appels d’offres, leurs échéances,
+          leurs montants et leurs statuts
+        </p>
+      </div>
 
-    <button (click)="reinitialiserRecherche()">
-      Réinitialiser
-    </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="ouvrirFormulaire()"
+      >
+        + Nouvel appel d’offres
+      </button>
 
-    <br><br>
+    </header>
 
-    <button (click)="ouvrirFormulaire()">
-      + Nouvel Appel d'Offres
-    </button>
+    <!-- Barre de recherche et actions -->
+    <section class="ao-toolbar">
 
-    <button (click)="exporterExcel()">
-      Exporter Excel
-    </button>
-
-    @if (showForm) {
-      <div style="margin-top:20px; padding:20px; border:1px solid #ccc;">
-
-        <h3>Nouveau Appel d'Offres</h3>
+      <div class="search-group">
 
         <input
           type="text"
-          placeholder="Référence"
-          [(ngModel)]="nouvelAppelOffre.reference"
+          class="form-control search-input"
+          placeholder="Rechercher par référence..."
+          [(ngModel)]="keyword"
+          (keyup.enter)="rechercherAppelsOffres()"
         >
-        <br><br>
 
-        <input
-          type="text"
-          placeholder="Objet"
-          [(ngModel)]="nouvelAppelOffre.objet"
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="rechercherAppelsOffres()"
         >
-        <br><br>
+          Rechercher
+        </button>
 
-        <input
-          type="date"
-          [(ngModel)]="nouvelAppelOffre.datePublication"
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="reinitialiserRecherche()"
         >
-        <br><br>
-
-        <input
-          type="date"
-          [(ngModel)]="nouvelAppelOffre.dateLimite"
-        >
-        <br><br>
-
-        <input
-          type="number"
-          placeholder="Montant estimé"
-          [(ngModel)]="nouvelAppelOffre.montantEstime"
-        >
-        <br><br>
-
-        <select [(ngModel)]="nouvelAppelOffre.statut">
-          <option value="EN_COURS">EN_COURS</option>
-          <option value="ADJUGE">ADJUGE</option>
-          <option value="ANNULE">ANNULE</option>
-        </select>
-        <br><br>
-
-        <select [(ngModel)]="nouvelAppelOffre.client.id" name="client">
-          <option [ngValue]="0">-- Choisir un client --</option>
-
-          @for (client of clients; track client.id) {
-            <option [ngValue]="client.id">
-              {{ client.raisonSociale }}
-            </option>
-          }
-        </select>
-        <br><br>
-
-        <button (click)="enregistrerAppelOffre()">
-          Enregistrer
+          Réinitialiser
         </button>
 
       </div>
+
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="exporterExcel()"
+      >
+        Exporter Excel
+      </button>
+
+    </section>
+
+    <!-- Formulaire -->
+    @if (showForm) {
+
+    <section class="ao-form-card">
+
+      <div class="form-card-header">
+
+        <div>
+          <h2>
+            {{
+            modeEdition
+            ? 'Modifier l’appel d’offres'
+            : 'Nouvel appel d’offres'
+            }}
+          </h2>
+
+          <p>
+            Renseignez les informations principales du dossier
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="form-close-button"
+          (click)="showForm = false"
+          aria-label="Fermer le formulaire"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="ao-form-grid">
+
+        <div class="form-group">
+
+          <label for="reference">
+            Référence
+          </label>
+
+          <input
+            id="reference"
+            type="text"
+            class="form-control"
+            placeholder="Ex. AO-2026-001"
+            [(ngModel)]="nouvelAppelOffre.reference"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="client">
+            Client
+          </label>
+
+          <select
+            id="client"
+            class="form-control"
+            [(ngModel)]="nouvelAppelOffre.client.id"
+            name="client"
+          >
+
+            <option [ngValue]="0">
+              -- Choisir un client --
+            </option>
+
+            @for (client of clients; track client.id) {
+
+            <option [ngValue]="client.id">
+              {{ client.raisonSociale }}
+            </option>
+
+            }
+
+          </select>
+
+        </div>
+
+        <div class="form-group form-group-wide">
+
+          <label for="objet">
+            Objet
+          </label>
+
+          <input
+            id="objet"
+            type="text"
+            class="form-control"
+            placeholder="Objet de l’appel d’offres"
+            [(ngModel)]="nouvelAppelOffre.objet"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="datePublication">
+            Date de publication
+          </label>
+
+          <input
+            id="datePublication"
+            type="date"
+            class="form-control"
+            [(ngModel)]="nouvelAppelOffre.datePublication"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="dateLimite">
+            Date limite
+          </label>
+
+          <input
+            id="dateLimite"
+            type="date"
+            class="form-control"
+            [(ngModel)]="nouvelAppelOffre.dateLimite"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="montantEstime">
+            Montant estimé
+          </label>
+
+          <input
+            id="montantEstime"
+            type="number"
+            min="0"
+            class="form-control"
+            placeholder="Montant en DH"
+            [(ngModel)]="nouvelAppelOffre.montantEstime"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="statut">
+            Statut
+          </label>
+
+          <select
+            id="statut"
+            class="form-control"
+            [(ngModel)]="nouvelAppelOffre.statut"
+          >
+
+            <option value="EN_COURS">
+              En cours
+            </option>
+
+            <option value="ADJUGE">
+              Adjugé
+            </option>
+
+            <option value="ANNULE">
+              Annulé
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="showForm = false"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="enregistrerAppelOffre()"
+        >
+          {{
+          modeEdition
+          ? 'Enregistrer les modifications'
+          : 'Enregistrer l’appel d’offres'
+          }}
+        </button>
+
+      </div>
+
+    </section>
+
     }
 
-    <table class="ao-table">
+    <!-- Tableau -->
+    <section class="ao-table-card">
 
-      <tr>
-        <th>Référence</th>
-        <th>Objet</th>
-        <th>Client</th>
-        <th>Montant</th>
-        <th>Date Limite</th>
-        <th>Statut</th>
-        <th>Actions</th>
-      </tr>
+      <div class="table-card-header">
 
-      @for (ao of appelsOffres; track ao.id) {
+        <div>
+          <h2>Liste des appels d’offres</h2>
 
-        <tr>
-          <td>{{ ao.reference }}</td>
-          <td>{{ ao.objet }}</td>
-          <td>{{ ao.client?.raisonSociale || ao.clientNom }}</td>
-          <td>{{ ao.montantEstime }}</td>
-          <td>{{ ao.dateLimite }}</td>
-          <td>{{ ao.statut }}</td>
-          <td>
+          <p>
+            {{ appelsOffres.length }} appel(s) d’offres affiché(s)
+          </p>
+        </div>
 
-            <button (click)="modifierAppelOffre(ao)">
-              Modifier
-            </button>
+      </div>
 
-            <button (click)="supprimerAppelOffre(ao.id)">
-              Supprimer
-            </button>
+      <div class="table-container">
 
-            <button (click)="exporterPdf(ao.id)">
-              PDF
-            </button>
+        <table class="app-table ao-table">
 
-          </td>
-        </tr>
+          <thead>
 
-      }
+          <tr>
+            <th>Référence</th>
+            <th>Objet</th>
+            <th>Client</th>
+            <th>Montant</th>
+            <th>Date limite</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
 
-    </table>
+          </thead>
 
-  </div>
+          <tbody>
+
+          @for (ao of appelsOffres; track ao.id) {
+
+          <tr>
+
+            <td>
+              <strong class="ao-reference">
+                {{ ao.reference }}
+              </strong>
+            </td>
+
+            <td>
+              {{ ao.objet || '—' }}
+            </td>
+
+            <td>
+              {{
+              ao.client?.raisonSociale
+              || ao.clientNom
+              || '—'
+              }}
+            </td>
+
+            <td>
+              {{ ao.montantEstime | number }} DH
+            </td>
+
+            <td>
+              {{ ao.dateLimite || '—' }}
+            </td>
+
+            <td>
+
+                  <span
+                    class="status-badge"
+                    [class.status-warning]="
+                      ao.statut === 'EN_COURS'
+                    "
+                    [class.status-success]="
+                      ao.statut === 'ADJUGE'
+                    "
+                    [class.status-danger]="
+                      ao.statut === 'ANNULE'
+                    "
+                  >
+                    @if (ao.statut === 'EN_COURS') {
+                      En cours
+                    } @else if (ao.statut === 'ADJUGE') {
+                      Adjugé
+                    } @else if (ao.statut === 'ANNULE') {
+                      Annulé
+                    } @else {
+                      {{ ao.statut || '—' }}
+                    }
+                  </span>
+
+            </td>
+
+            <td>
+
+              <div class="table-actions">
+
+                <button
+                  type="button"
+                  class="btn btn-light action-button"
+                  (click)="modifierAppelOffre(ao)"
+                >
+                  Modifier
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-danger action-button"
+                  (click)="supprimerAppelOffre(ao.id)"
+                >
+                  Supprimer
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary action-button"
+                  (click)="exporterPdf(ao.id)"
+                >
+                  PDF
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+          } @empty {
+
+          <tr>
+
+            <td
+              colspan="7"
+              class="empty-state"
+            >
+              Aucun appel d’offres disponible.
+            </td>
+
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
 
 </div>

@@ -1,124 +1,433 @@
-<div style="display:flex;">
+<div class="page-layout">
 
   <app-sidebar></app-sidebar>
 
-  <div class="content">
+  <main class="marches-page">
 
-    <h1>Gestion des Marchés</h1>
+    <header class="marches-header">
 
-    <br>
+      <div>
+        <h1>Gestion des Marchés</h1>
 
-    <input
-      type="text"
-      placeholder="Rechercher par numéro..."
-      [(ngModel)]="keyword"
-    >
+        <p>
+          Suivez les marchés, leur exécution, leurs montants et leurs statuts
+        </p>
+      </div>
 
-    <button (click)="rechercherMarches()">
-      Rechercher
-    </button>
-
-    <button (click)="reinitialiserRecherche()">
-      Réinitialiser
-    </button>
-
-    <br><br>
-
-    <button (click)="ouvrirFormulaire()">
-      + Nouveau Marché
-    </button>
-
-    <button (click)="exporterExcel()">
-      Exporter Excel
-    </button>
-
-    @if (showForm) {
-    <div style="margin-top:20px; padding:20px; border:1px solid #ccc;">
-
-      <h3>Nouveau Marché</h3>
-
-      <input type="text" placeholder="N° Marché" [(ngModel)]="nouveauMarche.numeroMarche">
-      <br><br>
-
-      <input type="date" [(ngModel)]="nouveauMarche.dateDebut">
-      <br><br>
-
-      <input type="date" [(ngModel)]="nouveauMarche.dateFin">
-      <br><br>
-
-      <input type="number" placeholder="Montant marché" [(ngModel)]="nouveauMarche.montantMarche">
-      <br><br>
-
-      <input type="number" placeholder="Taux exécution" [(ngModel)]="nouveauMarche.tauxExecution">
-      <br><br>
-
-      <select [(ngModel)]="nouveauMarche.statut">
-        <option value="EN_COURS">EN_COURS</option>
-        <option value="TERMINE">TERMINE</option>
-        <option value="ANNULE">ANNULE</option>
-      </select>
-      <br><br>
-
-      <select [(ngModel)]="nouveauMarche.appelDoffres.id">
-        <option [ngValue]="0">-- Choisir un appel d'offres --</option>
-
-        @for (ao of appelsOffres; track ao.id) {
-        <option [ngValue]="ao.id">
-          {{ ao.reference }}
-        </option>
-        }
-      </select>
-      <br><br>
-
-      <button (click)="enregistrerMarche()">
-        Enregistrer
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="ouvrirFormulaire()"
+      >
+        + Nouveau marché
       </button>
 
-    </div>
+    </header>
+
+    <section class="marches-toolbar">
+
+      <div class="search-group">
+
+        <input
+          type="text"
+          class="form-control search-input"
+          placeholder="Rechercher par numéro..."
+          [(ngModel)]="keyword"
+          (keyup.enter)="rechercherMarches()"
+        >
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="rechercherMarches()"
+        >
+          Rechercher
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="reinitialiserRecherche()"
+        >
+          Réinitialiser
+        </button>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="exporterExcel()"
+      >
+        Exporter Excel
+      </button>
+
+    </section>
+
+    @if (showForm) {
+
+    <section class="marche-form-card">
+
+      <div class="form-card-header">
+
+        <div>
+          <h2>
+            {{
+            modeEdition
+            ? 'Modifier le marché'
+            : 'Nouveau marché'
+            }}
+          </h2>
+
+          <p>
+            Renseignez les informations principales du marché
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="form-close-button"
+          (click)="showForm = false"
+          aria-label="Fermer le formulaire"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="marche-form-grid">
+
+        <div class="form-group">
+
+          <label for="numeroMarche">
+            Numéro du marché
+          </label>
+
+          <input
+            id="numeroMarche"
+            type="text"
+            class="form-control"
+            placeholder="Ex. MAR-2026-001"
+            [(ngModel)]="nouveauMarche.numeroMarche"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="appelDoffres">
+            Appel d’offres
+          </label>
+
+          <select
+            id="appelDoffres"
+            class="form-control"
+            [(ngModel)]="nouveauMarche.appelDoffres.id"
+          >
+            <option [ngValue]="0">
+              -- Choisir un appel d’offres --
+            </option>
+
+            @for (ao of appelsOffres; track ao.id) {
+
+            <option [ngValue]="ao.id">
+              {{ ao.reference }}
+            </option>
+
+            }
+          </select>
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="dateDebut">
+            Date de début
+          </label>
+
+          <input
+            id="dateDebut"
+            type="date"
+            class="form-control"
+            [(ngModel)]="nouveauMarche.dateDebut"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="dateFin">
+            Date de fin
+          </label>
+
+          <input
+            id="dateFin"
+            type="date"
+            class="form-control"
+            [(ngModel)]="nouveauMarche.dateFin"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="montantMarche">
+            Montant du marché
+          </label>
+
+          <input
+            id="montantMarche"
+            type="number"
+            min="0"
+            class="form-control"
+            placeholder="Montant en DH"
+            [(ngModel)]="nouveauMarche.montantMarche"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="tauxExecution">
+            Taux d’exécution
+          </label>
+
+          <input
+            id="tauxExecution"
+            type="number"
+            min="0"
+            max="100"
+            class="form-control"
+            placeholder="Taux en %"
+            [(ngModel)]="nouveauMarche.tauxExecution"
+          >
+
+        </div>
+
+        <div class="form-group form-group-wide">
+
+          <label for="statut">
+            Statut
+          </label>
+
+          <select
+            id="statut"
+            class="form-control"
+            [(ngModel)]="nouveauMarche.statut"
+          >
+            <option value="EN_COURS">
+              En cours
+            </option>
+
+            <option value="TERMINE">
+              Terminé
+            </option>
+
+            <option value="ANNULE">
+              Annulé
+            </option>
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="showForm = false"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="enregistrerMarche()"
+        >
+          {{
+          modeEdition
+          ? 'Enregistrer les modifications'
+          : 'Enregistrer le marché'
+          }}
+        </button>
+
+      </div>
+
+    </section>
+
     }
 
-    <table class="marche-table">
+    <section class="marches-table-card">
 
-      <tr>
-        <th>N° Marché</th>
-        <th>Appel d'Offres</th>
-        <th>Date Début</th>
-        <th>Date Fin</th>
-        <th>Montant</th>
-        <th>Taux Exécution</th>
-        <th>Statut</th>
-        <th>Actions</th>
-      </tr>
+      <div class="table-card-header">
 
-      @for (marche of marches; track marche.id) {
-      <tr>
-        <td>{{ marche.numeroMarche }}</td>
-        <td>{{ marche.appelDoffres?.reference }}</td>
-        <td>{{ marche.dateDebut }}</td>
-        <td>{{ marche.dateFin }}</td>
-        <td>{{ marche.montantMarche }}</td>
-        <td>{{ marche.tauxExecution }} %</td>
-        <td>{{ marche.statut }}</td>
-        <td>
+        <div>
+          <h2>Liste des marchés</h2>
 
-          <button (click)="modifierMarche(marche)">
-            Modifier
-          </button>
+          <p>
+            {{ marches.length }} marché(s) affiché(s)
+          </p>
+        </div>
 
-          <button (click)="supprimerMarche(marche.id)">
-            Supprimer
-          </button>
+      </div>
 
-          <button (click)="exporterPdf(marche.id)">
-            PDF
-          </button>
+      <div class="table-container">
 
-        </td>
-      </tr>
-      }
+        <table class="app-table marche-table">
 
-    </table>
+          <thead>
 
-  </div>
+          <tr>
+            <th>N° marché</th>
+            <th>Appel d’offres</th>
+            <th>Date début</th>
+            <th>Date fin</th>
+            <th>Montant</th>
+            <th>Taux d’exécution</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+
+          </thead>
+
+          <tbody>
+
+          @for (marche of marches; track marche.id) {
+
+          <tr>
+
+            <td>
+              <strong class="marche-reference">
+                {{ marche.numeroMarche }}
+              </strong>
+            </td>
+
+            <td>
+              {{ marche.appelDoffres?.reference || '—' }}
+            </td>
+
+            <td>
+              {{ marche.dateDebut || '—' }}
+            </td>
+
+            <td>
+              {{ marche.dateFin || '—' }}
+            </td>
+
+            <td>
+              {{ marche.montantMarche | number }} DH
+            </td>
+
+            <td>
+
+              <div class="execution-cell">
+
+                <div class="execution-header">
+                      <span>
+                        {{ marche.tauxExecution }} %
+                      </span>
+                </div>
+
+                <div class="progress-track">
+
+                  <div
+                    class="progress-value"
+                    [style.width.%]="marche.tauxExecution"
+                  ></div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+
+                  <span
+                    class="status-badge"
+                    [class.status-warning]="
+                      marche.statut === 'EN_COURS'
+                    "
+                    [class.status-success]="
+                      marche.statut === 'TERMINE'
+                    "
+                    [class.status-danger]="
+                      marche.statut === 'ANNULE'
+                    "
+                  >
+                    @if (marche.statut === 'EN_COURS') {
+                      En cours
+                    } @else if (marche.statut === 'TERMINE') {
+                      Terminé
+                    } @else if (marche.statut === 'ANNULE') {
+                      Annulé
+                    } @else {
+                      {{ marche.statut || '—' }}
+                    }
+                  </span>
+
+            </td>
+
+            <td>
+
+              <div class="table-actions">
+
+                <button
+                  type="button"
+                  class="btn btn-light action-button"
+                  (click)="modifierMarche(marche)"
+                >
+                  Modifier
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-danger action-button"
+                  (click)="supprimerMarche(marche.id)"
+                >
+                  Supprimer
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary action-button"
+                  (click)="exporterPdf(marche.id)"
+                >
+                  PDF
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+          } @empty {
+
+          <tr>
+
+            <td
+              colspan="8"
+              class="empty-state"
+            >
+              Aucun marché disponible.
+            </td>
+
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
 
 </div>

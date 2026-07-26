@@ -1,5 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Client, ClientService } from '../../services/client';
@@ -10,7 +15,11 @@ import { ConfirmDialogService } from '../../services/confirm-dialog';
 @Component({
   selector: 'app-appels-offres',
   standalone: true,
-  imports: [SidebarComponent, FormsModule],
+  imports: [
+    SidebarComponent,
+    FormsModule,
+    DecimalPipe
+  ],
   templateUrl: './appels-offres.html',
   styleUrl: './appels-offres.css',
 })
@@ -154,17 +163,30 @@ export class AppelsOffresComponent implements OnInit {
 
   chargerAppelsOffres(): void {
 
-    this.appelOffresService.getAppelsOffres().subscribe({
-      next: (data) => {
-        console.log('AO reçus = ', data);
-        this.appelsOffres = data;
-        this.cd.detectChanges();
-      },
-      error: (err) => {
-        console.log('Erreur chargement AO = ', err);
-      }
-    });
+    this.appelOffresService
+      .getAppelsOffres()
+      .subscribe({
 
+        next: (data) => {
+
+          this.appelsOffres = data;
+
+          this.cd.detectChanges();
+
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Erreur chargement appels d’offres',
+            err
+          );
+
+          this.toastService.error(
+            'Erreur lors du chargement des appels d’offres'
+          );
+        }
+      });
   }
 
   supprimerAppelOffre(id: number): void {

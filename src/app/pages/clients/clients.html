@@ -1,105 +1,350 @@
-<div style="display:flex;">
+<div class="page-layout">
 
   <app-sidebar></app-sidebar>
 
-  <div class="content">
+  <main class="clients-page">
 
-    <h1>Gestion des Clients</h1>
+    <header class="clients-header">
 
-    <br>
+      <div>
+        <h1>Gestion des Clients</h1>
 
-    <input
-      type="text"
-      placeholder="Rechercher par raison sociale..."
-      [(ngModel)]="keyword"
-    >
+        <p>
+          Gérez les clients publics et privés de l’entreprise
+        </p>
+      </div>
 
-    <button (click)="rechercherClients()">
-      Rechercher
-    </button>
-
-    <button (click)="reinitialiserRecherche()">
-      Réinitialiser
-    </button>
-
-    <br><br>
-
-    <button (click)="ouvrirFormulaire()">
-      + Nouveau Client
-    </button>
-
-    <button (click)="exporterExcel()">
-      Exporter Excel
-    </button>
-
-    @if (showForm) {
-    <div style="margin-top:20px; padding:20px; border:1px solid #ccc;">
-
-      <h3>Nouveau Client</h3>
-
-      <input type="text" placeholder="Raison sociale" [(ngModel)]="nouveauClient.raisonSociale">
-      <br><br>
-
-      <input type="text" placeholder="Adresse" [(ngModel)]="nouveauClient.adresse">
-      <br><br>
-
-      <input type="text" placeholder="Téléphone" [(ngModel)]="nouveauClient.telephone">
-      <br><br>
-
-      <input type="email" placeholder="Email" [(ngModel)]="nouveauClient.email">
-      <br><br>
-
-      <select [(ngModel)]="nouveauClient.typeClient">
-        <option value="PUBLIC">PUBLIC</option>
-        <option value="PRIVE">PRIVE</option>
-      </select>
-      <br><br>
-
-      <button (click)="enregistrerClient()">
-        Enregistrer
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="ouvrirFormulaire()"
+      >
+        + Nouveau client
       </button>
 
-    </div>
+    </header>
+
+    <section class="clients-toolbar">
+
+      <div class="search-group">
+
+        <input
+          type="text"
+          class="form-control search-input"
+          placeholder="Rechercher par raison sociale..."
+          [(ngModel)]="keyword"
+          (keyup.enter)="rechercherClients()"
+        >
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="rechercherClients()"
+        >
+          Rechercher
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="reinitialiserRecherche()"
+        >
+          Réinitialiser
+        </button>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="exporterExcel()"
+      >
+        Exporter Excel
+      </button>
+
+    </section>
+
+    @if (showForm) {
+
+    <section class="client-form-card">
+
+      <div class="form-card-header">
+
+        <div>
+          <h2>
+            {{
+            modeEdition
+            ? 'Modifier le client'
+            : 'Nouveau client'
+            }}
+          </h2>
+
+          <p>
+            Renseignez les informations du client
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="form-close-button"
+          (click)="showForm = false"
+          aria-label="Fermer le formulaire"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="client-form-grid">
+
+        <div class="form-group">
+
+          <label for="raisonSociale">
+            Raison sociale
+          </label>
+
+          <input
+            id="raisonSociale"
+            type="text"
+            class="form-control"
+            placeholder="Ex. OCP SA"
+            [(ngModel)]="nouveauClient.raisonSociale"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="typeClient">
+            Type de client
+          </label>
+
+          <select
+            id="typeClient"
+            class="form-control"
+            [(ngModel)]="nouveauClient.typeClient"
+          >
+            <option value="PUBLIC">
+              Public
+            </option>
+
+            <option value="PRIVE">
+              Privé
+            </option>
+          </select>
+
+        </div>
+
+        <div class="form-group form-group-wide">
+
+          <label for="adresse">
+            Adresse
+          </label>
+
+          <input
+            id="adresse"
+            type="text"
+            class="form-control"
+            placeholder="Adresse complète"
+            [(ngModel)]="nouveauClient.adresse"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="telephone">
+            Téléphone
+          </label>
+
+          <input
+            id="telephone"
+            type="text"
+            class="form-control"
+            placeholder="Ex. 06 00 00 00 00"
+            [(ngModel)]="nouveauClient.telephone"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="email">
+            E-mail
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            class="form-control"
+            placeholder="client@entreprise.ma"
+            [(ngModel)]="nouveauClient.email"
+          >
+
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="showForm = false"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="enregistrerClient()"
+        >
+          {{
+          modeEdition
+          ? 'Enregistrer les modifications'
+          : 'Enregistrer le client'
+          }}
+        </button>
+
+      </div>
+
+    </section>
+
     }
 
-    <table class="client-table">
+    <section class="clients-table-card">
 
-      <tr>
-        <th>Raison sociale</th>
-        <th>Adresse</th>
-        <th>Téléphone</th>
-        <th>Email</th>
-        <th>Type</th>
-        <th>Actions</th>
-      </tr>
+      <div class="table-card-header">
 
-      @for (client of clients; track client.id) {
-      <tr>
-        <td>{{ client.raisonSociale }}</td>
-        <td>{{ client.adresse }}</td>
-        <td>{{ client.telephone }}</td>
-        <td>{{ client.email }}</td>
-        <td>{{ client.typeClient }}</td>
-        <td>
+        <div>
+          <h2>Liste des clients</h2>
 
-          <button (click)="modifierClient(client)">
-            Modifier
-          </button>
+          <p>
+            {{ clients.length }} client(s) affiché(s)
+          </p>
+        </div>
 
-          <button (click)="supprimerClient(client.id!)">
-            Supprimer
-          </button>
+      </div>
 
-          <button (click)="exporterPdf(client.id!)">
-            PDF
-          </button>
+      <div class="table-container">
 
-        </td>
-      </tr>
-      }
+        <table class="app-table client-table">
 
-    </table>
+          <thead>
 
-  </div>
+          <tr>
+            <th>Raison sociale</th>
+            <th>Adresse</th>
+            <th>Téléphone</th>
+            <th>E-mail</th>
+            <th>Type</th>
+            <th>Actions</th>
+          </tr>
+
+          </thead>
+
+          <tbody>
+
+          @for (client of clients; track client.id) {
+
+          <tr>
+
+            <td>
+              <strong class="client-name">
+                {{ client.raisonSociale }}
+              </strong>
+            </td>
+
+            <td>
+              {{ client.adresse || '—' }}
+            </td>
+
+            <td>
+              {{ client.telephone || '—' }}
+            </td>
+
+            <td>
+              {{ client.email || '—' }}
+            </td>
+
+            <td>
+
+                  <span
+                    class="status-badge"
+                    [class.status-info]="
+                      client.typeClient === 'PUBLIC'
+                    "
+                    [class.status-success]="
+                      client.typeClient === 'PRIVE'
+                    "
+                  >
+                    {{
+                      client.typeClient === 'PUBLIC'
+                        ? 'Public'
+                        : 'Privé'
+                    }}
+                  </span>
+
+            </td>
+
+            <td>
+
+              <div class="table-actions">
+
+                <button
+                  type="button"
+                  class="btn btn-light action-button"
+                  (click)="modifierClient(client)"
+                >
+                  Modifier
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-danger action-button"
+                  (click)="supprimerClient(client.id!)"
+                >
+                  Supprimer
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary action-button"
+                  (click)="exporterPdf(client.id!)"
+                >
+                  PDF
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+          } @empty {
+
+          <tr>
+
+            <td
+              colspan="6"
+              class="empty-state"
+            >
+              Aucun client disponible.
+            </td>
+
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
 
 </div>
