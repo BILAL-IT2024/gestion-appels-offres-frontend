@@ -1,25 +1,357 @@
-.content {
-  padding: 20px;
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+/* =====================================================
+   PAGE
+===================================================== */
+
+.paiement-page {
   flex: 1;
+  min-width: 0;
+  padding: 32px;
+  background: var(--color-bg);
+}
+
+.paiement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.paiement-header h1 {
+  margin: 0;
+  color: var(--color-primary-dark);
+  font-size: clamp(32px, 3vw, 44px);
+}
+
+.paiement-header p {
+  margin-top: 8px;
+  color: var(--color-text-muted);
+}
+
+/* =====================================================
+   TOOLBAR
+===================================================== */
+
+.paiement-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  margin-bottom: 24px;
+  padding: 18px;
+
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.search-group {
+  display: flex;
+  flex: 1;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 260px;
+}
+
+/* =====================================================
+   FORMULAIRE
+===================================================== */
+
+.paiement-form-card {
+  margin-bottom: 24px;
+  padding: 24px;
+
+  background: white;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-md);
+}
+
+.form-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  margin-bottom: 24px;
+}
+
+.form-card-header h2 {
+  margin: 0;
+  color: var(--color-primary-dark);
+}
+
+.form-card-header p {
+  margin-top: 6px;
+  color: var(--color-text-muted);
+}
+
+.form-close-button {
+  width: 36px;
+  height: 36px;
+
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+
+  background: white;
+
+  font-size: 22px;
+}
+
+.form-close-button:hover {
+  color: var(--color-danger);
+}
+
+.paiement-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 18px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+
+  margin-top: 24px;
+  padding-top: 20px;
+
+  border-top: 1px solid var(--color-border);
+}
+
+/* =====================================================
+   TABLEAU
+===================================================== */
+
+.paiement-table-card {
+
+  padding: 22px;
+
+  background: white;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
+
+}
+
+.table-card-header {
+
+  margin-bottom: 18px;
+
+}
+
+.table-card-header h2 {
+
+  margin: 0;
+  color: var(--color-primary-dark);
+
+}
+
+.table-card-header p {
+
+  margin-top: 6px;
+  color: var(--color-text-muted);
+
+}
+
+.paiement-table-wrapper {
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
+
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
 }
 
 .paiement-table {
   width: 100%;
-  margin-top: 20px;
   border-collapse: collapse;
-  background: white;
+  table-layout: fixed;
 }
 
 .paiement-table th,
 .paiement-table td {
-  border: 1px solid #ccc;
-  padding: 10px;
+  padding: 14px 16px;
+
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+
   text-align: left;
-  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.paiement-table th:last-child,
+.paiement-table td:last-child {
+  border-right: none;
+}
+
+.paiement-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .paiement-table th {
-  background-color: #0b1f4d;
-  color: white;
+  background: var(--color-primary-dark);
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.paiement-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* Largeurs équilibrées */
+
+.paiement-table th:nth-child(1),
+.paiement-table td:nth-child(1) {
+  width: 15%;
+}
+
+.paiement-table th:nth-child(2),
+.paiement-table td:nth-child(2) {
+  width: 12%;
+}
+
+.paiement-table th:nth-child(3),
+.paiement-table td:nth-child(3) {
+  width: 15%;
+}
+
+.paiement-table th:nth-child(4),
+.paiement-table td:nth-child(4) {
+  width: 12%;
+}
+
+.paiement-table th:nth-child(5),
+.paiement-table td:nth-child(5) {
+  width: 13%;
+}
+
+.paiement-table th:nth-child(6),
+.paiement-table td:nth-child(6) {
+  width: 13%;
+}
+
+.paiement-table th:nth-child(7),
+.paiement-table td:nth-child(7) {
+  width: 20%;
+}
+
+.paiement-reference {
+  color: var(--color-primary-dark);
+  overflow-wrap: anywhere;
+}
+
+.montant-cell {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* =====================================================
+   ACTIONS
+===================================================== */
+
+.paiement-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.action-button {
+  flex: 0 0 auto;
+
+  min-width: 62px;
+  min-height: 32px;
+  padding: 5px 8px;
+
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* =====================================================
+   ETAT VIDE
+===================================================== */
+
+.empty-state {
+
+  padding: 35px !important;
+  text-align: center !important;
+  color: var(--color-text-muted);
+
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width:1100px){
+
+  .paiement-page{
+    padding:24px;
+  }
+
+  .paiement-toolbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+}
+
+@media (max-width:760px){
+
+  .paiement-page{
+    padding:18px;
+  }
+
+  .paiement-header{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .paiement-header .btn{
+    width:100%;
+  }
+
+  .paiement-form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-actions{
+    flex-direction:column-reverse;
+  }
+
+  .form-actions .btn{
+    width:100%;
+  }
+
+  .search-group{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .search-group .btn,
+  .search-input{
+    width:100%;
+  }
+
 }

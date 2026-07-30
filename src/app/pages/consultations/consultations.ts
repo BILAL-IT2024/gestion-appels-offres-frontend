@@ -1,13 +1,12 @@
 import {
-  AfterViewInit,
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    OnInit,
-    ViewChild
+  ChangeDetectorRef,
+  Component,
+  OnInit
 } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
+
+import { DecimalPipe } from '@angular/common';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 
@@ -21,8 +20,7 @@ import {
   ClientService
 } from '../../services/client';
 
-import { ToastService
-  } from '../../services/toast';
+import { ToastService } from '../../services/toast';
 
 import {
   ConfirmDialogService
@@ -33,15 +31,17 @@ import {
   standalone: true,
   imports: [
     SidebarComponent,
-    FormsModule
+    FormsModule,
+    DecimalPipe
   ],
   templateUrl: './consultations.html',
   styleUrl: './consultations.css'
 })
-export class Consultations implements OnInit, AfterViewInit {
 
-  @ViewChild('tableContainer')
-  tableContainer?: ElementRef<HTMLDivElement>;
+export class Consultations implements OnInit {
+
+    @ViewChild('tableWrapper')
+    tableWrapper?: ElementRef<HTMLDivElement>;
 
   showForm = false;
   modeEdition = false;
@@ -67,19 +67,6 @@ export class Consultations implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.chargerConsultations();
     this.chargerClients();
-  }
-
-  private creerConsultationVide(): Consultation {
-    return {
-      reference: '',
-      objet: '',
-      dateReception: '',
-      montantPropose: 0,
-      statut: 'EN_COURS',
-      client: {
-        id: 0
-      }
-    };
   }
 
   chargerConsultations(): void {
@@ -133,6 +120,12 @@ export class Consultations implements OnInit, AfterViewInit {
       this.creerConsultationVide();
 
     this.showForm = true;
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+
   }
 
   enregistrerConsultation(): void {
@@ -425,12 +418,27 @@ export class Consultations implements OnInit, AfterViewInit {
       });
   }
 
-ngAfterViewInit(): void {
-  setTimeout(() => {
-    if (this.tableContainer) {
-      this.tableContainer.nativeElement.scrollLeft = 0;
+private creerConsultationVide(): Consultation {
+
+  return {
+    reference: '',
+    objet: '',
+    dateReception: '',
+    montantPropose: 0,
+    statut: 'EN_COURS',
+    client: {
+      id: 0
     }
-  });
+  };
+
 }
+
+  private remettreTableauAuDebut(): void {
+    setTimeout(() => {
+      if (this.tableWrapper) {
+        this.tableWrapper.nativeElement.scrollLeft = 0;
+      }
+    });
+  }
 
 }

@@ -1,116 +1,371 @@
-<div style="display:flex;">
+<div class="page-layout">
 
   <app-sidebar></app-sidebar>
 
-  <div class="content">
+  <main class="commande-page">
 
-    <h1>Gestion des Commandes</h1>
+    <header class="commande-header">
 
-    <br>
+      <div>
+        <h1>Gestion des Commandes</h1>
 
-    <input
-      type="text"
-      placeholder="Rechercher par numéro..."
-      [(ngModel)]="keyword"
-    >
+        <p>
+          Suivez les commandes, leurs montants, leurs marchés et leurs statuts
+        </p>
+      </div>
 
-    <button (click)="rechercherCommandes()">
-      Rechercher
-    </button>
-
-    <button (click)="reinitialiserRecherche()">
-      Réinitialiser
-    </button>
-
-    <br><br>
-
-    <button (click)="ouvrirFormulaire()">
-      + Nouvelle Commande
-    </button>
-
-    <button (click)="exporterExcel()">
-      Exporter Excel
-    </button>
-
-    @if (showForm) {
-    <div style="margin-top:20px; padding:20px; border:1px solid #ccc;">
-
-      <h3>Nouvelle Commande</h3>
-
-      <input type="text" placeholder="N° Commande" [(ngModel)]="nouvelleCommande.numeroCommande">
-      <br><br>
-
-      <input type="date" [(ngModel)]="nouvelleCommande.dateCommande">
-      <br><br>
-
-      <input type="number" placeholder="Montant commande" [(ngModel)]="nouvelleCommande.montantCommande">
-      <br><br>
-
-      <select [(ngModel)]="nouvelleCommande.statut">
-        <option value="EN_COURS">EN_COURS</option>
-        <option value="LIVREE">LIVREE</option>
-        <option value="ANNULEE">ANNULEE</option>
-      </select>
-      <br><br>
-
-      <select [(ngModel)]="nouvelleCommande.marche.id">
-        <option [ngValue]="0">-- Choisir un marché --</option>
-
-        @for (marche of marches; track marche.id) {
-        <option [ngValue]="marche.id">
-          {{ marche.numeroMarche }}
-        </option>
-        }
-      </select>
-      <br><br>
-
-      <button (click)="enregistrerCommande()">
-        Enregistrer
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="ouvrirFormulaire()"
+      >
+        + Nouvelle commande
       </button>
 
-    </div>
+    </header>
+
+    <section class="commande-toolbar">
+
+      <div class="search-group">
+
+        <input
+          type="text"
+          class="form-control search-input"
+          placeholder="Rechercher par numéro..."
+          [(ngModel)]="keyword"
+          (keyup.enter)="rechercherCommandes()"
+        >
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="rechercherCommandes()"
+        >
+          Rechercher
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="reinitialiserRecherche()"
+        >
+          Réinitialiser
+        </button>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="exporterExcel()"
+      >
+        Exporter Excel
+      </button>
+
+    </section>
+
+    @if (showForm) {
+
+    <section class="commande-form-card">
+
+      <div class="form-card-header">
+
+        <div>
+          <h2>
+            {{
+            modeEdition
+            ? 'Modifier la commande'
+            : 'Nouvelle commande'
+            }}
+          </h2>
+
+          <p>
+            Renseignez les informations principales de la commande
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="form-close-button"
+          aria-label="Fermer le formulaire"
+          (click)="showForm = false"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="commande-form-grid">
+
+        <div class="form-group">
+
+          <label for="numeroCommande">
+            Numéro de commande
+          </label>
+
+          <input
+            id="numeroCommande"
+            type="text"
+            class="form-control"
+            placeholder="Ex. CMD-2026-001"
+            [(ngModel)]="nouvelleCommande.numeroCommande"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="marche">
+            Marché associé
+          </label>
+
+          <select
+            id="marche"
+            class="form-control"
+            [(ngModel)]="nouvelleCommande.marche.id"
+          >
+            <option [ngValue]="0">
+              -- Choisir un marché --
+            </option>
+
+            @for (marche of marches; track marche.id) {
+
+            <option [ngValue]="marche.id">
+              {{ marche.numeroMarche }}
+            </option>
+
+            }
+          </select>
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="dateCommande">
+            Date de commande
+          </label>
+
+          <input
+            id="dateCommande"
+            type="date"
+            class="form-control"
+            [(ngModel)]="nouvelleCommande.dateCommande"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="montantCommande">
+            Montant de la commande
+          </label>
+
+          <input
+            id="montantCommande"
+            type="number"
+            min="0"
+            class="form-control"
+            placeholder="Montant en DH"
+            [(ngModel)]="nouvelleCommande.montantCommande"
+          >
+
+        </div>
+
+        <div class="form-group form-group-wide">
+
+          <label for="statut">
+            Statut
+          </label>
+
+          <select
+            id="statut"
+            class="form-control"
+            [(ngModel)]="nouvelleCommande.statut"
+          >
+            <option value="EN_COURS">
+              En cours
+            </option>
+
+            <option value="LIVREE">
+              Livrée
+            </option>
+
+            <option value="ANNULEE">
+              Annulée
+            </option>
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="showForm = false"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="enregistrerCommande()"
+        >
+          {{
+          modeEdition
+          ? 'Enregistrer les modifications'
+          : 'Enregistrer la commande'
+          }}
+        </button>
+
+      </div>
+
+    </section>
+
     }
 
-    <table class="commande-table">
+    <section class="commande-table-card">
 
-      <tr>
-        <th>N° Commande</th>
-        <th>Marché</th>
-        <th>Date Commande</th>
-        <th>Montant</th>
-        <th>Statut</th>
-        <th>Actions</th>
-      </tr>
+      <div class="table-card-header">
 
-      @for (commande of commandes; track commande.id) {
-      <tr>
-        <td>{{ commande.numeroCommande }}</td>
-        <td>{{ commande.marche?.numeroMarche }}</td>
-        <td>{{ commande.dateCommande }}</td>
-        <td>{{ commande.montantCommande }}</td>
-        <td>{{ commande.statut }}</td>
+        <div>
+          <h2>Liste des commandes</h2>
 
-        <td>
+          <p>
+            {{ commandes.length }} commande(s) affichée(s)
+          </p>
+        </div>
 
-          <button (click)="modifierCommande(commande)">
-            Modifier
-          </button>
+      </div>
 
-          <button (click)="supprimerCommande(commande.id)">
-            Supprimer
-          </button>
+      <div class="commande-table-wrapper">
 
-          <button (click)="exporterPdf(commande.id)">
-            PDF
-          </button>
+        <table class="commande-table">
 
-        </td>
+          <thead>
 
-      </tr>
-      }
+          <tr>
+            <th>N° commande</th>
+            <th>Marché</th>
+            <th>Date commande</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
 
-    </table>
+          </thead>
 
-  </div>
+          <tbody>
+
+          @for (commande of commandes; track commande.id) {
+
+          <tr>
+
+            <td>
+              <strong class="commande-reference">
+                {{ commande.numeroCommande }}
+              </strong>
+            </td>
+
+            <td>
+              {{ commande.marche?.numeroMarche || '—' }}
+            </td>
+
+            <td>
+              {{ commande.dateCommande || '—' }}
+            </td>
+
+            <td class="montant-cell">
+              {{ commande.montantCommande | number }} DH
+            </td>
+
+            <td>
+
+                  <span
+                    class="status-badge"
+                    [class.status-warning]="
+                      commande.statut === 'EN_COURS'
+                    "
+                    [class.status-success]="
+                      commande.statut === 'LIVREE'
+                    "
+                    [class.status-danger]="
+                      commande.statut === 'ANNULEE'
+                    "
+                  >
+                    @if (commande.statut === 'EN_COURS') {
+                      En cours
+                    } @else if (commande.statut === 'LIVREE') {
+                      Livrée
+                    } @else if (commande.statut === 'ANNULEE') {
+                      Annulée
+                    } @else {
+                      {{ commande.statut || '—' }}
+                    }
+                  </span>
+
+            </td>
+
+            <td>
+
+              <div class="commande-actions">
+
+                <button
+                  type="button"
+                  class="btn btn-light action-button"
+                  (click)="modifierCommande(commande)"
+                >
+                  Modifier
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-danger action-button"
+                  (click)="supprimerCommande(commande.id)"
+                >
+                  Supprimer
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary action-button"
+                  (click)="exporterPdf(commande.id)"
+                >
+                  PDF
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+          } @empty {
+
+          <tr>
+
+            <td
+              colspan="6"
+              class="empty-state"
+            >
+              Aucune commande disponible.
+            </td>
+
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
 
 </div>

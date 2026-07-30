@@ -200,14 +200,101 @@
   margin-top: 0;
   overflow-x: auto;
   box-shadow: none;
+
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #e2e8f0;
+}
+
+.clients-table-card .table-container::-webkit-scrollbar {
+  height: 9px;
+}
+
+.clients-table-card .table-container::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+
+.clients-table-card .table-container::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 10px;
 }
 
 .client-table {
-  min-width: 980px;
+  width: 100%;
+  min-width: 1100px;
+  border-collapse: collapse;
+  table-layout: auto;
 }
+
+.client-table th,
+.client-table td {
+  white-space: nowrap;
+}
+
+/* Alignement du tableau */
+.client-table th {
+  text-align: center;
+}
+
+.client-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Nom du client à gauche */
+.client-table th:nth-child(1),
+.client-table td:nth-child(1) {
+  text-align: left;
+}
+
+/* Adresse à gauche */
+.client-table th:nth-child(2),
+.client-table td:nth-child(2) {
+  text-align: left;
+}
+
+/* Largeurs des colonnes */
+.client-table th:nth-child(1),
+.client-table td:nth-child(1) {
+  min-width: 220px;
+}
+
+.client-table th:nth-child(2),
+.client-table td:nth-child(2) {
+  min-width: 260px;
+  white-space: normal;
+}
+
+.client-table th:nth-child(3),
+.client-table td:nth-child(3) {
+  min-width: 160px;
+}
+
+.client-table th:nth-child(4),
+.client-table td:nth-child(4) {
+  min-width: 220px;
+}
+
+.client-table th:nth-child(5),
+.client-table td:nth-child(5) {
+  min-width: 120px;
+}
+
+.client-table th:nth-child(6),
+.client-table td:nth-child(6) {
+  min-width: 280px;
+}
+
 
 .client-name {
   color: var(--color-primary-dark);
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;
 }
 
 .action-button {
@@ -307,3 +394,4 @@
     padding: 16px;
   }
 }
+

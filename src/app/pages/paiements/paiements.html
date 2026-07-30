@@ -1,142 +1,410 @@
-<div style="display:flex;">
+<div class="page-layout">
 
   <app-sidebar></app-sidebar>
 
-  <div class="content">
+  <main class="paiement-page">
 
-    <h1>Gestion des Paiements</h1>
+    <header class="paiement-header">
 
-    <br>
+      <div>
+        <h1>Gestion des Paiements</h1>
 
-    <input
-      type="text"
-      placeholder="Rechercher par référence..."
-      [(ngModel)]="keyword"
-    >
-
-    <button (click)="rechercherPaiements()">
-      Rechercher
-    </button>
-
-    <button (click)="reinitialiserRecherche()">
-      Réinitialiser
-    </button>
-
-    <br><br>
-
-    <button (click)="ouvrirFormulaire()">
-      + Nouveau Paiement
-    </button>
-
-    <button (click)="exporterExcel()">
-      Exporter Excel
-    </button>
-
-    @if (showForm) {
-    <div style="margin-top:20px; padding:20px; border:1px solid #ccc;">
-
-      <h3>
-        {{ modeEdition ? 'Modifier le Paiement' : 'Nouveau Paiement' }}
-      </h3>
-
-      <input type="date" [(ngModel)]="nouveauPaiement.datePaiement">
-
-      <br><br>
-
-      <input type="number" placeholder="Montant paiement" [(ngModel)]="nouveauPaiement.montantPaiement">
-      <br><br>
-
-      <select [(ngModel)]="nouveauPaiement.modePaiement">
-        <option value="VIREMENT">VIREMENT</option>
-        <option value="CHEQUE">CHEQUE</option>
-        <option value="ESPECES">ESPECES</option>
-      </select>
-
-      <br><br>
-
-      <select [(ngModel)]="nouveauPaiement.statut">
-        <option value="EN_ATTENTE">EN_ATTENTE</option>
-        <option value="VALIDE">VALIDE</option>
-        <option value="ANNULE">ANNULE</option>
-      </select>
-
-      <br><br>
-
-      <input type="text" placeholder="Référence paiement" [(ngModel)]="nouveauPaiement.referencePaiement">
-      <br><br>
-
-      <select [(ngModel)]="nouveauPaiement.commande.id">
-        <option [ngValue]="0">-- Choisir une commande --</option>
-
-        @for (commande of commandes; track commande.id) {
-        <option [ngValue]="commande.id">
-          {{ commande.numeroCommande }}
-        </option>
-        }
-      </select>
-
-      <br><br>
-
-      <button (click)="enregistrerPaiement()">
-
-        {{ modeEdition
-        ? 'Enregistrer les modifications'
-        : 'Enregistrer'
-        }}
-
-      </button>
+        <p>
+          Suivez les paiements, leurs montants, leurs modes et leurs statuts
+        </p>
+      </div>
 
       <button
         type="button"
-        (click)="showForm = false">
-
-        Annuler
-
+        class="btn btn-primary"
+        (click)="ouvrirFormulaire()"
+      >
+        + Nouveau paiement
       </button>
 
-    </div>
+    </header>
+
+    <section class="paiement-toolbar">
+
+      <div class="search-group">
+
+        <input
+          type="text"
+          class="form-control search-input"
+          placeholder="Rechercher par référence..."
+          [(ngModel)]="keyword"
+          (keyup.enter)="rechercherPaiements()"
+        >
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="rechercherPaiements()"
+        >
+          Rechercher
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="reinitialiserRecherche()"
+        >
+          Réinitialiser
+        </button>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="exporterExcel()"
+      >
+        Exporter Excel
+      </button>
+
+    </section>
+
+    @if (showForm) {
+
+    <section class="paiement-form-card">
+
+      <div class="form-card-header">
+
+        <div>
+          <h2>
+            {{
+            modeEdition
+            ? 'Modifier le paiement'
+            : 'Nouveau paiement'
+            }}
+          </h2>
+
+          <p>
+            Renseignez les informations principales du paiement
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="form-close-button"
+          aria-label="Fermer le formulaire"
+          (click)="showForm = false"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="paiement-form-grid">
+
+        <div class="form-group">
+
+          <label for="referencePaiement">
+            Référence du paiement
+          </label>
+
+          <input
+            id="referencePaiement"
+            type="text"
+            class="form-control"
+            placeholder="Ex. PAY-2026-001"
+            [(ngModel)]="nouveauPaiement.referencePaiement"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="commande">
+            Commande associée
+          </label>
+
+          <select
+            id="commande"
+            class="form-control"
+            [(ngModel)]="nouveauPaiement.commande.id"
+          >
+            <option [ngValue]="0">
+              -- Choisir une commande --
+            </option>
+
+            @for (commande of commandes; track commande.id) {
+
+            <option [ngValue]="commande.id">
+              {{ commande.numeroCommande }}
+            </option>
+
+            }
+          </select>
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="datePaiement">
+            Date du paiement
+          </label>
+
+          <input
+            id="datePaiement"
+            type="date"
+            class="form-control"
+            [(ngModel)]="nouveauPaiement.datePaiement"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="montantPaiement">
+            Montant du paiement
+          </label>
+
+          <input
+            id="montantPaiement"
+            type="number"
+            min="0"
+            class="form-control"
+            placeholder="Montant en DH"
+            [(ngModel)]="nouveauPaiement.montantPaiement"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="modePaiement">
+            Mode de paiement
+          </label>
+
+          <select
+            id="modePaiement"
+            class="form-control"
+            [(ngModel)]="nouveauPaiement.modePaiement"
+          >
+            <option value="VIREMENT">
+              Virement
+            </option>
+
+            <option value="CHEQUE">
+              Chèque
+            </option>
+
+            <option value="ESPECES">
+              Espèces
+            </option>
+          </select>
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="statut">
+            Statut
+          </label>
+
+          <select
+            id="statut"
+            class="form-control"
+            [(ngModel)]="nouveauPaiement.statut"
+          >
+            <option value="EN_ATTENTE">
+              En attente
+            </option>
+
+            <option value="VALIDE">
+              Validé
+            </option>
+
+            <option value="ANNULE">
+              Annulé
+            </option>
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="showForm = false"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="enregistrerPaiement()"
+        >
+          {{
+          modeEdition
+          ? 'Enregistrer les modifications'
+          : 'Enregistrer le paiement'
+          }}
+        </button>
+
+      </div>
+
+    </section>
+
     }
 
-    <table class="paiement-table">
+    <section class="paiement-table-card">
 
-      <tr>
-        <th>Date</th>
-        <th>Montant</th>
-        <th>Mode</th>
-        <th>Statut</th>
-        <th>Référence</th>
-        <th>Commande</th>
-        <th>Actions</th>
-      </tr>
+      <div class="table-card-header">
 
-      @for (paiement of paiements; track paiement.id) {
-      <tr>
-        <td>{{ paiement.datePaiement }}</td>
-        <td>{{ paiement.montantPaiement }}</td>
-        <td>{{ paiement.modePaiement }}</td>
-        <td>{{ paiement.statut }}</td>
-        <td>{{ paiement.referencePaiement }}</td>
-        <td>{{ paiement.commande?.numeroCommande }}</td>
-        <td>
+        <div>
+          <h2>Liste des paiements</h2>
 
-          <button (click)="modifierPaiement(paiement)">
-            Modifier
-          </button>
+          <p>
+            {{ paiements.length }} paiement(s) affiché(s)
+          </p>
+        </div>
 
-          <button (click)="supprimerPaiement(paiement.id)">
-            Supprimer
-          </button>
+      </div>
 
-          <button (click)="exporterPdf(paiement.id)">
-            PDF
-          </button>
+      <div class="paiement-table-wrapper">
 
-        </td>
-      </tr>
-      }
+        <table class="paiement-table">
 
-    </table>
+          <thead>
 
-  </div>
+          <tr>
+            <th>Référence</th>
+            <th>Date</th>
+            <th>Montant</th>
+            <th>Mode</th>
+            <th>Statut</th>
+            <th>Commande</th>
+            <th>Actions</th>
+          </tr>
+
+          </thead>
+
+          <tbody>
+
+          @for (paiement of paiements; track paiement.id) {
+
+          <tr>
+
+            <td>
+              <strong class="paiement-reference">
+                {{ paiement.referencePaiement || '—' }}
+              </strong>
+            </td>
+
+            <td>
+              {{ paiement.datePaiement || '—' }}
+            </td>
+
+            <td class="montant-cell">
+              {{ paiement.montantPaiement | number }} DH
+            </td>
+
+            <td>
+              @if (paiement.modePaiement === 'VIREMENT') {
+              Virement
+              } @else if (paiement.modePaiement === 'CHEQUE') {
+              Chèque
+              } @else if (paiement.modePaiement === 'ESPECES') {
+              Espèces
+              } @else {
+              {{ paiement.modePaiement || '—' }}
+              }
+            </td>
+
+            <td>
+
+                  <span
+                    class="status-badge"
+                    [class.status-warning]="
+                      paiement.statut === 'EN_ATTENTE'
+                    "
+                    [class.status-success]="
+                      paiement.statut === 'VALIDE'
+                    "
+                    [class.status-danger]="
+                      paiement.statut === 'ANNULE'
+                    "
+                  >
+                    @if (paiement.statut === 'EN_ATTENTE') {
+                      En attente
+                    } @else if (paiement.statut === 'VALIDE') {
+                      Validé
+                    } @else if (paiement.statut === 'ANNULE') {
+                      Annulé
+                    } @else {
+                      {{ paiement.statut || '—' }}
+                    }
+                  </span>
+
+            </td>
+
+            <td>
+              {{ paiement.commande?.numeroCommande || '—' }}
+            </td>
+
+            <td>
+
+              <div class="paiement-actions">
+
+                <button
+                  type="button"
+                  class="btn btn-light action-button"
+                  (click)="modifierPaiement(paiement)"
+                >
+                  Modifier
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-danger action-button"
+                  (click)="supprimerPaiement(paiement.id)"
+                >
+                  Supprimer
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary action-button"
+                  (click)="exporterPdf(paiement.id)"
+                >
+                  PDF
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+          } @empty {
+
+          <tr>
+
+            <td
+              colspan="7"
+              class="empty-state"
+            >
+              Aucun paiement disponible.
+            </td>
+
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
 
 </div>

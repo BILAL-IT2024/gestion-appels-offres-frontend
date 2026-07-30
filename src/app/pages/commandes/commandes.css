@@ -1,25 +1,403 @@
-.content {
-  padding: 20px;
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+/* =====================================================
+   PAGE
+===================================================== */
+
+.commande-page {
   flex: 1;
+  min-width: 0;
+  padding: 32px;
+  background: var(--color-bg);
+}
+
+.commande-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.commande-header h1 {
+  margin: 0;
+  color: var(--color-primary-dark);
+  font-size: clamp(32px, 3vw, 44px);
+  line-height: 1.1;
+}
+
+.commande-header p {
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+  font-size: 15px;
+}
+
+/* =====================================================
+   TOOLBAR
+===================================================== */
+
+.commande-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 24px;
+  padding: 18px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.search-group {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 260px;
+  max-width: 520px;
+}
+
+/* =====================================================
+   FORMULAIRE
+===================================================== */
+
+.commande-form-card {
+  margin-bottom: 24px;
+  padding: 24px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+
+  animation: form-enter 0.22s ease;
+}
+
+.form-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.form-card-header h2 {
+  margin: 0;
+  color: var(--color-primary-dark);
+  font-size: 22px;
+}
+
+.form-card-header p {
+  margin: 6px 0 0;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.form-close-button {
+  flex: 0 0 36px;
+  width: 36px;
+  min-height: 36px;
+  padding: 0;
+
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #64748b;
+
+  font-size: 22px;
+  line-height: 1;
+}
+
+.form-close-button:hover {
+  background: #f8fafc;
+  color: var(--color-danger);
+}
+
+.commande-form-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.commande-form-grid .form-group {
+  margin-bottom: 0;
+}
+
+.form-group-wide {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+
+  margin-top: 24px;
+  padding-top: 20px;
+
+  border-top: 1px solid var(--color-border);
+}
+
+/* =====================================================
+   CARTE DU TABLEAU
+===================================================== */
+
+.commande-table-card {
+  min-width: 0;
+  padding: 22px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.table-card-header {
+  margin-bottom: 18px;
+}
+
+.table-card-header h2 {
+  margin: 0;
+  color: var(--color-primary-dark);
+  font-size: 21px;
+}
+
+.table-card-header p {
+  margin: 6px 0 0;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+/* =====================================================
+   TABLEAU
+===================================================== */
+
+.commande-table-wrapper {
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
+
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
 }
 
 .commande-table {
   width: 100%;
-  margin-top: 20px;
   border-collapse: collapse;
-  background: white;
+  table-layout: fixed;
 }
 
 .commande-table th,
 .commande-table td {
-  border: 1px solid #ccc;
-  padding: 10px;
+  padding: 14px 16px;
+
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+
   text-align: left;
-  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.commande-table th:last-child,
+.commande-table td:last-child {
+  border-right: none;
+}
+
+.commande-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .commande-table th {
-  background-color: #0b1f4d;
-  color: white;
+  background: var(--color-primary-dark);
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.commande-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* Largeurs équilibrées */
+
+.commande-table th:nth-child(1),
+.commande-table td:nth-child(1) {
+  width: 17%;
+}
+
+.commande-table th:nth-child(2),
+.commande-table td:nth-child(2) {
+  width: 15%;
+}
+
+.commande-table th:nth-child(3),
+.commande-table td:nth-child(3) {
+  width: 17%;
+}
+
+.commande-table th:nth-child(4),
+.commande-table td:nth-child(4) {
+  width: 17%;
+}
+
+.commande-table th:nth-child(5),
+.commande-table td:nth-child(5) {
+  width: 13%;
+}
+
+.commande-table th:nth-child(6),
+.commande-table td:nth-child(6) {
+  width: 21%;
+}
+
+.commande-reference {
+  color: var(--color-primary-dark);
+}
+
+.montant-cell {
+  white-space: nowrap;
+}
+
+/* =====================================================
+   ACTIONS
+===================================================== */
+
+.commande-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.action-button {
+  flex: 0 0 auto;
+
+  min-width: 62px;
+  min-height: 32px;
+  padding: 5px 8px;
+
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* =====================================================
+   ÉTAT VIDE
+===================================================== */
+
+.empty-state {
+  padding: 34px !important;
+  color: var(--color-text-muted);
+  text-align: center !important;
+}
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+@keyframes form-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1200px) {
+  .commande-table {
+    min-width: 980px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .commande-page {
+    padding: 24px;
+  }
+
+  .commande-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .search-input {
+    max-width: none;
+  }
+
+  .commande-toolbar > .btn {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 760px) {
+  .commande-page {
+    padding: 18px;
+  }
+
+  .commande-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .commande-header > .btn {
+    width: 100%;
+  }
+
+  .commande-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group-wide {
+    grid-column: auto;
+  }
+
+  .form-actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+
+  .search-group {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .search-group .btn,
+  .search-input,
+  .commande-toolbar > .btn {
+    width: 100%;
+  }
+
+  .commande-table-card {
+    padding: 16px;
+  }
 }

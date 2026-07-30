@@ -2,308 +2,397 @@
 
   <app-sidebar></app-sidebar>
 
-  <main class="content">
+  <main class="consultation-page">
 
-    <h1>Gestion des Consultations</h1>
+    <header class="consultation-header">
 
-    <!-- Recherche -->
-    <div class="search-bar">
+      <div>
+        <h1>Gestion des Consultations</h1>
 
-      <input
-        type="text"
-        placeholder="Rechercher par référence..."
-        [(ngModel)]="keyword"
-      >
-
-      <button
-        class="btn-primary"
-        type="button"
-        (click)="rechercherConsultations()"
-      >
-        Rechercher
-      </button>
+        <p>
+          Suivez les consultations, les montants proposés,
+          les clients et les décisions
+        </p>
+      </div>
 
       <button
-        class="btn-secondary"
         type="button"
-        (click)="reinitialiserRecherche()"
-      >
-        Réinitialiser
-      </button>
-
-    </div>
-
-    <!-- Actions principales -->
-    <div class="actions-bar">
-
-      <button
-        class="btn-success"
-        type="button"
+        class="btn btn-primary"
         (click)="ouvrirFormulaire()"
       >
-        + Nouvelle Consultation
+        + Nouvelle consultation
       </button>
 
+    </header>
+
+    <section class="consultation-toolbar">
+
+      <div class="search-group">
+
+        <input
+          type="text"
+          class="form-control search-input"
+          placeholder="Rechercher par référence..."
+          [(ngModel)]="keyword"
+          (keyup.enter)="rechercherConsultations()"
+        >
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="rechercherConsultations()"
+        >
+          Rechercher
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="reinitialiserRecherche()"
+        >
+          Réinitialiser
+        </button>
+
+      </div>
+
       <button
-        class="btn-light"
         type="button"
+        class="btn btn-success"
         (click)="exporterExcel()"
       >
         Exporter Excel
       </button>
 
-    </div>
+    </section>
 
-    <!-- Formulaire -->
     @if (showForm) {
 
-    <div class="form-card">
+    <section class="consultation-form-card">
 
-      <h3>
-        {{ modeEdition
-        ? 'Modifier la consultation'
-        : 'Nouvelle consultation'
-        }}
-      </h3>
+      <div class="form-card-header">
 
-      <div class="form-group">
-        <label for="reference">Référence</label>
+        <div>
+          <h2>
+            {{
+            modeEdition
+            ? 'Modifier la consultation'
+            : 'Nouvelle consultation'
+            }}
+          </h2>
 
-        <input
-          id="reference"
-          type="text"
-          placeholder="Référence"
-          [(ngModel)]="nouvelleConsultation.reference"
-        >
-      </div>
-
-      <div class="form-group">
-        <label for="objet">Objet</label>
-
-        <input
-          id="objet"
-          type="text"
-          placeholder="Objet"
-          [(ngModel)]="nouvelleConsultation.objet"
-        >
-      </div>
-
-      <div class="form-group">
-        <label for="dateReception">Date de réception</label>
-
-        <input
-          id="dateReception"
-          type="date"
-          [(ngModel)]="nouvelleConsultation.dateReception"
-        >
-      </div>
-
-      <div class="form-group">
-        <label for="montantPropose">Montant proposé</label>
-
-        <input
-          id="montantPropose"
-          type="number"
-          placeholder="Montant proposé"
-          [(ngModel)]="nouvelleConsultation.montantPropose"
-        >
-      </div>
-
-      <div class="form-group">
-        <label for="statut">Statut</label>
-
-        <select
-          id="statut"
-          [(ngModel)]="nouvelleConsultation.statut"
-        >
-          <option value="EN_COURS">EN_COURS</option>
-          <option value="RETENUE">RETENUE</option>
-          <option value="REFUSEE">REFUSEE</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="client">Client</label>
-
-        <select
-          id="client"
-          [(ngModel)]="nouvelleConsultation.client.id"
-        >
-
-          <option [ngValue]="0">
-            -- Choisir un client --
-          </option>
-
-          @for (client of clients; track client.id) {
-
-          <option [ngValue]="client.id">
-            {{ client.raisonSociale }}
-          </option>
-
-          }
-
-        </select>
-      </div>
-
-      <div class="actions-bar">
+          <p>
+            Renseignez les informations principales de la consultation
+          </p>
+        </div>
 
         <button
-          class="btn-success"
           type="button"
-          (click)="enregistrerConsultation()"
+          class="form-close-button"
+          aria-label="Fermer le formulaire"
+          (click)="showForm = false"
         >
-          {{
-          modeEdition
-          ? 'Enregistrer les modifications'
-          : 'Enregistrer'
-          }}
+          ×
         </button>
 
+      </div>
+
+      <div class="consultation-form-grid">
+
+        <div class="form-group">
+
+          <label for="reference">
+            Référence
+          </label>
+
+          <input
+            id="reference"
+            type="text"
+            class="form-control"
+            placeholder="Ex. CONS-2026-001"
+            [(ngModel)]="nouvelleConsultation.reference"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="client">
+            Client
+          </label>
+
+          <select
+            id="client"
+            class="form-control"
+            [(ngModel)]="nouvelleConsultation.client.id"
+          >
+            <option [ngValue]="0">
+              -- Choisir un client --
+            </option>
+
+            @for (client of clients; track client.id) {
+
+            <option [ngValue]="client.id">
+              {{ client.raisonSociale }}
+            </option>
+
+            }
+          </select>
+
+        </div>
+
+        <div class="form-group form-group-wide">
+
+          <label for="objet">
+            Objet
+          </label>
+
+          <input
+            id="objet"
+            type="text"
+            class="form-control"
+            placeholder="Objet de la consultation"
+            [(ngModel)]="nouvelleConsultation.objet"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="dateReception">
+            Date de réception
+          </label>
+
+          <input
+            id="dateReception"
+            type="date"
+            class="form-control"
+            [(ngModel)]="nouvelleConsultation.dateReception"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="montantPropose">
+            Montant proposé
+          </label>
+
+          <input
+            id="montantPropose"
+            type="number"
+            min="0"
+            class="form-control"
+            placeholder="Montant en DH"
+            [(ngModel)]="nouvelleConsultation.montantPropose"
+          >
+
+        </div>
+
+        <div class="form-group form-group-wide">
+
+          <label for="statut">
+            Statut
+          </label>
+
+          <select
+            id="statut"
+            class="form-control"
+            [(ngModel)]="nouvelleConsultation.statut"
+          >
+            <option value="EN_COURS">
+              En cours
+            </option>
+
+            <option value="RETENUE">
+              Retenue
+            </option>
+
+            <option value="REFUSEE">
+              Refusée
+            </option>
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+
         <button
-          class="btn-secondary"
           type="button"
+          class="btn btn-outline"
           (click)="showForm = false"
         >
           Annuler
         </button>
 
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="enregistrerConsultation()"
+        >
+          {{
+          modeEdition
+          ? 'Enregistrer les modifications'
+          : 'Enregistrer la consultation'
+          }}
+        </button>
+
       </div>
 
-    </div>
+    </section>
 
     }
 
-    <!-- Tableau -->
-    <div class="table-container" #tableContainer>
+    <section class="consultation-table-card">
 
-      <table class="consultation-table">
+      <div class="table-card-header">
 
-        <thead>
+        <div>
+          <h2>Liste des consultations</h2>
 
-        <tr>
-          <th>Référence</th>
-          <th>Objet</th>
-          <th>Date réception</th>
-          <th>Montant proposé</th>
-          <th>Statut</th>
-          <th>Client</th>
-          <th>Actions</th>
-        </tr>
+          <p>
+            {{ consultations.length }} consultation(s) affichée(s)
+          </p>
+        </div>
 
-        </thead>
+      </div>
 
-        <tbody>
+      <div class="consultation-table-wrapper">
 
-        @for (
-        consultation of consultations;
-        track consultation.id
-        ) {
+        <table class="consultation-table">
 
-        <tr>
+          <thead>
 
-          <td>
-            {{ consultation.reference }}
-          </td>
+          <tr>
+            <th>Référence</th>
+            <th>Objet</th>
+            <th>Date réception</th>
+            <th>Montant proposé</th>
+            <th>Statut</th>
+            <th>Client</th>
+            <th>Actions</th>
+          </tr>
 
-          <td>
-            {{ consultation.objet }}
-          </td>
+          </thead>
 
-          <td>
-            {{ consultation.dateReception }}
-          </td>
+          <tbody>
 
-          <td>
-            {{ consultation.montantPropose }} DH
-          </td>
+          @for (
+          consultation of consultations;
+          track consultation.id
+          ) {
 
-          <td>
+          <tr>
 
-            @if (consultation.statut === 'RETENUE') {
+            <td>
+              <strong class="consultation-reference">
+                {{ consultation.reference }}
+              </strong>
+            </td>
 
-            <span class="status-badge status-success">
-                    RETENUE
+            <td>
+              {{ consultation.objet || '—' }}
+            </td>
+
+            <td>
+              {{ consultation.dateReception || '—' }}
+            </td>
+
+            <td class="montant-cell">
+              {{ consultation.montantPropose | number }} DH
+            </td>
+
+            <td>
+
+                  <span
+                    class="status-badge"
+                    [class.status-warning]="
+                      consultation.statut === 'EN_COURS'
+                    "
+                    [class.status-success]="
+                      consultation.statut === 'RETENUE'
+                    "
+                    [class.status-danger]="
+                      consultation.statut === 'REFUSEE'
+                    "
+                  >
+                    @if (consultation.statut === 'EN_COURS') {
+                      En cours
+                    } @else if (consultation.statut === 'RETENUE') {
+                      Retenue
+                    } @else if (consultation.statut === 'REFUSEE') {
+                      Refusée
+                    } @else {
+                      {{ consultation.statut || '—' }}
+                    }
                   </span>
 
-            } @else if (
-            consultation.statut === 'EN_COURS'
-            ) {
+            </td>
 
-            <span class="status-badge status-warning">
-                    EN_COURS
-                  </span>
+            <td>
+              {{
+              consultation.client?.raisonSociale
+              || '—'
+              }}
+            </td>
 
-            } @else if (
-            consultation.statut === 'REFUSEE'
-            ) {
+            <td>
 
-            <span class="status-badge status-danger">
-                    REFUSEE
-                  </span>
+              <div class="consultation-actions">
 
-            } @else {
+                <button
+                  type="button"
+                  class="btn btn-light action-button"
+                  (click)="modifierConsultation(consultation)"
+                >
+                  Modifier
+                </button>
 
-            <span class="status-badge status-neutral">
-                    {{ consultation.statut }}
-                  </span>
+                <button
+                  type="button"
+                  class="btn btn-danger action-button"
+                  (click)="supprimerConsultation(consultation.id)"
+                >
+                  Supprimer
+                </button>
 
-            }
+                <button
+                  type="button"
+                  class="btn btn-secondary action-button"
+                  (click)="exporterPdf(consultation.id)"
+                >
+                  PDF
+                </button>
 
-          </td>
+              </div>
 
-          <td>
-            {{ consultation.client?.raisonSociale }}
-          </td>
+            </td>
 
-          <td>
+          </tr>
 
-            <div class="table-actions">
+          } @empty {
 
-              <button
-                class="btn-primary"
-                type="button"
-                (click)="modifierConsultation(consultation)"
-              >
-                Modifier
-              </button>
+          <tr>
 
-              <button
-                class="btn-danger"
-                type="button"
-                (click)="supprimerConsultation(consultation.id)"
-              >
-                Supprimer
-              </button>
+            <td
+              colspan="7"
+              class="empty-state"
+            >
+              Aucune consultation trouvée.
+            </td>
 
-              <button
-                class="btn-light"
-                type="button"
-                (click)="exporterPdf(consultation.id)"
-              >
-                PDF
-              </button>
+          </tr>
 
-            </div>
+          }
 
-          </td>
+          </tbody>
 
-        </tr>
+        </table>
 
-        } @empty {
+      </div>
 
-        <tr>
-          <td colspan="7" style="text-align: center;">
-            Aucune consultation trouvée.
-          </td>
-        </tr>
-
-        }
-
-        </tbody>
-
-      </table>
-
-    </div>
+    </section>
 
   </main>
 

@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Commande, CommandeService } from '../../services/commande';
@@ -10,7 +11,7 @@ import { ConfirmDialogService } from '../../services/confirm-dialog';
 @Component({
   selector: 'app-commandes',
   standalone: true,
-  imports: [SidebarComponent, FormsModule],
+  imports: [SidebarComponent, FormsModule, DecimalPipe],
   templateUrl: './commandes.html',
   styleUrl: './commandes.css',
 })
@@ -39,7 +40,7 @@ export class Commandes implements OnInit {
     private marcheService: MarcheService,
     private cd: ChangeDetectorRef,
     private toastService: ToastService,
-     private confirmDialogService: ConfirmDialogService
+    private confirmDialogService: ConfirmDialogService
   ) {}
 
   ngOnInit(): void {
