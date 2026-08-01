@@ -138,8 +138,8 @@
 }
 
 .notification-card:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(15, 31, 77, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(15, 31, 77, 0.1);
 }
 
 .notification-danger {
@@ -382,13 +382,4 @@
     width: 100%;
     justify-content: space-between;
   }
-}
-
-.notification-card {
-  transition: all 0.25s ease;
-}
-
-.notification-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(0,0,0,.10);
 }

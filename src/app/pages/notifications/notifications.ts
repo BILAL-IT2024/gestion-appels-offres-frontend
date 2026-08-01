@@ -34,6 +34,7 @@ export class Notifications implements OnInit {
   paiementsEnAttente: any[] = [];
 
   chargement = true;
+  private requetesTerminees = 0;
 
   constructor(
     private dashboardService: DashboardService,
@@ -48,6 +49,7 @@ export class Notifications implements OnInit {
   chargerNotifications(): void {
 
     this.chargement = true;
+    this.requetesTerminees = 0;
 
     this.dashboardService
       .getAlertesAppelsOffres()
@@ -94,8 +96,13 @@ export class Notifications implements OnInit {
 
   private verifierFinChargement(): void {
 
-    this.chargement = false;
+    this.requetesTerminees++;
 
+    if (this.requetesTerminees < 2) {
+      return;
+    }
+
+    this.chargement = false;
     this.cd.detectChanges();
   }
 

@@ -40,9 +40,6 @@ import {
 
 export class Consultations implements OnInit {
 
-    @ViewChild('tableWrapper')
-    tableWrapper?: ElementRef<HTMLDivElement>;
-
   showForm = false;
   modeEdition = false;
 
@@ -432,13 +429,5 @@ private creerConsultationVide(): Consultation {
   };
 
 }
-
-  private remettreTableauAuDebut(): void {
-    setTimeout(() => {
-      if (this.tableWrapper) {
-        this.tableWrapper.nativeElement.scrollLeft = 0;
-      }
-    });
-  }
 
 }
