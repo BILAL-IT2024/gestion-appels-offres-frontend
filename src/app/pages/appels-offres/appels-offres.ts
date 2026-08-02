@@ -40,6 +40,7 @@ export class AppelsOffresComponent implements OnInit {
     dateLimite: '',
     montantEstime: 0,
     statut: 'EN_COURS',
+    das: '',
     client: {
       id: 0
     }
@@ -70,6 +71,7 @@ export class AppelsOffresComponent implements OnInit {
       dateLimite: '',
       montantEstime: 0,
       statut: 'EN_COURS',
+      das: '',
       client: {
         id: 0
       }
@@ -246,6 +248,7 @@ export class AppelsOffresComponent implements OnInit {
       dateLimite: ao.dateLimite,
       montantEstime: ao.montantEstime,
       statut: ao.statut,
+      das: ao.das ?? '',
       client: {
         id: Number(
           ao.client?.id ??

@@ -200,10 +200,27 @@
   margin-top: 0;
 
   overflow-x: auto;
+  overflow-y: hidden;
 
   border-radius: 14px;
 
   box-shadow: none;
+
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #e2e8f0;
+}
+
+.ao-table-card .table-container::-webkit-scrollbar {
+  height: 9px;
+}
+
+.ao-table-card .table-container::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+
+.ao-table-card .table-container::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 10px;
 }
 
 /* =====================================================
@@ -212,71 +229,83 @@
 
 .ao-table {
   width: 100%;
-  min-width: 1050px;
-  table-layout: fixed;
+  min-width: 1380px;
+  table-layout: auto;
+  border-collapse: collapse;
 }
 
 .ao-table th,
 .ao-table td {
-  overflow: hidden;
-  text-overflow: ellipsis;
   vertical-align: middle;
-}
-
-.ao-table th {
   white-space: nowrap;
 }
 
-.ao-table td:nth-child(1) {
-  white-space: nowrap;
-}
-
-.ao-table td:nth-child(2) {
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.ao-table td:nth-child(3),
-.ao-table td:nth-child(4),
-.ao-table td:nth-child(5),
-.ao-table td:nth-child(6) {
-  white-space: nowrap;
-}
+/* Référence */
 
 .ao-table th:nth-child(1),
 .ao-table td:nth-child(1) {
-  width: 14%;
+  width: 145px;
+  min-width: 145px;
 }
+
+/* Objet */
 
 .ao-table th:nth-child(2),
 .ao-table td:nth-child(2) {
-  width: 24%;
+  width: 270px;
+  min-width: 270px;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
+
+/* Client */
 
 .ao-table th:nth-child(3),
 .ao-table td:nth-child(3) {
-  width: 15%;
+  width: 170px;
+  min-width: 170px;
 }
+
+/* DAS */
 
 .ao-table th:nth-child(4),
 .ao-table td:nth-child(4) {
-  width: 14%;
+  width: 145px;
+  min-width: 145px;
+  text-align: center;
 }
+
+/* Montant */
 
 .ao-table th:nth-child(5),
 .ao-table td:nth-child(5) {
-  width: 13%;
+  width: 165px;
+  min-width: 165px;
 }
+
+/* Date limite */
 
 .ao-table th:nth-child(6),
 .ao-table td:nth-child(6) {
-  width: 10%;
+  width: 140px;
+  min-width: 140px;
 }
+
+/* Statut */
 
 .ao-table th:nth-child(7),
 .ao-table td:nth-child(7) {
-  width: 220px;
-  min-width: 220px;
+  width: 125px;
+  min-width: 125px;
+  text-align: center;
+}
+
+/* Actions */
+
+.ao-table th:nth-child(8),
+.ao-table td:nth-child(8) {
+  width: 240px;
+  min-width: 240px;
 }
 
 .ao-reference {
@@ -290,12 +319,13 @@
 .ao-table .table-actions {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: nowrap;
   gap: 7px;
 }
 
 .action-button {
+  flex-shrink: 0;
   min-width: 64px;
   min-height: 34px;
   padding: 6px 9px;
@@ -399,3 +429,5 @@
     padding: 16px;
   }
 }
+
+

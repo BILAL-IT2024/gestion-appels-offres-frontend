@@ -3,16 +3,29 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Marche {
+
   id?: number;
+
   numeroMarche: string;
+
   dateDebut: string;
+
   dateFin: string;
+
   montantMarche: number;
+
   tauxExecution: number;
+
   statut: string;
+
+  das: string;
+
   appelDoffres: {
     id: number;
+    reference?: string;
+    das?: string;
   };
+
 }
 
 @Injectable({

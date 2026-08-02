@@ -200,10 +200,27 @@
   margin-top: 0;
 
   overflow-x: auto;
+  overflow-y: hidden;
 
   border-radius: 14px;
 
   box-shadow: none;
+
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #e2e8f0;
+}
+
+.marches-table-card .table-container::-webkit-scrollbar {
+  height: 9px;
+}
+
+.marches-table-card .table-container::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+
+.marches-table-card .table-container::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 10px;
 }
 
 /* =====================================================
@@ -212,59 +229,96 @@
 
 .marche-table {
   width: 100%;
-  min-width: 1180px;
+  min-width: 1570px;
   table-layout: auto;
+  border-collapse: collapse;
 }
 
 .marche-table th,
 .marche-table td {
   vertical-align: middle;
+  white-space: nowrap;
 }
+
+/* 1 — N° marché */
 
 .marche-table th:nth-child(1),
 .marche-table td:nth-child(1) {
-  min-width: 140px;
+  width: 150px;
+  min-width: 150px;
 }
+
+/* 2 — Appel d’offres */
 
 .marche-table th:nth-child(2),
 .marche-table td:nth-child(2) {
-  min-width: 155px;
-}
-
-.marche-table th:nth-child(3),
-.marche-table td:nth-child(3),
-.marche-table th:nth-child(4),
-.marche-table td:nth-child(4) {
-  min-width: 130px;
-  white-space: nowrap;
-}
-
-.marche-table th:nth-child(5),
-.marche-table td:nth-child(5) {
-  min-width: 150px;
-  white-space: nowrap;
-}
-
-.marche-table th:nth-child(6),
-.marche-table td:nth-child(6) {
+  width: 180px;
   min-width: 180px;
 }
 
+/* 3 — DAS */
+
+.marche-table th:nth-child(3),
+.marche-table td:nth-child(3) {
+  width: 150px;
+  min-width: 150px;
+  text-align: center;
+}
+
+/* 4 — Date début */
+
+.marche-table th:nth-child(4),
+.marche-table td:nth-child(4) {
+  width: 140px;
+  min-width: 140px;
+}
+
+/* 5 — Date fin */
+
+.marche-table th:nth-child(5),
+.marche-table td:nth-child(5) {
+  width: 140px;
+  min-width: 140px;
+}
+
+/* 6 — Montant */
+
+.marche-table th:nth-child(6),
+.marche-table td:nth-child(6) {
+  width: 200px;
+  min-width: 200px;
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* 7 — Taux d’exécution */
+
 .marche-table th:nth-child(7),
 .marche-table td:nth-child(7) {
-  min-width: 115px;
-  white-space: nowrap;
+  width: 210px;
+  min-width: 210px;
 }
+
+/* 8 — Statut */
 
 .marche-table th:nth-child(8),
 .marche-table td:nth-child(8) {
-  min-width: 230px;
+  width: 140px;
+  min-width: 140px;
+  text-align: center;
+}
+
+/* 9 — Actions */
+
+.marche-table th:nth-child(9),
+.marche-table td:nth-child(9) {
+  width: 280px;
+  min-width: 280px;
 }
 
 .marche-reference {
   color: var(--color-primary-dark);
 }
-
 /* =====================================================
    TAUX D’EXÉCUTION
 ===================================================== */

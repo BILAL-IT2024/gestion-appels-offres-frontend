@@ -32,6 +32,7 @@ export class Marches implements OnInit {
     montantMarche: 0,
     tauxExecution: 0,
     statut: 'EN_COURS',
+    das: '',
     appelDoffres: {
       id: 0
     }
@@ -73,6 +74,28 @@ export class Marches implements OnInit {
     });
   }
 
+mettreAJourDepuisAO(idAppelOffre: number): void {
+
+  const appelOffreSelectionne =
+    this.appelsOffres.find(
+      ao => Number(ao.id) === Number(idAppelOffre)
+    );
+
+  if (!appelOffreSelectionne) {
+    this.nouveauMarche.das = '';
+    this.nouveauMarche.montantMarche = 0;
+    return;
+  }
+
+  this.nouveauMarche.das =
+    appelOffreSelectionne.das ?? '';
+
+  this.nouveauMarche.montantMarche =
+    Number(
+      appelOffreSelectionne.montantEstime ?? 0
+    );
+}
+
 ouvrirFormulaire(): void {
 
   this.modeEdition = false;
@@ -85,6 +108,7 @@ ouvrirFormulaire(): void {
     montantMarche: 0,
     tauxExecution: 0,
     statut: 'EN_COURS',
+    das: '',
     appelDoffres: {
       id: 0
     }
@@ -94,6 +118,24 @@ ouvrirFormulaire(): void {
 }
 
 enregistrerMarche(): void {
+
+   this.mettreAJourDepuisAO(
+     this.nouveauMarche.appelDoffres.id
+   );
+
+  if (this.nouveauMarche.appelDoffres.id === 0) {
+    this.toastService.warning(
+       'Veuillez sélectionner un appel d’offres adjugé'
+    );
+    return;
+     }
+
+  if (!this.nouveauMarche.das) {
+    this.toastService.warning(
+       'L’appel d’offres sélectionné ne possède pas de DAS'
+     );
+    return;
+    }
 
   if (
     this.modeEdition &&
@@ -222,8 +264,14 @@ modifierMarche(marche: any): void {
     montantMarche: marche.montantMarche,
     tauxExecution: marche.tauxExecution,
     statut: marche.statut,
+    das:
+      marche.das
+      ?? marche.appelDoffres?.das
+      ?? '',
     appelDoffres: {
-      id: Number(marche.appelDoffres?.id ?? 0)
+      id: Number(
+        marche.appelDoffres?.id ?? 0
+      )
     }
   };
 

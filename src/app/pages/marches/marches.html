@@ -123,16 +123,19 @@
             id="appelDoffres"
             class="form-control"
             [(ngModel)]="nouveauMarche.appelDoffres.id"
+            (ngModelChange)="mettreAJourDepuisAO($event)"
           >
             <option [ngValue]="0">
-              -- Choisir un appel d’offres --
+              -- Choisir un appel d’offres adjugé --
             </option>
 
             @for (ao of appelsOffres; track ao.id) {
 
+            @if (ao.statut === 'ADJUGE') {
             <option [ngValue]="ao.id">
               {{ ao.reference }}
             </option>
+            }
 
             }
           </select>
@@ -180,8 +183,9 @@
             type="number"
             min="0"
             class="form-control"
-            placeholder="Montant en DH"
+            placeholder="Montant chargé automatiquement"
             [(ngModel)]="nouveauMarche.montantMarche"
+            readonly
           >
 
         </div>
@@ -283,6 +287,7 @@
           <tr>
             <th>N° marché</th>
             <th>Appel d’offres</th>
+            <th>DAS</th>
             <th>Date début</th>
             <th>Date fin</th>
             <th>Montant</th>
@@ -307,6 +312,17 @@
 
             <td>
               {{ marche.appelDoffres?.reference || '—' }}
+            </td>
+
+            <td>
+              <span
+                  class="das-badge"
+                  [class.das-rdf]="marche.das === 'RDF'"
+                  [class.das-telereleve]="marche.das === 'TELERELEVE'"
+                  [class.das-asst]="marche.das === 'ASST'"
+              >
+                 {{ marche.das || marche.appelDoffres?.das || '—' }}
+              </span>
             </td>
 
             <td>
@@ -410,7 +426,7 @@
           <tr>
 
             <td
-              colspan="8"
+              colspan="9"
               class="empty-state"
             >
               Aucun marché disponible.
