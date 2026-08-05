@@ -24,6 +24,7 @@ export class Commandes implements OnInit {
   commandes: any[] = [];
   keyword = '';
   marches: any[] = [];
+  marcheSelectionne: any | null = null;
 
   nouvelleCommande: Commande = {
     numeroCommande: '',
@@ -71,6 +72,19 @@ export class Commandes implements OnInit {
     });
   }
 
+mettreAJourMarcheSelectionne(idMarche: number): void {
+
+  this.marcheSelectionne =
+    this.marches.find(
+      marche =>
+        Number(marche.id) === Number(idMarche)
+    ) ?? null;
+
+  if (!this.marcheSelectionne) {
+    this.nouvelleCommande.montantCommande = 0;
+  }
+}
+
   ouvrirFormulaire(): void {
 
     this.modeEdition = false;
@@ -86,10 +100,44 @@ export class Commandes implements OnInit {
       }
     };
 
+    this.marcheSelectionne = null;
     this.showForm = true;
   }
 
 enregistrerCommande(): void {
+
+  if (
+    !this.nouvelleCommande.numeroCommande.trim() ||
+    !this.nouvelleCommande.dateCommande ||
+    this.nouvelleCommande.marche.id === 0 ||
+    this.nouvelleCommande.montantCommande <= 0
+  ) {
+    this.toastService.warning(
+      'Veuillez remplir correctement tous les champs'
+    );
+    return;
+  }
+
+  this.mettreAJourMarcheSelectionne(
+    this.nouvelleCommande.marche.id
+  );
+
+  if (!this.marcheSelectionne) {
+    this.toastService.warning(
+      'Le marché sélectionné est introuvable'
+    );
+    return;
+  }
+
+  if (
+    this.nouvelleCommande.montantCommande >
+    Number(this.marcheSelectionne.montantMarche ?? 0)
+  ) {
+    this.toastService.warning(
+      'Le montant de la commande dépasse le montant du marché'
+    );
+    return;
+  }
 
   if (
     this.modeEdition &&
@@ -123,11 +171,19 @@ enregistrerCommande(): void {
             err
           );
 
-          this.toastService.error(
-            'Erreur lors de la modification de la commande'
-          );
+          const message =
+            err?.error?.detail
+            || err?.error?.message
+            || (
+              typeof err?.error === 'string'
+                ? err.error
+                : null
+            )
+            || 'Erreur lors de la modification de la commande';
+
+          this.toastService.error(message);
         }
-      });
+        });
 
     return;
   }
@@ -154,9 +210,11 @@ enregistrerCommande(): void {
           err
         );
 
-        this.toastService.error(
-          'Erreur lors de l’enregistrement de la commande'
-        );
+        const message =
+          err?.error?.message
+          || 'Erreur lors de l’enregistrement de la commande';
+
+        this.toastService.error(message);
       }
     });
 }
@@ -176,6 +234,10 @@ modifierCommande(commande: any): void {
       id: Number(commande.marche?.id ?? 0)
     }
   };
+
+this.mettreAJourMarcheSelectionne(
+  this.nouvelleCommande.marche.id
+);
 
 }
 

@@ -123,6 +123,7 @@
             id="marche"
             class="form-control"
             [(ngModel)]="nouvelleCommande.marche.id"
+            (ngModelChange)="mettreAJourMarcheSelectionne($event)"
           >
             <option [ngValue]="0">
               -- Choisir un marché --
@@ -130,9 +131,12 @@
 
             @for (marche of marches; track marche.id) {
 
+            @if (marche.statut !== 'ANNULE') {
             <option [ngValue]="marche.id">
               {{ marche.numeroMarche }}
+              — {{ marche.montantMarche | number }} DH
             </option>
+            }
 
             }
           </select>

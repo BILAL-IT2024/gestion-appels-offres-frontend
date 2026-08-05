@@ -9,6 +9,7 @@ export interface Consultation {
   dateReception: string;
   montantPropose: number;
   statut: string;
+  das: string;
   client: {
     id: number;
   };

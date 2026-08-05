@@ -132,6 +132,7 @@ export class Consultations implements OnInit {
       !this.nouvelleConsultation.objet.trim() ||
       !this.nouvelleConsultation.dateReception ||
       this.nouvelleConsultation.montantPropose <= 0 ||
+      !this.nouvelleConsultation.das ||
       this.nouvelleConsultation.client.id === 0
     ) {
       this.toastService.warning(
@@ -229,6 +230,7 @@ export class Consultations implements OnInit {
       montantPropose:
         consultation.montantPropose,
       statut: consultation.statut,
+       das: consultation.das ?? '',
       client: {
         id: Number(
           consultation.client?.id ?? 0
@@ -423,6 +425,7 @@ private creerConsultationVide(): Consultation {
     dateReception: '',
     montantPropose: 0,
     statut: 'EN_COURS',
+    das: '',
     client: {
       id: 0
     }
