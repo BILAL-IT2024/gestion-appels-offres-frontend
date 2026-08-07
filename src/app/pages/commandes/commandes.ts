@@ -148,10 +148,6 @@ enregistrerCommande(): void {
     return;
   }
 
-  this.mettreAJourMarcheSelectionne(
-    this.nouvelleCommande.marche.id
-  );
-
   if (!this.marcheSelectionne) {
     this.toastService.warning(
       'Le marché sélectionné est introuvable'
