@@ -13,53 +13,95 @@ export interface Commande {
   };
 }
 
+export interface ResumeMarche {
+  montantMarche: number;
+  montantCommande: number;
+  montantRestant: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class CommandeService {
 
-  private apiUrl = 'http://localhost:9090/api/commandes';
+  private apiUrl =
+    'http://localhost:9090/api/commandes';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient
+  ) {}
 
   getCommandes(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<any[]>(
+      this.apiUrl
+    );
   }
 
-  saveCommande(commande: Commande): Observable<Commande> {
-    return this.http.post<Commande>(this.apiUrl, commande);
+  saveCommande(
+    commande: Commande
+  ): Observable<Commande> {
+    return this.http.post<Commande>(
+      this.apiUrl,
+      commande
+    );
   }
 
-  updateCommande(id: number, commande: Commande): Observable<Commande> {
-    return this.http.put<Commande>(`${this.apiUrl}/${id}`, commande);
+  updateCommande(
+    id: number,
+    commande: Commande
+  ): Observable<Commande> {
+    return this.http.put<Commande>(
+      `${this.apiUrl}/${id}`,
+      commande
+    );
   }
 
-  deleteCommande(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteCommande(
+    id: number
+  ): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiUrl}/${id}`
+    );
   }
 
-searchCommandes(keyword: string): Observable<any[]> {
-  return this.http.get<any[]>(
-    `${this.apiUrl}/search?keyword=${keyword}`
-  );
-}
+  searchCommandes(
+    keyword: string
+  ): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/search`,
+      {
+        params: {
+          keyword
+        }
+      }
+    );
+  }
 
-exportExcel(): Observable<Blob> {
-  return this.http.get(
-    `${this.apiUrl}/export/excel`,
-    {
-      responseType: 'blob'
-    }
-  );
-}
+  getResumeMarche(
+    marcheId: number
+  ): Observable<ResumeMarche> {
+    return this.http.get<ResumeMarche>(
+      `${this.apiUrl}/marche/${marcheId}/resume`
+    );
+  }
 
-exportPdf(id: number): Observable<Blob> {
-  return this.http.get(
-    `${this.apiUrl}/${id}/pdf`,
-    {
-      responseType: 'blob'
-    }
-  );
-}
+  exportExcel(): Observable<Blob> {
+    return this.http.get(
+      `${this.apiUrl}/export/excel`,
+      {
+        responseType: 'blob'
+      }
+    );
+  }
 
+  exportPdf(
+    id: number
+  ): Observable<Blob> {
+    return this.http.get(
+      `${this.apiUrl}/${id}/pdf`,
+      {
+        responseType: 'blob'
+      }
+    );
+  }
 }

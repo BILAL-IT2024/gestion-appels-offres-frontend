@@ -141,6 +141,35 @@
             }
           </select>
 
+          @if (resumeMarche) {
+
+          <div class="marche-resume">
+
+            <div>
+              <span>Montant du marché</span>
+              <strong>
+                {{ resumeMarche.montantMarche | number }} DH
+              </strong>
+            </div>
+
+            <div>
+              <span>Déjà commandé</span>
+              <strong>
+                {{ resumeMarche.montantCommande | number }} DH
+              </strong>
+            </div>
+
+            <div>
+              <span>Reste disponible</span>
+              <strong>
+                {{ resumeMarche.montantRestant | number }} DH
+              </strong>
+            </div>
+
+          </div>
+
+          }
+
         </div>
 
         <div class="form-group">
@@ -171,7 +200,20 @@
             class="form-control"
             placeholder="Montant en DH"
             [(ngModel)]="nouvelleCommande.montantCommande"
-          >
+            [max]="resumeMarche?.montantRestant ?? null"
+            [disabled]="
+             !modeEdition &&
+             resumeMarche?.montantRestant === 0
+            "
+           >
+          @if (
+          !modeEdition &&
+          resumeMarche?.montantRestant === 0
+          ) {
+          <small class="form-error">
+            Le montant du marché est entièrement consommé.
+          </small>
+          }
 
         </div>
 

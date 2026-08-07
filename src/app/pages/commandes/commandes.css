@@ -401,3 +401,49 @@
     padding: 16px;
   }
 }
+
+.marche-resume {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+
+  margin-top: 12px;
+}
+
+.marche-resume > div {
+  padding: 12px;
+
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+
+  background: #f8fafc;
+}
+
+.marche-resume span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.marche-resume strong {
+  color: var(--color-primary-dark);
+  font-size: 15px;
+}
+
+@media (max-width: 760px) {
+  .marche-resume {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-error {
+  display: block;
+  margin-top: 7px;
+
+  color: var(--color-danger);
+  font-size: 12px;
+  font-weight: 700;
+}

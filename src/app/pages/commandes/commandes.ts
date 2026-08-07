@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
-import { Commande, CommandeService } from '../../services/commande';
+import { Commande, CommandeService, ResumeMarche } from '../../services/commande';
 import { MarcheService } from '../../services/marche';
 import { ToastService } from '../../services/toast';
 import { ConfirmDialogService } from '../../services/confirm-dialog';
@@ -25,6 +25,7 @@ export class Commandes implements OnInit {
   keyword = '';
   marches: any[] = [];
   marcheSelectionne: any | null = null;
+  resumeMarche: ResumeMarche | null = null;
 
   nouvelleCommande: Commande = {
     numeroCommande: '',
@@ -72,7 +73,9 @@ export class Commandes implements OnInit {
     });
   }
 
-mettreAJourMarcheSelectionne(idMarche: number): void {
+mettreAJourMarcheSelectionne(
+  idMarche: number
+): void {
 
   this.marcheSelectionne =
     this.marches.find(
@@ -80,9 +83,35 @@ mettreAJourMarcheSelectionne(idMarche: number): void {
         Number(marche.id) === Number(idMarche)
     ) ?? null;
 
+  this.resumeMarche = null;
+
   if (!this.marcheSelectionne) {
     this.nouvelleCommande.montantCommande = 0;
+    return;
   }
+
+  this.commandeService
+    .getResumeMarche(idMarche)
+    .subscribe({
+
+      next: (resume) => {
+        this.resumeMarche = resume;
+        this.cd.detectChanges();
+      },
+
+      error: (err) => {
+        console.error(
+          'Erreur chargement résumé marché',
+          err
+        );
+
+        this.resumeMarche = null;
+
+        this.toastService.error(
+          'Impossible de charger les montants du marché'
+        );
+      }
+    });
 }
 
   ouvrirFormulaire(): void {
@@ -101,6 +130,7 @@ mettreAJourMarcheSelectionne(idMarche: number): void {
     };
 
     this.marcheSelectionne = null;
+    this.resumeMarche = null;
     this.showForm = true;
   }
 
@@ -125,6 +155,26 @@ enregistrerCommande(): void {
   if (!this.marcheSelectionne) {
     this.toastService.warning(
       'Le marché sélectionné est introuvable'
+    );
+    return;
+  }
+
+  if (!this.resumeMarche) {
+    this.toastService.warning(
+      'Veuillez attendre le chargement des informations du marché'
+    );
+    return;
+  }
+
+  if (
+    !this.modeEdition &&
+    this.nouvelleCommande.montantCommande >
+    this.resumeMarche.montantRestant
+  ) {
+    this.toastService.warning(
+      `Le montant dépasse le reste disponible : ${
+        this.resumeMarche.montantRestant
+      } DH`
     );
     return;
   }
