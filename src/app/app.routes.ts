@@ -8,6 +8,7 @@ import { Paiements } from './pages/paiements/paiements';
 import { Clients } from './pages/clients/clients';
 import { Consultations } from './pages/consultations/consultations';
 import { Notifications } from './pages/notifications/notifications';
+import { Offres } from './pages/offres/offres';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -18,5 +19,6 @@ export const routes: Routes = [
   { path: 'commandes', component: Commandes },
   { path: 'paiements', component: Paiements },
   { path: 'clients', component: Clients },
-  { path: 'consultations', component: Consultations }
+  { path: 'consultations', component: Consultations },
+  { path: 'offres', component: Offres }
 ];

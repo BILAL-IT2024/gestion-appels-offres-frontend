@@ -1,0 +1,518 @@
+<div class="page-layout">
+
+  <app-sidebar></app-sidebar>
+
+  <main class="offres-page">
+
+    <header class="offres-header">
+
+      <div>
+        <h1>Gestion des Offres</h1>
+
+        <p>
+          Gérez les offres liées aux appels d’offres
+          et aux consultations
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="ouvrirFormulaire()"
+      >
+        + Nouvelle offre
+      </button>
+
+    </header>
+
+    <section class="offres-toolbar">
+
+      <div class="search-group">
+
+        <input
+          type="text"
+          class="form-control search-input"
+          placeholder="Rechercher par référence..."
+          [(ngModel)]="keyword"
+          (keyup.enter)="rechercherOffres()"
+        >
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="rechercherOffres()"
+        >
+          Rechercher
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="reinitialiserRecherche()"
+        >
+          Réinitialiser
+        </button>
+
+      </div>
+
+      <!-- AJOUT ICI -->
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="exporterExcel()"
+      >
+        Exporter Excel
+      </button>
+
+    </section>
+
+    @if (showForm) {
+
+    <section class="offre-form-card">
+
+      <div class="form-card-header">
+
+        <div>
+
+          <h2>
+            {{
+            modeEdition
+            ? 'Modifier l’offre'
+            : 'Nouvelle offre'
+            }}
+          </h2>
+
+          <p>
+            Renseignez les informations principales de l’offre
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="form-close-button"
+          aria-label="Fermer le formulaire"
+          (click)="showForm = false"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="offre-form-grid">
+
+        <div class="form-group">
+
+          <label for="reference">
+            Référence
+          </label>
+
+          <input
+            id="reference"
+            type="text"
+            class="form-control"
+            placeholder="Ex. OFF-2026-001"
+            [(ngModel)]="nouvelleOffre.reference"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="dateOffre">
+            Date de l’offre
+          </label>
+
+          <input
+            id="dateOffre"
+            type="date"
+            class="form-control"
+            [(ngModel)]="nouvelleOffre.dateOffre"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="montantOffre">
+            Montant de l’offre
+          </label>
+
+          <input
+            id="montantOffre"
+            type="number"
+            min="0"
+            class="form-control"
+            placeholder="Montant en DH"
+            [(ngModel)]="nouvelleOffre.montantOffre"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="statut">
+            Statut
+          </label>
+
+          <select
+            id="statut"
+            class="form-control"
+            [(ngModel)]="nouvelleOffre.statut"
+          >
+
+            <option value="EN_PREPARATION">
+              En préparation
+            </option>
+
+            <option value="DEPOSEE">
+              Déposée
+            </option>
+
+            <option value="ACCEPTEE">
+              Acceptée
+            </option>
+
+            <option value="REFUSEE">
+              Refusée
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="form-group form-group-wide">
+
+          <label>
+            Type de source
+          </label>
+
+          <div class="source-selector">
+
+            <label class="source-option">
+
+              <input
+                type="radio"
+                name="typeSource"
+                value="AO"
+                [(ngModel)]="typeSource"
+                (ngModelChange)="changerTypeSource()"
+              >
+
+              Appel d’offres
+
+            </label>
+
+            <label class="source-option">
+
+              <input
+                type="radio"
+                name="typeSource"
+                value="CONSULTATION"
+                [(ngModel)]="typeSource"
+                (ngModelChange)="changerTypeSource()"
+              >
+
+              Consultation
+
+            </label>
+
+          </div>
+
+        </div>
+
+        @if (typeSource === 'AO') {
+
+        <div class="form-group form-group-wide">
+
+          <label for="appelDoffres">
+            Appel d’offres associé
+          </label>
+
+          <select
+            id="appelDoffres"
+            class="form-control"
+            [(ngModel)]="nouvelleOffre.appelDoffres!.id"
+          >
+
+            <option [ngValue]="0">
+              -- Choisir un appel d’offres --
+            </option>
+
+            @for (ao of appelsOffres; track ao.id) {
+
+            @if (ao.statut !== 'ANNULE') {
+
+            <option [ngValue]="ao.id">
+              {{ ao.reference }}
+              — {{ ao.objet }}
+            </option>
+
+            }
+
+            }
+
+          </select>
+
+        </div>
+
+        }
+
+        @if (typeSource === 'CONSULTATION') {
+
+        <div class="form-group form-group-wide">
+
+          <label for="consultation">
+            Consultation associée
+          </label>
+
+          <select
+            id="consultation"
+            class="form-control"
+            [(ngModel)]="nouvelleOffre.consultation!.id"
+          >
+
+            <option [ngValue]="0">
+              -- Choisir une consultation --
+            </option>
+
+            @for (
+            consultation of consultations;
+            track consultation.id
+            ) {
+
+            <option [ngValue]="consultation.id">
+              {{ consultation.reference }}
+              — {{ consultation.objet }}
+            </option>
+
+            }
+
+          </select>
+
+        </div>
+
+        }
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="showForm = false"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="enregistrerOffre()"
+        >
+          {{
+          modeEdition
+          ? 'Enregistrer les modifications'
+          : 'Enregistrer l’offre'
+          }}
+        </button>
+
+      </div>
+
+    </section>
+
+    }
+
+    <section class="offres-table-card">
+
+      <div class="table-card-header">
+
+        <div>
+
+          <h2>
+            Liste des offres
+          </h2>
+
+          <p>
+            {{ offres.length }} offre(s) affichée(s)
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="offres-table-wrapper">
+
+        <table class="offres-table">
+
+          <thead>
+
+          <tr>
+            <th>Référence</th>
+            <th>Date</th>
+            <th>Source</th>
+            <th>DAS</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+
+          </thead>
+
+          <tbody>
+
+          @for (offre of offres; track offre.id) {
+
+          <tr>
+
+            <td>
+              <strong class="offre-reference">
+                {{ offre.reference }}
+              </strong>
+            </td>
+
+            <td>
+              {{ offre.dateOffre || '—' }}
+            </td>
+
+            <td>
+
+              @if (offre.appelDoffres) {
+
+              <span class="source-badge source-ao">
+                  AO
+                </span>
+
+              {{ offre.appelDoffres.reference || '—' }}
+
+              } @else if (offre.consultation) {
+
+              <span class="source-badge source-consultation">
+                  Consultation
+                </span>
+
+              {{ offre.consultation.reference || '—' }}
+
+              } @else {
+
+              —
+
+              }
+
+            </td>
+
+            <td>
+
+              <span
+                class="das-badge"
+                [class.das-rdf]="offre.das === 'RDF'"
+                [class.das-telereleve]="
+                  offre.das === 'TELERELEVE'
+                "
+                [class.das-asst]="offre.das === 'ASST'"
+              >
+                {{ offre.das || '—' }}
+              </span>
+
+            </td>
+
+            <td class="montant-cell">
+              {{ offre.montantOffre | number }} DH
+            </td>
+
+            <td>
+
+              <span
+                class="status-badge"
+                [class.status-warning]="
+                  offre.statut === 'EN_PREPARATION'
+                "
+                [class.status-info]="
+                  offre.statut === 'DEPOSEE'
+                "
+                [class.status-success]="
+                  offre.statut === 'ACCEPTEE'
+                "
+                [class.status-danger]="
+                  offre.statut === 'REFUSEE'
+                "
+              >
+
+                @if (offre.statut === 'EN_PREPARATION') {
+                  En préparation
+                } @else if (offre.statut === 'DEPOSEE') {
+                  Déposée
+                } @else if (offre.statut === 'ACCEPTEE') {
+                  Acceptée
+                } @else if (offre.statut === 'REFUSEE') {
+                  Refusée
+                } @else {
+                  {{ offre.statut || '—' }}
+                }
+
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="offre-actions">
+
+                <button
+                  type="button"
+                  class="btn btn-light action-button"
+                  (click)="modifierOffre(offre)"
+                >
+                  Modifier
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-danger action-button"
+                  (click)="supprimerOffre(offre.id!)"
+                >
+                  Supprimer
+                </button>
+
+                <!-- AJOUT ICI -->
+                <button
+                  type="button"
+                  class="btn btn-secondary action-button"
+                  (click)="exporterPdf(offre.id!)"
+                >
+                  PDF
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+          } @empty {
+
+          <tr>
+
+            <td
+              colspan="7"
+              class="empty-state"
+            >
+              Aucune offre disponible.
+            </td>
+
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
