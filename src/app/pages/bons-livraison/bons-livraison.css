@@ -1,0 +1,629 @@
+/* =========================================================
+   PAGE - BONS DE LIVRAISON
+   Design temporaire
+   ========================================================= */
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f4f7fc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+
+.page-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.bons-page {
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+
+  padding: 32px;
+
+  background: #f4f7fc;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.bons-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-bottom: 32px;
+}
+
+.bons-header h1 {
+  margin: 0 0 8px;
+
+  color: #123a78;
+
+  font-size: 42px;
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.bons-header p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   BOUTONS
+   ========================================================= */
+
+.btn {
+  min-height: 48px;
+
+  padding: 0 22px;
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  color: white;
+  background: #2563eb;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-success {
+  color: white;
+  background: #16a34a;
+}
+
+.btn-success:hover {
+  background: #15803d;
+}
+
+.btn-danger {
+  color: white;
+  background: #dc2626;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+.btn-secondary {
+  color: white;
+  background: #64748b;
+}
+
+.btn-secondary:hover {
+  background: #475569;
+}
+
+.btn-outline {
+  color: #172033;
+
+  background: white;
+
+  border: 1px solid #cbd5e1;
+}
+
+.btn-outline:hover {
+  background: #f8fafc;
+}
+
+.btn-light {
+  color: #172033;
+
+  background: white;
+
+  border: 1px solid #cbd5e1;
+}
+
+
+/* =========================================================
+   BARRE DE RECHERCHE
+   ========================================================= */
+
+.bons-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 30px;
+
+  padding: 24px;
+
+  background: white;
+
+  border: 1px solid #dbe3ef;
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.search-group {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  flex: 1;
+}
+
+.search-input {
+  flex: 1;
+
+  min-width: 260px;
+  max-width: 640px;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.form-control {
+  width: 100%;
+
+  min-height: 48px;
+
+  padding: 0 16px;
+
+  color: #172033;
+
+  background: white;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+
+  outline: none;
+
+  font-size: 16px;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.form-control:focus {
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+
+/* =========================================================
+   FORMULAIRE
+   ========================================================= */
+
+.bon-form-card {
+  margin-bottom: 30px;
+
+  padding: 28px;
+
+  background: white;
+
+  border: 1px solid #dbe3ef;
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.form-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 20px;
+
+  margin-bottom: 26px;
+}
+
+.form-card-header h2 {
+  margin: 0 0 6px;
+
+  color: #123a78;
+
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.form-card-header p {
+  margin: 0;
+
+  color: #64748b;
+}
+
+.form-close-button {
+  width: 40px;
+  height: 40px;
+
+  border: none;
+  border-radius: 50%;
+
+  color: #475569;
+  background: #f1f5f9;
+
+  font-size: 25px;
+
+  cursor: pointer;
+}
+
+.form-close-button:hover {
+  background: #e2e8f0;
+}
+
+.bon-form-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 22px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.form-group label {
+  color: #334155;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.form-group-wide {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  margin-top: 28px;
+
+  padding-top: 22px;
+
+  border-top: 1px solid #e2e8f0;
+}
+
+
+/* =========================================================
+   CARTE TABLEAU
+   ========================================================= */
+
+.bons-table-card {
+  padding: 28px 28px 24px;
+
+  background: white;
+
+  border: 1px solid #dbe3ef;
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.table-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 22px;
+}
+
+.table-card-header h2 {
+  margin: 0 0 5px;
+
+  color: #123a78;
+
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.table-card-header p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   TABLEAU
+   ========================================================= */
+
+.bons-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+
+  border-radius: 16px;
+}
+
+.bons-table {
+  width: 100%;
+
+  min-width: 1100px;
+
+  border-collapse: collapse;
+
+  background: white;
+}
+
+.bons-table thead {
+  background: #164487;
+}
+
+.bons-table th {
+  padding: 20px 18px;
+
+  color: white;
+
+  border-right:
+    1px solid rgba(255, 255, 255, 0.18);
+
+  text-align: left;
+
+  font-size: 15px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+.bons-table th:first-child {
+  border-radius: 14px 0 0 0;
+}
+
+.bons-table th:last-child {
+  border-radius: 0 14px 0 0;
+  border-right: none;
+}
+
+.bons-table td {
+  padding: 20px 18px;
+
+  color: #172033;
+
+  border-bottom: 1px solid #e2e8f0;
+
+  font-size: 15px;
+
+  vertical-align: middle;
+}
+
+.bons-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.bon-reference {
+  color: #172033;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   STATUTS
+   ========================================================= */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 7px 14px;
+
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+.status-warning {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.status-info {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.status-success {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.status-danger {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.bon-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  white-space: nowrap;
+}
+
+.action-button {
+  min-height: 42px;
+
+  padding: 0 15px;
+
+  font-size: 13px;
+
+  border-radius: 9px;
+}
+
+
+/* =========================================================
+   AUCUNE DONNEE
+   ========================================================= */
+
+.empty-state {
+  padding: 45px !important;
+
+  color: #64748b !important;
+
+  text-align: center;
+
+  font-size: 16px !important;
+}
+
+
+/* =========================================================
+   SCROLLBAR DU TABLEAU
+   ========================================================= */
+
+.bons-table-wrapper::-webkit-scrollbar {
+  height: 9px;
+}
+
+.bons-table-wrapper::-webkit-scrollbar-track {
+  background: #e2e8f0;
+
+  border-radius: 20px;
+}
+
+.bons-table-wrapper::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+
+  border-radius: 20px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+  .bons-page {
+    padding: 32px 25px;
+  }
+
+  .bons-header h1 {
+    font-size: 36px;
+  }
+
+  .bons-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .search-group {
+    flex-wrap: wrap;
+  }
+
+  .search-input {
+    max-width: none;
+  }
+}
+
+
+@media (max-width: 900px) {
+
+  .bons-page {
+    padding: 18px;
+  }
+
+  .bons-header {
+    flex-direction: column;
+  }
+
+  .bons-header h1 {
+    font-size: 30px;
+  }
+
+  .bons-header .btn {
+    width: 100%;
+  }
+
+  .bons-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .search-group {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .bons-toolbar .btn {
+    width: 100%;
+  }
+
+  .bon-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group-wide {
+    grid-column: auto;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+
+  .bons-table-card {
+    padding: 20px;
+  }
+}

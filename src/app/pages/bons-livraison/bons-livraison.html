@@ -1,0 +1,412 @@
+<div class="page-layout">
+
+  <app-sidebar></app-sidebar>
+
+  <main class="bons-page">
+
+    <header class="bons-header">
+
+      <div>
+        <h1>Gestion des Bons de Livraison</h1>
+
+        <p>
+          Suivez les bons de livraison,
+          les commandes associées et leurs statuts
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="ouvrirFormulaire()"
+      >
+        + Nouveau bon de livraison
+      </button>
+
+    </header>
+
+    <section class="bons-toolbar">
+
+      <div class="search-group">
+
+        <input
+          type="text"
+          class="form-control search-input"
+          placeholder="Rechercher par numéro..."
+          [(ngModel)]="keyword"
+          (keyup.enter)="rechercherBons()"
+        >
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="rechercherBons()"
+        >
+          Rechercher
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="reinitialiserRecherche()"
+        >
+          Réinitialiser
+        </button>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="exporterExcel()"
+      >
+        Exporter Excel
+      </button>
+
+    </section>
+
+    @if (showForm) {
+
+    <section class="bon-form-card">
+
+      <div class="form-card-header">
+
+        <div>
+
+          <h2>
+            {{
+            modeEdition
+            ? 'Modifier le bon de livraison'
+            : 'Nouveau bon de livraison'
+            }}
+          </h2>
+
+          <p>
+            Renseignez les informations principales
+            du bon de livraison
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="form-close-button"
+          aria-label="Fermer le formulaire"
+          (click)="showForm = false"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="bon-form-grid">
+
+        <div class="form-group">
+
+          <label for="numeroBon">
+            Numéro du bon
+          </label>
+
+          <input
+            id="numeroBon"
+            type="text"
+            class="form-control"
+            placeholder="Ex. BL-2026-001"
+            [(ngModel)]="nouveauBon.numeroBon"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="commande">
+            Commande associée
+          </label>
+
+          <select
+            id="commande"
+            class="form-control"
+            [(ngModel)]="nouveauBon.commande.id"
+          >
+
+            <option [ngValue]="0">
+              -- Choisir une commande --
+            </option>
+
+            @for (commande of commandes; track commande.id) {
+
+            @if (commande.statut !== 'ANNULEE') {
+
+            <option [ngValue]="commande.id">
+              {{ commande.numeroCommande }}
+            </option>
+
+            }
+
+            }
+
+          </select>
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="dateLivraison">
+            Date de livraison
+          </label>
+
+          <input
+            id="dateLivraison"
+            type="date"
+            class="form-control"
+            [(ngModel)]="nouveauBon.dateLivraison"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="statut">
+            Statut
+          </label>
+
+          <select
+            id="statut"
+            class="form-control"
+            [(ngModel)]="nouveauBon.statut"
+          >
+
+            <option value="EN_PREPARATION">
+              En préparation
+            </option>
+
+            <option value="LIVRE">
+              Livré
+            </option>
+
+            <option value="RECEPTIONNE">
+              Réceptionné
+            </option>
+
+            <option value="ANNULE">
+              Annulé
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="form-group form-group-wide">
+
+          <label for="objet">
+            Objet
+          </label>
+
+          <input
+            id="objet"
+            type="text"
+            class="form-control"
+            placeholder="Objet du bon de livraison"
+            [(ngModel)]="nouveauBon.objet"
+          >
+
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="showForm = false"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="enregistrerBon()"
+        >
+          {{
+          modeEdition
+          ? 'Enregistrer les modifications'
+          : 'Enregistrer le bon'
+          }}
+        </button>
+
+      </div>
+
+    </section>
+
+    }
+
+    <section class="bons-table-card">
+
+      <div class="table-card-header">
+
+        <div>
+
+          <h2>
+            Liste des bons de livraison
+          </h2>
+
+          <p>
+            {{ bonsLivraison.length }} bon(s) affiché(s)
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="bons-table-wrapper">
+
+        <table class="bons-table">
+
+          <thead>
+
+          <tr>
+            <th>N° bon</th>
+            <th>Commande</th>
+            <th>Marché</th>
+            <th>Date livraison</th>
+            <th>Objet</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+
+          </thead>
+
+          <tbody>
+
+          @for (bon of bonsLivraison; track bon.id) {
+
+          <tr>
+
+            <td>
+              <strong class="bon-reference">
+                {{ bon.numeroBon }}
+              </strong>
+            </td>
+
+            <td>
+              {{
+              bon.commande.numeroCommande
+              || '—'
+              }}
+            </td>
+
+            <td>
+              {{
+              bon.commande.marche?.numeroMarche
+              || '—'
+              }}
+            </td>
+
+            <td>
+              {{ bon.dateLivraison || '—' }}
+            </td>
+
+            <td>
+              {{ bon.objet || '—' }}
+            </td>
+
+            <td>
+
+              <span
+                class="status-badge"
+                [class.status-warning]="
+                  bon.statut === 'EN_PREPARATION'
+                "
+                [class.status-info]="
+                  bon.statut === 'LIVRE'
+                "
+                [class.status-success]="
+                  bon.statut === 'RECEPTIONNE'
+                "
+                [class.status-danger]="
+                  bon.statut === 'ANNULE'
+                "
+              >
+
+                @if (bon.statut === 'EN_PREPARATION') {
+                  En préparation
+                } @else if (bon.statut === 'LIVRE') {
+                  Livré
+                } @else if (
+                  bon.statut === 'RECEPTIONNE'
+                ) {
+                  Réceptionné
+                } @else if (
+                  bon.statut === 'ANNULE'
+                ) {
+                  Annulé
+                } @else {
+                  {{ bon.statut || '—' }}
+                }
+
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="bon-actions">
+
+                <button
+                  type="button"
+                  class="btn btn-light action-button"
+                  (click)="modifierBon(bon)"
+                >
+                  Modifier
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-danger action-button"
+                  (click)="supprimerBon(bon.id!)"
+                >
+                  Supprimer
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary action-button"
+                  (click)="exporterPdf(bon.id!)"
+                >
+                  PDF
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+          } @empty {
+
+          <tr>
+
+            <td
+              colspan="7"
+              class="empty-state"
+            >
+              Aucun bon de livraison disponible.
+            </td>
+
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
