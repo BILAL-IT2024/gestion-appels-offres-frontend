@@ -9,6 +9,7 @@ import { Clients } from './pages/clients/clients';
 import { Consultations } from './pages/consultations/consultations';
 import { Notifications } from './pages/notifications/notifications';
 import { Offres } from './pages/offres/offres';
+import { OrdresService } from './pages/ordres-service/ordres-service';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: 'notifications', component: Notifications },
   { path: 'appels-offres', component: AppelsOffresComponent },
   { path: 'marches', component: Marches },
+  { path: 'ordres-service', component: OrdresService },
   { path: 'commandes', component: Commandes },
   { path: 'paiements', component: Paiements },
   { path: 'clients', component: Clients },

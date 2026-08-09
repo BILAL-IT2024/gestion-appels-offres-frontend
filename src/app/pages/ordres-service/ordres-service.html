@@ -1,0 +1,426 @@
+<div class="page-layout">
+
+  <app-sidebar></app-sidebar>
+
+  <main class="ordres-page">
+
+    <header class="ordres-header">
+
+      <div>
+        <h1>Gestion des Ordres de Service</h1>
+
+        <p>
+          Suivez les ordres de service,
+          leurs dates, leurs marchés et leurs statuts
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="ouvrirFormulaire()"
+      >
+        + Nouvel ordre de service
+      </button>
+
+    </header>
+
+    <section class="ordres-toolbar">
+
+      <div class="search-group">
+
+        <input
+          type="text"
+          class="form-control search-input"
+          placeholder="Rechercher par numéro..."
+          [(ngModel)]="keyword"
+          (keyup.enter)="rechercherOrdres()"
+        >
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="rechercherOrdres()"
+        >
+          Rechercher
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="reinitialiserRecherche()"
+        >
+          Réinitialiser
+        </button>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="exporterExcel()"
+      >
+        Exporter Excel
+      </button>
+
+    </section>
+
+    @if (showForm) {
+
+    <section class="ordre-form-card">
+
+      <div class="form-card-header">
+
+        <div>
+
+          <h2>
+            {{
+            modeEdition
+            ? 'Modifier l’ordre de service'
+            : 'Nouvel ordre de service'
+            }}
+          </h2>
+
+          <p>
+            Renseignez les informations principales
+            de l’ordre de service
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="form-close-button"
+          aria-label="Fermer le formulaire"
+          (click)="showForm = false"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="ordre-form-grid">
+
+        <div class="form-group">
+
+          <label for="numeroOrdre">
+            Numéro de l’ordre
+          </label>
+
+          <input
+            id="numeroOrdre"
+            type="text"
+            class="form-control"
+            placeholder="Ex. OS-2026-001"
+            [(ngModel)]="nouvelOrdre.numeroOrdre"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="marche">
+            Marché associé
+          </label>
+
+          <select
+            id="marche"
+            class="form-control"
+            [(ngModel)]="nouvelOrdre.marche.id"
+          >
+
+            <option [ngValue]="0">
+              -- Choisir un marché --
+            </option>
+
+            @for (marche of marches; track marche.id) {
+
+            @if (marche.statut !== 'ANNULE') {
+
+            <option [ngValue]="marche.id">
+              {{ marche.numeroMarche }}
+            </option>
+
+            }
+
+            }
+
+          </select>
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="dateOrdre">
+            Date de l’ordre
+          </label>
+
+          <input
+            id="dateOrdre"
+            type="date"
+            class="form-control"
+            [(ngModel)]="nouvelOrdre.dateOrdre"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="dateDebutExecution">
+            Date de début d’exécution
+          </label>
+
+          <input
+            id="dateDebutExecution"
+            type="date"
+            class="form-control"
+            [(ngModel)]="nouvelOrdre.dateDebutExecution"
+          >
+
+        </div>
+
+        <div class="form-group form-group-wide">
+
+          <label for="objet">
+            Objet
+          </label>
+
+          <input
+            id="objet"
+            type="text"
+            class="form-control"
+            placeholder="Objet de l’ordre de service"
+            [(ngModel)]="nouvelOrdre.objet"
+          >
+
+        </div>
+
+        <div class="form-group form-group-wide">
+
+          <label for="statut">
+            Statut
+          </label>
+
+          <select
+            id="statut"
+            class="form-control"
+            [(ngModel)]="nouvelOrdre.statut"
+          >
+
+            <option value="EMIS">
+              Émis
+            </option>
+
+            <option value="EN_EXECUTION">
+              En exécution
+            </option>
+
+            <option value="TERMINE">
+              Terminé
+            </option>
+
+            <option value="ANNULE">
+              Annulé
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="showForm = false"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="enregistrerOrdre()"
+        >
+          {{
+          modeEdition
+          ? 'Enregistrer les modifications'
+          : 'Enregistrer l’ordre de service'
+          }}
+        </button>
+
+      </div>
+
+    </section>
+
+    }
+
+    <section class="ordres-table-card">
+
+      <div class="table-card-header">
+
+        <div>
+
+          <h2>
+            Liste des ordres de service
+          </h2>
+
+          <p>
+            {{ ordres.length }} ordre(s) affiché(s)
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="ordres-table-wrapper">
+
+        <table class="ordres-table">
+
+          <thead>
+
+          <tr>
+            <th>N° ordre</th>
+            <th>Marché</th>
+            <th>Date ordre</th>
+            <th>Début exécution</th>
+            <th>Objet</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+
+          </thead>
+
+          <tbody>
+
+          @for (ordre of ordres; track ordre.id) {
+
+          <tr>
+
+            <td>
+              <strong class="ordre-reference">
+                {{ ordre.numeroOrdre }}
+              </strong>
+            </td>
+
+            <td>
+              {{
+              ordre.marche?.numeroMarche
+              || '—'
+              }}
+            </td>
+
+            <td>
+              {{ ordre.dateOrdre || '—' }}
+            </td>
+
+            <td>
+              {{ ordre.dateDebutExecution || '—' }}
+            </td>
+
+            <td>
+              {{ ordre.objet || '—' }}
+            </td>
+
+            <td>
+
+              <span
+                class="status-badge"
+                [class.status-info]="
+                  ordre.statut === 'EMIS'
+                "
+                [class.status-warning]="
+                  ordre.statut === 'EN_EXECUTION'
+                "
+                [class.status-success]="
+                  ordre.statut === 'TERMINE'
+                "
+                [class.status-danger]="
+                  ordre.statut === 'ANNULE'
+                "
+              >
+
+                @if (ordre.statut === 'EMIS') {
+                  Émis
+                } @else if (
+                  ordre.statut === 'EN_EXECUTION'
+                ) {
+                  En exécution
+                } @else if (
+                  ordre.statut === 'TERMINE'
+                ) {
+                  Terminé
+                } @else if (
+                  ordre.statut === 'ANNULE'
+                ) {
+                  Annulé
+                } @else {
+                  {{ ordre.statut || '—' }}
+                }
+
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="ordre-actions">
+
+                <button
+                  type="button"
+                  class="btn btn-light action-button"
+                  (click)="modifierOrdre(ordre)"
+                >
+                  Modifier
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-danger action-button"
+                  (click)="supprimerOrdre(ordre.id!)"
+                >
+                  Supprimer
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary action-button"
+                  (click)="exporterPdf(ordre.id!)"
+                >
+                  PDF
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+          } @empty {
+
+          <tr>
+
+            <td
+              colspan="7"
+              class="empty-state"
+            >
+              Aucun ordre de service disponible.
+            </td>
+
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>

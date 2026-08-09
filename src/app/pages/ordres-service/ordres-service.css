@@ -1,0 +1,496 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+/* =====================================================
+   PAGE
+===================================================== */
+
+.ordres-page {
+  flex: 1;
+  min-width: 0;
+  padding: 32px;
+  background: var(--color-bg);
+}
+
+.ordres-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.ordres-header h1 {
+  margin: 0;
+  color: var(--color-primary-dark);
+  font-size: clamp(32px, 3vw, 44px);
+  line-height: 1.1;
+}
+
+.ordres-header p {
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+  font-size: 15px;
+}
+
+/* =====================================================
+   TOOLBAR
+===================================================== */
+
+.ordres-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 24px;
+  padding: 18px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.search-group {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 260px;
+  max-width: 520px;
+}
+
+/* =====================================================
+   FORMULAIRE
+===================================================== */
+
+.ordre-form-card {
+  margin-bottom: 24px;
+  padding: 24px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+
+  animation: ordre-form-enter 0.22s ease;
+}
+
+.form-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.form-card-header h2 {
+  margin: 0;
+  color: var(--color-primary-dark);
+  font-size: 22px;
+}
+
+.form-card-header p {
+  margin: 6px 0 0;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.form-close-button {
+  flex: 0 0 36px;
+
+  width: 36px;
+  min-height: 36px;
+  padding: 0;
+
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #64748b;
+
+  font-size: 22px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.form-close-button:hover {
+  background: #f8fafc;
+  color: var(--color-danger);
+}
+
+.ordre-form-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.ordre-form-grid .form-group {
+  margin-bottom: 0;
+}
+
+.form-group-wide {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+
+  margin-top: 24px;
+  padding-top: 20px;
+
+  border-top: 1px solid var(--color-border);
+}
+
+/* =====================================================
+   CARTE TABLEAU
+===================================================== */
+
+.ordres-table-card {
+  min-width: 0;
+  padding: 22px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.table-card-header {
+  margin-bottom: 18px;
+}
+
+.table-card-header h2 {
+  margin: 0;
+  color: var(--color-primary-dark);
+  font-size: 21px;
+}
+
+.table-card-header p {
+  margin: 6px 0 0;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+/* =====================================================
+   TABLEAU
+===================================================== */
+
+.ordres-table-wrapper {
+  width: 100%;
+  max-width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  border-radius: 14px;
+
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #e2e8f0;
+}
+
+.ordres-table-wrapper::-webkit-scrollbar {
+  height: 9px;
+}
+
+.ordres-table-wrapper::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+
+.ordres-table-wrapper::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 10px;
+}
+
+.ordres-table {
+  width: 100%;
+  min-width: 1280px;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.ordres-table thead th {
+  padding: 17px 18px;
+
+  color: #ffffff;
+  background: #123b7a;
+
+  border-right:
+    1px solid rgba(255, 255, 255, 0.25);
+
+  text-align: left;
+  font-size: 14px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+.ordres-table thead th:last-child {
+  border-right: none;
+}
+
+.ordres-table tbody td {
+  padding: 17px 18px;
+
+  color: #1e293b;
+  background: #ffffff;
+
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+
+  vertical-align: middle;
+}
+
+.ordres-table tbody td:last-child {
+  border-right: none;
+}
+
+.ordres-table tbody tr:hover td {
+  background: #f8fbff;
+}
+
+/* Numéro ordre */
+
+.ordres-table th:nth-child(1),
+.ordres-table td:nth-child(1) {
+  width: 160px;
+  min-width: 160px;
+}
+
+/* Marché */
+
+.ordres-table th:nth-child(2),
+.ordres-table td:nth-child(2) {
+  width: 150px;
+  min-width: 150px;
+  white-space: nowrap;
+}
+
+/* Date ordre */
+
+.ordres-table th:nth-child(3),
+.ordres-table td:nth-child(3) {
+  width: 145px;
+  min-width: 145px;
+  white-space: nowrap;
+}
+
+/* Début exécution */
+
+.ordres-table th:nth-child(4),
+.ordres-table td:nth-child(4) {
+  width: 170px;
+  min-width: 170px;
+  white-space: nowrap;
+}
+
+/* Objet */
+
+.ordres-table th:nth-child(5),
+.ordres-table td:nth-child(5) {
+  width: 300px;
+  min-width: 300px;
+
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+/* Statut */
+
+.ordres-table th:nth-child(6),
+.ordres-table td:nth-child(6) {
+  width: 150px;
+  min-width: 150px;
+
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Actions */
+
+.ordres-table th:nth-child(7),
+.ordres-table td:nth-child(7) {
+  width: 270px;
+  min-width: 270px;
+}
+
+.ordre-reference {
+  color: var(--color-primary-dark);
+}
+
+/* =====================================================
+   STATUTS
+===================================================== */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 12px;
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.status-info {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.status-warning {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.status-success {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.status-danger {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+/* =====================================================
+   ACTIONS
+===================================================== */
+
+.ordre-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-wrap: nowrap;
+  gap: 7px;
+}
+
+.ordre-actions .action-button {
+  flex-shrink: 0;
+
+  min-width: 64px;
+  min-height: 34px;
+
+  padding: 6px 9px;
+
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* =====================================================
+   ÉTAT VIDE
+===================================================== */
+
+.empty-state {
+  padding: 32px !important;
+  color: var(--color-text-muted);
+  text-align: center !important;
+}
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+@keyframes ordre-form-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1100px) {
+
+  .ordres-page {
+    padding: 24px;
+  }
+
+  .ordres-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .search-input {
+    max-width: none;
+  }
+
+  .ordres-toolbar > .btn {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 760px) {
+
+  .ordres-page {
+    padding: 18px;
+  }
+
+  .ordres-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ordres-header > .btn {
+    width: 100%;
+  }
+
+  .ordre-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group-wide {
+    grid-column: auto;
+  }
+
+  .form-actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+
+  .search-group {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .search-input,
+  .search-group .btn,
+  .ordres-toolbar > .btn {
+    width: 100%;
+  }
+
+  .ordres-table-card {
+    padding: 16px;
+  }
+}
