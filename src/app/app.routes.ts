@@ -11,6 +11,7 @@ import { Notifications } from './pages/notifications/notifications';
 import { Offres } from './pages/offres/offres';
 import { OrdresService } from './pages/ordres-service/ordres-service';
 import { BonsLivraison } from './pages/bons-livraison/bons-livraison';
+import { Factures } from './pages/factures/factures';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -21,6 +22,7 @@ export const routes: Routes = [
   { path: 'ordres-service', component: OrdresService },
   { path: 'commandes', component: Commandes },
   { path: 'bons-livraison', component: BonsLivraison },
+  { path: 'factures', component: Factures },
   { path: 'paiements', component: Paiements },
   { path: 'clients', component: Clients },
   { path: 'consultations', component: Consultations },

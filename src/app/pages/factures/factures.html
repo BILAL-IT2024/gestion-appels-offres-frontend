@@ -1,0 +1,518 @@
+<div class="page-layout">
+
+  <app-sidebar></app-sidebar>
+
+  <main class="factures-page">
+
+    <header class="factures-header">
+
+      <div>
+        <h1>Gestion des Factures</h1>
+
+        <p>
+          Suivez les factures, leurs montants,
+          leurs échéances et leurs statuts
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="ouvrirFormulaire()"
+      >
+        + Nouvelle facture
+      </button>
+
+    </header>
+
+    <section class="factures-toolbar">
+
+      <div class="search-group">
+
+        <input
+          type="text"
+          class="form-control search-input"
+          placeholder="Rechercher par numéro..."
+          [(ngModel)]="keyword"
+          (keyup.enter)="rechercherFactures()"
+        >
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="rechercherFactures()"
+        >
+          Rechercher
+        </button>
+
+        <select
+          class="form-control statut-filter"
+          [(ngModel)]="filtreStatut"
+          (ngModelChange)="filtrerParStatut()"
+        >
+          <option value="">
+            Tous les statuts
+          </option>
+
+          <option value="BROUILLON">
+            Brouillon
+          </option>
+
+          <option value="EMISE">
+            Émise
+          </option>
+
+          <option value="PAYEE">
+            Payée
+          </option>
+
+          <option value="ANNULEE">
+            Annulée
+          </option>
+        </select>
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="reinitialiserRecherche()"
+        >
+          Réinitialiser
+        </button>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="exporterExcel()"
+      >
+        Exporter Excel
+      </button>
+
+    </section>
+
+    @if (showForm) {
+
+    <section class="facture-form-card">
+
+      <div class="form-card-header">
+
+        <div>
+
+          <h2>
+            {{
+            modeEdition
+            ? 'Modifier la facture'
+            : 'Nouvelle facture'
+            }}
+          </h2>
+
+          <p>
+            Renseignez les informations principales
+            de la facture
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="form-close-button"
+          aria-label="Fermer le formulaire"
+          (click)="showForm = false"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="facture-form-grid">
+
+        <div class="form-group">
+
+          <label for="numeroFacture">
+            Numéro de facture
+          </label>
+
+          <input
+            id="numeroFacture"
+            type="text"
+            class="form-control"
+            placeholder="Ex. FAC-2026-001"
+            [(ngModel)]="nouvelleFacture.numeroFacture"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="bonLivraison">
+            Bon de livraison
+          </label>
+
+          <select
+            id="bonLivraison"
+            class="form-control"
+            [(ngModel)]="nouvelleFacture.bonLivraison.id"
+          >
+
+            <option [ngValue]="0">
+              -- Choisir un bon de livraison --
+            </option>
+
+            @for (bon of bonsLivraison; track bon.id) {
+
+            @if (bon.statut !== 'ANNULE') {
+
+            <option [ngValue]="bon.id">
+              {{ bon.numeroBon }}
+              @if (bon.commande?.numeroCommande) {
+              — {{ bon.commande.numeroCommande }}
+              }
+            </option>
+
+            }
+
+            }
+
+          </select>
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="dateFacture">
+            Date de facture
+          </label>
+
+          <input
+            id="dateFacture"
+            type="date"
+            class="form-control"
+            [(ngModel)]="nouvelleFacture.dateFacture"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="dateEcheance">
+            Date d’échéance
+          </label>
+
+          <input
+            id="dateEcheance"
+            type="date"
+            class="form-control"
+            [(ngModel)]="nouvelleFacture.dateEcheance"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="montantHT">
+            Montant HT
+          </label>
+
+          <input
+            id="montantHT"
+            type="number"
+            min="0"
+            class="form-control"
+            placeholder="Montant HT en DH"
+            [(ngModel)]="nouvelleFacture.montantHT"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="tva">
+            TVA (%)
+          </label>
+
+          <input
+            id="tva"
+            type="number"
+            min="0"
+            class="form-control"
+            placeholder="Ex. 20"
+            [(ngModel)]="nouvelleFacture.tva"
+          >
+
+        </div>
+
+        @if (modeEdition && nouvelleFacture.montantTTC !== undefined) {
+
+        <div class="form-group">
+
+          <label for="montantTTC">
+            Montant TTC
+          </label>
+
+          <input
+            id="montantTTC"
+            type="number"
+            class="form-control"
+            [ngModel]="nouvelleFacture.montantTTC"
+            readonly
+          >
+
+        </div>
+
+        }
+
+        <div class="form-group">
+
+          <label for="statut">
+            Statut
+          </label>
+
+          <select
+            id="statut"
+            class="form-control"
+            [(ngModel)]="nouvelleFacture.statut"
+          >
+
+            <option value="BROUILLON">
+              Brouillon
+            </option>
+
+            <option value="EMISE">
+              Émise
+            </option>
+
+            <option value="PAYEE">
+              Payée
+            </option>
+
+            <option value="ANNULEE">
+              Annulée
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="showForm = false"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="enregistrerFacture()"
+        >
+          {{
+          modeEdition
+          ? 'Enregistrer les modifications'
+          : 'Enregistrer la facture'
+          }}
+        </button>
+
+      </div>
+
+    </section>
+
+    }
+
+    <section class="factures-table-card">
+
+      <div class="table-card-header">
+
+        <div>
+
+          <h2>
+            Liste des factures
+          </h2>
+
+          <p>
+            {{ factures.length }} facture(s) affichée(s)
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="factures-table-wrapper">
+
+        <table class="factures-table">
+
+          <thead>
+
+          <tr>
+            <th>N° facture</th>
+            <th>Bon livraison</th>
+            <th>Commande</th>
+            <th>Date facture</th>
+            <th>Échéance</th>
+            <th>Montant HT</th>
+            <th>TVA</th>
+            <th>Montant TTC</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+
+          </thead>
+
+          <tbody>
+
+          @for (facture of factures; track facture.id) {
+
+          <tr>
+
+            <td>
+              <strong class="facture-reference">
+                {{ facture.numeroFacture }}
+              </strong>
+            </td>
+
+            <td>
+              {{
+              facture.bonLivraison.numeroBon
+              || '—'
+              }}
+            </td>
+
+            <td>
+              {{
+              facture.bonLivraison.commande?.numeroCommande
+              || '—'
+              }}
+            </td>
+
+            <td>
+              {{ facture.dateFacture || '—' }}
+            </td>
+
+            <td>
+              {{ facture.dateEcheance || '—' }}
+            </td>
+
+            <td class="montant-cell">
+              {{ facture.montantHT | number }} DH
+            </td>
+
+            <td>
+              {{ facture.tva | number }} %
+            </td>
+
+            <td class="montant-ttc-cell">
+              {{
+              facture.montantTTC !== undefined
+              ? (facture.montantTTC | number)
+              : '—'
+              }}
+              @if (facture.montantTTC !== undefined) {
+              DH
+              }
+            </td>
+
+            <td>
+
+              <span
+                class="status-badge"
+                [class.status-warning]="
+                  facture.statut === 'BROUILLON'
+                "
+                [class.status-info]="
+                  facture.statut === 'EMISE'
+                "
+                [class.status-success]="
+                  facture.statut === 'PAYEE'
+                "
+                [class.status-danger]="
+                  facture.statut === 'ANNULEE'
+                "
+              >
+
+                @if (facture.statut === 'BROUILLON') {
+                  Brouillon
+                } @else if (
+                  facture.statut === 'EMISE'
+                ) {
+                  Émise
+                } @else if (
+                  facture.statut === 'PAYEE'
+                ) {
+                  Payée
+                } @else if (
+                  facture.statut === 'ANNULEE'
+                ) {
+                  Annulée
+                } @else {
+                  {{ facture.statut || '—' }}
+                }
+
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="facture-actions">
+
+                <button
+                  type="button"
+                  class="btn btn-light action-button"
+                  (click)="modifierFacture(facture)"
+                >
+                  Modifier
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-danger action-button"
+                  (click)="supprimerFacture(facture.id!)"
+                >
+                  Supprimer
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary action-button"
+                  (click)="exporterPdf(facture.id!)"
+                >
+                  PDF
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+          } @empty {
+
+          <tr>
+
+            <td
+              colspan="10"
+              class="empty-state"
+            >
+              Aucune facture disponible.
+            </td>
+
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
