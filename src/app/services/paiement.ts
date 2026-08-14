@@ -3,15 +3,37 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Paiement {
+
   id?: number;
+
   datePaiement: string;
+
   montantPaiement: number;
+
   modePaiement: string;
+
   referencePaiement: string;
+
   statut: string;
-  commande: {
+
+  facture?: {
     id: number;
-  };
+    numeroFacture?: string;
+  } | null;
+
+  commande?: {
+    id: number;
+    numeroCommande?: string;
+  } | null;
+}
+
+export interface ResumeFacture {
+
+  montantTTC: number;
+
+  montantPaye: number;
+
+  resteAPayer: number;
 }
 
 @Injectable({
@@ -26,11 +48,14 @@ export class PaiementService {
     private http: HttpClient
   ) {}
 
+
   getPaiements(): Observable<any[]> {
+
     return this.http.get<any[]>(
       this.apiUrl
     );
   }
+
 
   savePaiement(
     paiement: Paiement
@@ -41,6 +66,7 @@ export class PaiementService {
       paiement
     );
   }
+
 
   updatePaiement(
     id: number,
@@ -53,6 +79,7 @@ export class PaiementService {
     );
   }
 
+
   deletePaiement(
     id: number
   ): Observable<void> {
@@ -61,6 +88,7 @@ export class PaiementService {
       `${this.apiUrl}/${id}`
     );
   }
+
 
   searchPaiements(
     keyword: string
@@ -71,6 +99,27 @@ export class PaiementService {
     );
   }
 
+
+  getPaiementsByFacture(
+    factureId: number
+  ): Observable<Paiement[]> {
+
+    return this.http.get<Paiement[]>(
+      `${this.apiUrl}/facture/${factureId}`
+    );
+  }
+
+
+  getResumeFacture(
+    factureId: number
+  ): Observable<ResumeFacture> {
+
+    return this.http.get<ResumeFacture>(
+      `${this.apiUrl}/facture/${factureId}/resume`
+    );
+  }
+
+
   exportExcel(): Observable<Blob> {
 
     return this.http.get(
@@ -80,6 +129,7 @@ export class PaiementService {
       }
     );
   }
+
 
   exportPdf(
     id: number

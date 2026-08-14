@@ -115,29 +115,72 @@
 
         <div class="form-group">
 
-          <label for="commande">
-            Commande associée
+          <label for="facture">
+            Facture associée
           </label>
 
           <select
-            id="commande"
+            id="facture"
             class="form-control"
-            [(ngModel)]="nouveauPaiement.commande.id"
+            [(ngModel)]="nouveauPaiement.facture!.id"
+            (ngModelChange)="chargerResumeFacture($event)"
           >
             <option [ngValue]="0">
-              -- Choisir une commande --
+              -- Choisir une facture --
             </option>
 
-            @for (commande of commandes; track commande.id) {
+            @for (facture of factures; track facture.id) {
 
-            <option [ngValue]="commande.id">
-              {{ commande.numeroCommande }}
+            @if (facture.statut !== 'ANNULEE') {
+
+            <option [ngValue]="facture.id">
+              {{ facture.numeroFacture }}
+              — {{ facture.montantTTC | number }} DH
             </option>
 
             }
+
+            }
+
           </select>
 
         </div>
+
+        @if (resumeFacture) {
+
+        <div class="form-group form-group-wide">
+
+          <div class="facture-resume">
+
+            <div>
+              <span>Montant TTC</span>
+
+              <strong>
+                {{ resumeFacture.montantTTC | number }} DH
+              </strong>
+            </div>
+
+            <div>
+              <span>Déjà payé</span>
+
+              <strong>
+                {{ resumeFacture.montantPaye | number }} DH
+              </strong>
+            </div>
+
+            <div>
+              <span>Reste à payer</span>
+
+              <strong>
+                {{ resumeFacture.resteAPayer | number }} DH
+              </strong>
+            </div>
+
+          </div>
+
+        </div>
+
+        }
 
         <div class="form-group">
 
@@ -279,6 +322,7 @@
             <th>Montant</th>
             <th>Mode</th>
             <th>Statut</th>
+            <th>Facture</th>
             <th>Commande</th>
             <th>Actions</th>
           </tr>
@@ -345,6 +389,10 @@
             </td>
 
             <td>
+              {{ paiement.facture?.numeroFacture || '—' }}
+            </td>
+
+            <td>
               {{ paiement.commande?.numeroCommande || '—' }}
             </td>
 
@@ -387,7 +435,7 @@
           <tr>
 
             <td
-              colspan="7"
+              colspan="8"
               class="empty-state"
             >
               Aucun paiement disponible.

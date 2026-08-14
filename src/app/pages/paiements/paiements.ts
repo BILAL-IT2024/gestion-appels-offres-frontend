@@ -8,7 +8,7 @@ import { DecimalPipe } from '@angular/common';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Paiement, PaiementService } from '../../services/paiement';
-import { CommandeService } from '../../services/commande';
+import { FactureService } from '../../services/facture';
 import { ToastService } from '../../services/toast';
 import { ConfirmDialogService } from '../../services/confirm-dialog';
 
@@ -27,7 +27,12 @@ export class Paiements implements OnInit {
 
   paiements: any[] = [];
   keyword = '';
-  commandes: any[] = [];
+  factures: any[] = [];
+  resumeFacture: {
+    montantTTC: number;
+    montantPaye: number;
+    resteAPayer: number;
+  } | null = null;
 
   nouveauPaiement: Paiement = {
     datePaiement: '',
@@ -35,14 +40,15 @@ export class Paiements implements OnInit {
     modePaiement: 'VIREMENT',
     referencePaiement: '',
     statut: 'EN_ATTENTE',
-    commande: {
+    facture: {
       id: 0
-    }
+    },
+    commande: null
   };
 
   constructor(
     private paiementService: PaiementService,
-    private commandeService: CommandeService,
+    private factureService: FactureService,
     private cd: ChangeDetectorRef,
     private toastService: ToastService,
     private confirmDialogService: ConfirmDialogService
@@ -50,7 +56,7 @@ export class Paiements implements OnInit {
 
   ngOnInit(): void {
     this.chargerPaiements();
-    this.chargerCommandes();
+    this.chargerFactures();
   }
 
   chargerPaiements(): void {
@@ -65,16 +71,65 @@ export class Paiements implements OnInit {
     });
   }
 
-  chargerCommandes(): void {
-    this.commandeService.getCommandes().subscribe({
-      next: (data) => {
-        this.commandes = data;
-      },
-      error: (err) => {
-        console.log('Erreur chargement commandes', err);
-      }
-    });
+  chargerFactures(): void {
+
+    this.factureService
+      .getFactures()
+      .subscribe({
+
+        next: (data) => {
+          this.factures = data;
+          this.cd.detectChanges();
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Erreur chargement factures',
+            err
+          );
+
+          this.toastService.error(
+            'Erreur lors du chargement des factures'
+          );
+        }
+      });
   }
+
+ chargerResumeFacture(
+   factureId: number
+ ): void {
+
+   this.resumeFacture = null;
+
+   if (!factureId) {
+     return;
+   }
+
+   this.paiementService
+     .getResumeFacture(factureId)
+     .subscribe({
+
+       next: (data) => {
+
+         this.resumeFacture = data;
+
+         this.cd.detectChanges();
+       },
+
+       error: (err) => {
+
+         console.error(
+           'Erreur chargement résumé facture',
+           err
+         );
+
+         this.toastService.error(
+           'Erreur lors du chargement du résumé de la facture'
+         );
+       }
+     });
+ }
 
   ouvrirFormulaire(): void {
 
@@ -87,15 +142,50 @@ export class Paiements implements OnInit {
       modePaiement: 'VIREMENT',
       referencePaiement: '',
       statut: 'EN_ATTENTE',
-      commande: {
+      facture: {
         id: 0
-      }
+      },
+      commande: null
     };
 
+    this.resumeFacture = null;
+
     this.showForm = true;
+
   }
 
 enregistrerPaiement(): void {
+
+  if (
+    !this.nouveauPaiement.referencePaiement.trim() ||
+    !this.nouveauPaiement.datePaiement ||
+    this.nouveauPaiement.montantPaiement <= 0 ||
+    !this.nouveauPaiement.facture ||
+    this.nouveauPaiement.facture.id === 0
+  ) {
+
+    this.toastService.warning(
+      'Veuillez remplir correctement tous les champs'
+    );
+
+    return;
+  }
+
+  if (
+    this.resumeFacture &&
+    !this.modeEdition &&
+    this.nouveauPaiement.montantPaiement >
+      this.resumeFacture.resteAPayer
+  ) {
+
+    this.toastService.warning(
+      `Le montant dépasse le reste à payer : ${
+        this.resumeFacture.resteAPayer
+      } DH`
+    );
+
+    return;
+  }
 
   if (
     this.modeEdition &&
@@ -116,10 +206,23 @@ enregistrerPaiement(): void {
         this.chargerPaiements();
       },
       error: (err) => {
-        console.log('Erreur modification paiement', err);
-        this.toastService.error(
-          'Erreur lors de la modification du paiement'
+
+        console.error(
+          'Erreur modification paiement',
+          err
         );
+
+        const message =
+          err?.error?.detail
+          || err?.error?.message
+          || (
+            typeof err?.error === 'string'
+              ? err.error
+              : null
+          )
+          || 'Erreur lors de l’enregistrement du paiement';
+
+        this.toastService.error(message);
       }
     });
 
@@ -134,10 +237,23 @@ enregistrerPaiement(): void {
         this.chargerPaiements();
       },
       error: (err) => {
-        console.log('Erreur enregistrement paiement', err);
-        this.toastService.error(
-          'Erreur lors de l’enregistrement du paiement'
+
+        console.error(
+          'Erreur enregistrement paiement',
+          err
         );
+
+        const message =
+          err?.error?.detail
+          || err?.error?.message
+          || (
+            typeof err?.error === 'string'
+              ? err.error
+              : null
+          )
+          || 'Erreur lors de l’enregistrement du paiement';
+
+        this.toastService.error(message);
       }
     });
 
@@ -157,10 +273,26 @@ modifierPaiement(paiement: any): void {
     modePaiement: paiement.modePaiement,
     referencePaiement: paiement.referencePaiement,
     statut: paiement.statut ?? 'EN_ATTENTE',
+
+    facture: {
+      id: Number(
+        paiement.facture?.id ?? 0
+      )
+    },
+
     commande: {
-      id: Number(paiement.commande?.id ?? 0)
+      id: Number(
+        paiement.commande?.id ?? 0
+      )
     }
   };
+
+  const factureId =
+    this.nouveauPaiement.facture?.id ?? 0;
+
+  if (factureId !== 0) {
+    this.chargerResumeFacture(factureId);
+  }
 
 }
 

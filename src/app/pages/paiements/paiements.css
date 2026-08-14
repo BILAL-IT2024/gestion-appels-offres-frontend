@@ -182,8 +182,10 @@
 
 .paiement-table {
   width: 100%;
+  min-width: 1250px;
+
   border-collapse: collapse;
-  table-layout: fixed;
+  table-layout: auto;
 }
 
 .paiement-table th,
@@ -212,6 +214,7 @@
 
   font-size: 13px;
   font-weight: 700;
+
   white-space: nowrap;
 }
 
@@ -219,51 +222,123 @@
   background: #f8fafc;
 }
 
-/* Largeurs équilibrées */
+/* Référence */
 
 .paiement-table th:nth-child(1),
 .paiement-table td:nth-child(1) {
-  width: 15%;
+  min-width: 170px;
 }
+
+/* Date */
 
 .paiement-table th:nth-child(2),
 .paiement-table td:nth-child(2) {
-  width: 12%;
+  min-width: 130px;
+  white-space: nowrap;
 }
+
+/* Montant */
 
 .paiement-table th:nth-child(3),
 .paiement-table td:nth-child(3) {
-  width: 15%;
+  min-width: 150px;
+  white-space: nowrap;
 }
+
+/* Mode */
 
 .paiement-table th:nth-child(4),
 .paiement-table td:nth-child(4) {
-  width: 12%;
+  min-width: 130px;
+  white-space: nowrap;
 }
+
+/* Statut */
 
 .paiement-table th:nth-child(5),
 .paiement-table td:nth-child(5) {
-  width: 13%;
+  min-width: 130px;
+  white-space: nowrap;
 }
+
+/* Facture */
 
 .paiement-table th:nth-child(6),
 .paiement-table td:nth-child(6) {
-  width: 13%;
+  min-width: 160px;
+  white-space: nowrap;
 }
+
+/* Commande */
 
 .paiement-table th:nth-child(7),
 .paiement-table td:nth-child(7) {
-  width: 20%;
+  min-width: 160px;
+  white-space: nowrap;
+}
+
+/* Actions */
+
+.paiement-table th:nth-child(8),
+.paiement-table td:nth-child(8) {
+  min-width: 250px;
 }
 
 .paiement-reference {
   color: var(--color-primary-dark);
-  overflow-wrap: anywhere;
+
+  font-weight: 700;
+
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .montant-cell {
-  font-weight: 600;
+  font-weight: 700;
   white-space: nowrap;
+}
+
+/* =====================================================
+   RESUME FACTURE
+===================================================== */
+
+.form-group-wide {
+  grid-column: 1 / -1;
+}
+
+.facture-resume {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 14px;
+
+  padding: 16px;
+
+  background: #f8fafc;
+
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.facture-resume > div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.facture-resume span {
+  color: var(--color-text-muted);
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.facture-resume strong {
+  color: var(--color-primary-dark);
+
+  font-size: 16px;
 }
 
 /* =====================================================
@@ -273,18 +348,21 @@
 .paiement-actions {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+
+  flex-wrap: nowrap;
   gap: 6px;
 }
 
 .action-button {
   flex: 0 0 auto;
 
-  min-width: 62px;
-  min-height: 32px;
-  padding: 5px 8px;
+  min-width: 68px;
+  min-height: 34px;
+
+  padding: 5px 9px;
 
   font-size: 10px;
+
   white-space: nowrap;
 }
 
@@ -352,6 +430,10 @@
   .search-group .btn,
   .search-input{
     width:100%;
+  }
+
+  .facture-resume {
+    grid-template-columns: 1fr;
   }
 
 }
