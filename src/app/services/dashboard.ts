@@ -29,6 +29,15 @@ export interface DashboardStats {
 
   chiffreAffaireTotal: number;
 
+  totalFactures: number;
+  facturesPayees: number;
+  facturesPartiellementPayees: number;
+  facturesEmises: number;
+
+  montantTotalFacture: number;
+  resteTotalAEncaisser: number;
+  totalEncaisse: number;
+
   aoAdjuges: number;
   tauxReussite: number;
   aoEnCours: number;

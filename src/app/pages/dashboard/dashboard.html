@@ -204,6 +204,57 @@
         </strong>
       </article>
 
+      <article class="kpi-card">
+        <span class="kpi-label">Total factures</span>
+        <strong class="kpi-value">
+          {{ stats.totalFactures }}
+        </strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Factures payées</span>
+        <strong class="kpi-value">
+          {{ stats.facturesPayees }}
+        </strong>
+      </article>
+
+      <article class="kpi-card kpi-warning">
+  <span class="kpi-label">
+    Factures partiellement payées
+  </span>
+        <strong class="kpi-value">
+          {{ stats.facturesPartiellementPayees }}
+        </strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Factures émises</span>
+        <strong class="kpi-value">
+          {{ stats.facturesEmises }}
+        </strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Montant total facturé</span>
+        <strong class="kpi-value kpi-value-small">
+          {{ stats.montantTotalFacture | number }} DH
+        </strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Total encaissé</span>
+        <strong class="kpi-value kpi-value-small">
+          {{ stats.totalEncaisse | number }} DH
+        </strong>
+      </article>
+
+      <article class="kpi-card kpi-warning">
+        <span class="kpi-label">Reste à encaisser</span>
+        <strong class="kpi-value kpi-value-small">
+          {{ stats.resteTotalAEncaisser | number }} DH
+        </strong>
+      </article>
+
     </section>
 
     }
