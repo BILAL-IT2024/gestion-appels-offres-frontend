@@ -468,22 +468,78 @@ modifierCommande(commande: any): void {
   this.idCommandeEnCours = commande.id;
   this.showForm = true;
 
-  this.nouvelleCommande = {
-    numeroCommande: commande.numeroCommande,
-    dateCommande: commande.dateCommande,
-    montantCommande: commande.montantCommande,
-    statut: commande.statut,
-    marche: {
-      id: Number(commande.marche?.id ?? 0)
-    }
-  };
+  this.resumeMarche = null;
+  this.resumeConsultation = null;
 
-if (this.nouvelleCommande.marche) {
-  this.mettreAJourMarcheSelectionne(
-    this.nouvelleCommande.marche.id
+  this.marcheSelectionne = null;
+  this.consultationSelectionnee = null;
+
+
+  // ==========================
+  // COMMANDE LIÉE À UN MARCHÉ
+  // ==========================
+
+  if (commande.marche) {
+
+    this.origineCommande = 'MARCHE';
+
+    this.nouvelleCommande = {
+      numeroCommande: commande.numeroCommande,
+      dateCommande: commande.dateCommande,
+      montantCommande: commande.montantCommande,
+      statut: commande.statut,
+
+      marche: {
+        id: Number(commande.marche.id)
+      },
+
+      consultation: null
+    };
+
+    this.mettreAJourMarcheSelectionne(
+      Number(commande.marche.id)
+    );
+
+    return;
+  }
+
+
+  // ================================
+  // COMMANDE LIÉE À UNE CONSULTATION
+  // ================================
+
+  if (commande.consultation) {
+
+    this.origineCommande = 'CONSULTATION';
+
+    this.nouvelleCommande = {
+      numeroCommande: commande.numeroCommande,
+      dateCommande: commande.dateCommande,
+      montantCommande: commande.montantCommande,
+      statut: commande.statut,
+
+      marche: null,
+
+      consultation: {
+        id: Number(commande.consultation.id)
+      }
+    };
+
+    this.mettreAJourConsultationSelectionnee(
+      Number(commande.consultation.id)
+    );
+
+    return;
+  }
+
+
+  // ==========================
+  // CAS ANORMAL
+  // ==========================
+
+  this.toastService.warning(
+    'Cette commande ne possède ni marché ni consultation'
   );
-}
-
 }
 
 supprimerCommande(id: number): void {
