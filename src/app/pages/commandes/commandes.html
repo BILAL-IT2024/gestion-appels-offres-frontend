@@ -113,6 +113,40 @@
 
         </div>
 
+        <div class="form-group form-group-wide">
+
+          <label>
+            Origine de la commande
+          </label>
+
+          <div class="origine-buttons">
+
+            <button
+              type="button"
+              class="btn"
+              [class.btn-primary]="origineCommande === 'MARCHE'"
+              [class.btn-outline]="origineCommande !== 'MARCHE'"
+              (click)="changerOrigineCommande('MARCHE')"
+            >
+              Marché
+            </button>
+
+            <button
+              type="button"
+              class="btn"
+              [class.btn-primary]="origineCommande === 'CONSULTATION'"
+              [class.btn-outline]="origineCommande !== 'CONSULTATION'"
+              (click)="changerOrigineCommande('CONSULTATION')"
+            >
+              Consultation
+            </button>
+
+          </div>
+
+        </div>
+
+        @if (origineCommande === 'MARCHE') {
+
         <div class="form-group">
 
           <label for="marche">
@@ -122,9 +156,10 @@
           <select
             id="marche"
             class="form-control"
-            [(ngModel)]="nouvelleCommande.marche.id"
+            [(ngModel)]="nouvelleCommande.marche!.id"
             (ngModelChange)="mettreAJourMarcheSelectionne($event)"
           >
+
             <option [ngValue]="0">
               -- Choisir un marché --
             </option>
@@ -132,14 +167,18 @@
             @for (marche of marches; track marche.id) {
 
             @if (marche.statut !== 'ANNULE') {
+
             <option [ngValue]="marche.id">
               {{ marche.numeroMarche }}
               — {{ marche.montantMarche | number }} DH
             </option>
+
             }
 
             }
+
           </select>
+
 
           @if (resumeMarche) {
 
@@ -147,20 +186,25 @@
 
             <div>
               <span>Montant du marché</span>
+
               <strong>
                 {{ resumeMarche.montantMarche | number }} DH
               </strong>
             </div>
 
+
             <div>
               <span>Déjà commandé</span>
+
               <strong>
                 {{ resumeMarche.montantCommande | number }} DH
               </strong>
             </div>
 
+
             <div>
               <span>Reste disponible</span>
+
               <strong>
                 {{ resumeMarche.montantRestant | number }} DH
               </strong>
@@ -172,6 +216,76 @@
 
         </div>
 
+        }
+
+
+        @if (origineCommande === 'CONSULTATION') {
+
+        <div class="form-group">
+
+          <label for="consultation">
+            Consultation retenue
+          </label>
+
+          <select
+            id="consultation"
+            class="form-control"
+            [(ngModel)]="nouvelleCommande.consultation!.id"
+            (ngModelChange)="mettreAJourConsultationSelectionnee($event)"
+          >
+
+            <option [ngValue]="0">
+              -- Choisir une consultation --
+            </option>
+
+            @for (
+            consultation of consultationsRetenues;
+            track consultation.id
+            ) {
+
+            <option [ngValue]="consultation.id">
+              {{ consultation.reference }}
+              — {{ consultation.objet }}
+            </option>
+
+            }
+
+          </select>
+          @if (resumeConsultation) {
+
+          <div class="marche-resume">
+
+            <div>
+              <span>Montant de la consultation</span>
+
+              <strong>
+                {{ resumeConsultation.montantConsultation | number }} DH
+              </strong>
+            </div>
+
+            <div>
+              <span>Déjà commandé</span>
+
+              <strong>
+                {{ resumeConsultation.montantCommande | number }} DH
+              </strong>
+            </div>
+
+            <div>
+              <span>Reste disponible</span>
+
+              <strong>
+                {{ resumeConsultation.montantRestant | number }} DH
+              </strong>
+            </div>
+
+          </div>
+
+          }
+
+        </div>
+
+        }
         <div class="form-group">
 
           <label for="dateCommande">
@@ -200,11 +314,25 @@
             class="form-control"
             placeholder="Montant en DH"
             [(ngModel)]="nouvelleCommande.montantCommande"
-            [max]="resumeMarche?.montantRestant ?? null"
-            [disabled]="
-             !modeEdition &&
-             resumeMarche?.montantRestant === 0
+            [max]="
+              origineCommande === 'MARCHE'
+                ? (resumeMarche?.montantRestant ?? null)
+                : (resumeConsultation?.montantRestant ?? null)
             "
+            [disabled]="
+              !modeEdition &&
+               (
+                 (
+                  origineCommande === 'MARCHE' &&
+                  resumeMarche?.montantRestant === 0
+                  )
+                  ||
+                  (
+                   origineCommande === 'CONSULTATION' &&
+                   resumeConsultation?.montantRestant === 0
+                 )
+              )
+             "
            >
           @if (
           !modeEdition &&
@@ -212,6 +340,16 @@
           ) {
           <small class="form-error">
             Le montant du marché est entièrement consommé.
+          </small>
+          }
+
+          @if (
+          !modeEdition &&
+          origineCommande === 'CONSULTATION' &&
+          resumeConsultation?.montantRestant === 0
+          ) {
+          <small class="form-error">
+            Le montant de la consultation est entièrement consommé.
           </small>
           }
 
@@ -317,7 +455,21 @@
             </td>
 
             <td>
-              {{ commande.marche?.numeroMarche || '—' }}
+
+              @if (commande.marche) {
+
+              {{ commande.marche.numeroMarche }}
+
+              } @else if (commande.consultation) {
+
+              {{ commande.consultation.reference }}
+
+              } @else {
+
+              —
+
+              }
+
             </td>
 
             <td>

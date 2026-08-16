@@ -4,17 +4,34 @@ import { Observable } from 'rxjs';
 
 export interface Commande {
   id?: number;
+
   numeroCommande: string;
+
   dateCommande: string;
+
   montantCommande: number;
+
   statut: string;
-  marche: {
+
+  marche?: {
     id: number;
-  };
+    numeroMarche?: string;
+  } | null;
+
+  consultation?: {
+    id: number;
+    reference?: string;
+  } | null;
 }
 
 export interface ResumeMarche {
   montantMarche: number;
+  montantCommande: number;
+  montantRestant: number;
+}
+
+export interface ResumeConsultation {
+  montantConsultation: number;
   montantCommande: number;
   montantRestant: number;
 }
@@ -82,6 +99,14 @@ export class CommandeService {
   ): Observable<ResumeMarche> {
     return this.http.get<ResumeMarche>(
       `${this.apiUrl}/marche/${marcheId}/resume`
+    );
+  }
+
+  getResumeConsultation(
+    consultationId: number
+  ): Observable<ResumeConsultation> {
+    return this.http.get<ResumeConsultation>(
+      `${this.apiUrl}/consultation/${consultationId}/resume`
     );
   }
 

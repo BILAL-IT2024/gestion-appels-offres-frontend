@@ -3,8 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
-import { Commande, CommandeService, ResumeMarche } from '../../services/commande';
+import { Commande, CommandeService, ResumeMarche, ResumeConsultation } from '../../services/commande';
 import { MarcheService } from '../../services/marche';
+import { ConsultationService } from '../../services/consultation';
 import { ToastService } from '../../services/toast';
 import { ConfirmDialogService } from '../../services/confirm-dialog';
 
@@ -24,8 +25,16 @@ export class Commandes implements OnInit {
   commandes: any[] = [];
   keyword = '';
   marches: any[] = [];
+  consultationsRetenues: any[] = [];
+
+  origineCommande: 'MARCHE' | 'CONSULTATION' = 'MARCHE';
+
   marcheSelectionne: any | null = null;
+  consultationSelectionnee: any | null = null;
+
   resumeMarche: ResumeMarche | null = null;
+
+  resumeConsultation: ResumeConsultation | null = null;
 
   nouvelleCommande: Commande = {
     numeroCommande: '',
@@ -34,12 +43,14 @@ export class Commandes implements OnInit {
     statut: 'EN_COURS',
     marche: {
       id: 0
-    }
+    },
+    consultation: null
   };
 
   constructor(
     private commandeService: CommandeService,
     private marcheService: MarcheService,
+    private consultationService: ConsultationService,
     private cd: ChangeDetectorRef,
     private toastService: ToastService,
     private confirmDialogService: ConfirmDialogService
@@ -48,6 +59,7 @@ export class Commandes implements OnInit {
   ngOnInit(): void {
     this.chargerCommandes();
     this.chargerMarches();
+    this.chargerConsultationsRetenues();
   }
 
   chargerCommandes(): void {
@@ -72,6 +84,76 @@ export class Commandes implements OnInit {
       }
     });
   }
+
+  chargerConsultationsRetenues(): void {
+
+    this.consultationService
+      .getConsultations()
+      .subscribe({
+
+        next: (data) => {
+
+          console.log('Toutes les consultations :', data);
+
+          this.consultationsRetenues =
+            data.filter(
+              consultation =>
+                consultation.statut?.toUpperCase() === 'RETENUE'
+            );
+
+          console.log(
+            'Consultations retenues :',
+            this.consultationsRetenues
+          );
+
+          this.cd.detectChanges();
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Erreur chargement consultations',
+            err
+          );
+
+          this.toastService.error(
+            'Impossible de charger les consultations retenues'
+          );
+        }
+      });
+  }
+
+changerOrigineCommande(
+  origine: 'MARCHE' | 'CONSULTATION'
+): void {
+
+  this.origineCommande = origine;
+
+  this.marcheSelectionne = null;
+  this.consultationSelectionnee = null;
+
+  this.resumeMarche = null;
+  this.resumeConsultation = null;
+
+  this.nouvelleCommande.montantCommande = 0;
+
+  if (origine === 'MARCHE') {
+
+    this.nouvelleCommande.marche = {
+      id: 0
+    };
+
+    this.nouvelleCommande.consultation = null;
+
+  } else {
+
+    this.nouvelleCommande.marche = null;
+
+    this.nouvelleCommande.consultation = {
+      id: 0
+    };
+  }
+}
 
 mettreAJourMarcheSelectionne(
   idMarche: number
@@ -114,7 +196,52 @@ mettreAJourMarcheSelectionne(
     });
 }
 
-  ouvrirFormulaire(): void {
+mettreAJourConsultationSelectionnee(
+  consultationId: number
+): void {
+
+  this.consultationSelectionnee =
+    this.consultationsRetenues.find(
+      consultation =>
+        Number(consultation.id) ===
+        Number(consultationId)
+    ) ?? null;
+
+  this.resumeConsultation = null;
+
+  if (!this.consultationSelectionnee) {
+    this.nouvelleCommande.montantCommande = 0;
+    return;
+  }
+
+  this.commandeService
+    .getResumeConsultation(consultationId)
+    .subscribe({
+
+      next: (resume) => {
+
+        this.resumeConsultation = resume;
+
+        this.cd.detectChanges();
+      },
+
+      error: (err) => {
+
+        console.error(
+          'Erreur chargement résumé consultation',
+          err
+        );
+
+        this.resumeConsultation = null;
+
+        this.toastService.error(
+          'Impossible de charger les montants de la consultation'
+        );
+      }
+    });
+}
+
+ouvrirFormulaire(): void {
 
     this.modeEdition = false;
     this.idCommandeEnCours = undefined;
@@ -126,11 +253,16 @@ mettreAJourMarcheSelectionne(
       statut: 'EN_COURS',
       marche: {
         id: 0
-      }
+      },
+      consultation: null
     };
 
     this.marcheSelectionne = null;
+    this.consultationSelectionnee = null;
+
     this.resumeMarche = null;
+    this.resumeConsultation = null;
+
     this.showForm = true;
   }
 
@@ -139,7 +271,6 @@ enregistrerCommande(): void {
   if (
     !this.nouvelleCommande.numeroCommande.trim() ||
     !this.nouvelleCommande.dateCommande ||
-    this.nouvelleCommande.marche.id === 0 ||
     this.nouvelleCommande.montantCommande <= 0
   ) {
     this.toastService.warning(
@@ -148,43 +279,109 @@ enregistrerCommande(): void {
     return;
   }
 
-  if (!this.marcheSelectionne) {
-    this.toastService.warning(
-      'Le marché sélectionné est introuvable'
-    );
-    return;
+  if (this.origineCommande === 'MARCHE') {
+
+    if (
+      !this.nouvelleCommande.marche ||
+      this.nouvelleCommande.marche.id === 0
+    ) {
+      this.toastService.warning(
+        'Veuillez sélectionner un marché'
+      );
+      return;
+    }
+
   }
 
-  if (!this.resumeMarche) {
-    this.toastService.warning(
-      'Veuillez attendre le chargement des informations du marché'
-    );
-    return;
+  if (this.origineCommande === 'CONSULTATION') {
+
+    if (
+      !this.nouvelleCommande.consultation ||
+      this.nouvelleCommande.consultation.id === 0
+    ) {
+      this.toastService.warning(
+        'Veuillez sélectionner une consultation'
+      );
+      return;
+    }
+
   }
 
-  if (
-    !this.modeEdition &&
-    this.nouvelleCommande.montantCommande >
-    this.resumeMarche.montantRestant
-  ) {
-    this.toastService.warning(
-      `Le montant dépasse le reste disponible : ${
-        this.resumeMarche.montantRestant
-      } DH`
-    );
-    return;
+  if (this.origineCommande === 'MARCHE') {
+
+    if (!this.marcheSelectionne) {
+      this.toastService.warning(
+        'Le marché sélectionné est introuvable'
+      );
+      return;
+    }
+
+    if (!this.resumeMarche) {
+      this.toastService.warning(
+        'Veuillez attendre le chargement des informations du marché'
+      );
+      return;
+    }
+
+    if (
+      !this.modeEdition &&
+      this.nouvelleCommande.montantCommande >
+      this.resumeMarche.montantRestant
+    ) {
+      this.toastService.warning(
+        `Le montant dépasse le reste disponible : ${
+          this.resumeMarche.montantRestant
+        } DH`
+      );
+      return;
+    }
+
+    if (
+      this.nouvelleCommande.montantCommande >
+      Number(this.marcheSelectionne.montantMarche ?? 0)
+    ) {
+      this.toastService.warning(
+        'Le montant de la commande dépasse le montant du marché'
+      );
+      return;
+    }
+
+    this.nouvelleCommande.consultation = null;
   }
 
-  if (
-    this.nouvelleCommande.montantCommande >
-    Number(this.marcheSelectionne.montantMarche ?? 0)
-  ) {
-    this.toastService.warning(
-      'Le montant de la commande dépasse le montant du marché'
-    );
-    return;
-  }
+  if (this.origineCommande === 'CONSULTATION') {
 
+    if (!this.consultationSelectionnee) {
+      this.toastService.warning(
+        'La consultation sélectionnée est introuvable'
+      );
+      return;
+    }
+
+    if (!this.resumeConsultation) {
+      this.toastService.warning(
+        'Veuillez attendre le chargement des informations de la consultation'
+      );
+      return;
+    }
+
+    if (
+      !this.modeEdition &&
+      this.nouvelleCommande.montantCommande >
+      this.resumeConsultation.montantRestant
+    ) {
+
+      this.toastService.warning(
+        `Le montant dépasse le reste disponible : ${
+          this.resumeConsultation.montantRestant
+        } DH`
+      );
+
+      return;
+    }
+
+    this.nouvelleCommande.marche = null;
+  }
   if (
     this.modeEdition &&
     this.idCommandeEnCours !== undefined
@@ -281,9 +478,11 @@ modifierCommande(commande: any): void {
     }
   };
 
-this.mettreAJourMarcheSelectionne(
-  this.nouvelleCommande.marche.id
-);
+if (this.nouvelleCommande.marche) {
+  this.mettreAJourMarcheSelectionne(
+    this.nouvelleCommande.marche.id
+  );
+}
 
 }
 
