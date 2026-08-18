@@ -127,6 +127,7 @@
             id="commande"
             class="form-control"
             [(ngModel)]="nouveauBon.commande.id"
+            (ngModelChange)="mettreAJourCommandeSelectionnee($event)"
           >
 
             <option [ngValue]="0">
@@ -146,6 +147,69 @@
             }
 
           </select>
+
+          @if (resumeCommande) {
+
+          <div class="commande-resume">
+
+            <div>
+              <span>Montant commande</span>
+
+              <strong>
+                {{ resumeCommande.montantCommande | number }} DH
+              </strong>
+            </div>
+
+            <div>
+              <span>Déjà livré</span>
+
+              <strong>
+                {{ resumeCommande.montantLivre | number }} DH
+              </strong>
+            </div>
+
+            <div>
+              <span>Reste à livrer</span>
+
+              <strong>
+                {{ resumeCommande.montantRestant | number }} DH
+              </strong>
+            </div>
+
+          </div>
+
+          }
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="montantLivraison">
+            Montant livré
+          </label>
+
+          <input
+            id="montantLivraison"
+            type="number"
+            min="0"
+            class="form-control"
+            placeholder="Montant livré en DH"
+            [(ngModel)]="nouveauBon.montantLivraison"
+            [max]="resumeCommande?.montantRestant ?? null"
+            [disabled]="
+      !modeEdition &&
+      resumeCommande?.montantRestant === 0
+    "
+          >
+
+          @if (
+          !modeEdition &&
+          resumeCommande?.montantRestant === 0
+          ) {
+          <small class="form-error">
+            Cette commande est entièrement livrée.
+          </small>
+          }
 
         </div>
 
@@ -269,8 +333,9 @@
           <tr>
             <th>N° bon</th>
             <th>Commande</th>
-            <th>Marché</th>
+            <th>Marché / Consultation</th>
             <th>Date livraison</th>
+            <th>Montant livré</th>
             <th>Objet</th>
             <th>Statut</th>
             <th>Actions</th>
@@ -298,14 +363,29 @@
             </td>
 
             <td>
-              {{
-              bon.commande.marche?.numeroMarche
-              || '—'
-              }}
+
+              @if (bon.commande.marche) {
+
+              {{ bon.commande.marche.numeroMarche }}
+
+              } @else if (bon.commande.consultation) {
+
+              {{ bon.commande.consultation.reference }}
+
+              } @else {
+
+              —
+
+              }
+
             </td>
 
             <td>
               {{ bon.dateLivraison || '—' }}
+            </td>
+
+            <td class="montant-cell">
+              {{ bon.montantLivraison | number }} DH
             </td>
 
             <td>
@@ -389,7 +469,7 @@
           <tr>
 
             <td
-              colspan="7"
+              colspan="8"
               class="empty-state"
             >
               Aucun bon de livraison disponible.

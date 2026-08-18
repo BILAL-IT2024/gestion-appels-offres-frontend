@@ -13,15 +13,30 @@ export interface BonLivraison {
 
   statut: string;
 
+  montantLivraison: number;
+
   commande: {
     id: number;
     numeroCommande?: string;
 
-    marche?: {
+  marche?: {
       id?: number;
       numeroMarche?: string;
     };
+
+   consultation?: {
+      id?: number;
+      reference?: string;
+    };
+
   };
+
+}
+
+export interface ResumeCommandeLivraison {
+  montantCommande: number;
+  montantLivre: number;
+  montantRestant: number;
 }
 
 @Injectable({
@@ -39,6 +54,15 @@ export class BonLivraisonService {
   getBonsLivraison(): Observable<BonLivraison[]> {
     return this.http.get<BonLivraison[]>(
       this.apiUrl
+    );
+  }
+
+  getResumeCommande(
+    commandeId: number
+  ): Observable<ResumeCommandeLivraison> {
+
+    return this.http.get<ResumeCommandeLivraison>(
+      `${this.apiUrl}/commande/${commandeId}/resume`
     );
   }
 

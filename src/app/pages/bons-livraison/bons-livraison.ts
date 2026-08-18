@@ -6,12 +6,14 @@ import {
 
 import { FormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 
 import {
   BonLivraison,
-  BonLivraisonService
+  BonLivraisonService,
+  ResumeCommandeLivraison
 } from '../../services/bon-livraison';
 
 import {
@@ -46,6 +48,8 @@ export class BonsLivraison implements OnInit {
   commandes: any[] = [];
 
   keyword = '';
+
+  resumeCommande: ResumeCommandeLivraison | null = null;
 
   nouveauBon: BonLivraison =
     this.creerBonVide();
@@ -113,6 +117,43 @@ export class BonsLivraison implements OnInit {
       });
   }
 
+  mettreAJourCommandeSelectionnee(
+    commandeId: number
+  ): void {
+
+    this.resumeCommande = null;
+
+    if (!commandeId || commandeId === 0) {
+      return;
+    }
+
+    this.bonLivraisonService
+      .getResumeCommande(commandeId)
+      .subscribe({
+
+        next: (resume) => {
+
+          this.resumeCommande = resume;
+
+          this.cd.detectChanges();
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Erreur chargement résumé commande',
+            err
+          );
+
+          this.resumeCommande = null;
+
+          this.toastService.error(
+            'Impossible de charger les informations de la commande'
+          );
+        }
+      });
+  }
+
   ouvrirFormulaire(): void {
 
     this.modeEdition = false;
@@ -120,6 +161,8 @@ export class BonsLivraison implements OnInit {
 
     this.nouveauBon =
       this.creerBonVide();
+
+    this.resumeCommande = null;
 
     this.showForm = true;
 
@@ -135,10 +178,25 @@ export class BonsLivraison implements OnInit {
       !this.nouveauBon.numeroBon.trim() ||
       !this.nouveauBon.dateLivraison ||
       !this.nouveauBon.objet.trim() ||
-      this.nouveauBon.commande.id === 0
+      this.nouveauBon.commande.id === 0 ||
+      this.nouveauBon.montantLivraison <= 0
     ) {
       this.toastService.warning(
         'Veuillez remplir correctement tous les champs'
+      );
+      return;
+    }
+
+    if (
+      !this.modeEdition &&
+      this.resumeCommande &&
+      this.nouveauBon.montantLivraison >
+        this.resumeCommande.montantRestant
+    ) {
+      this.toastService.warning(
+        `Le montant livré dépasse le reste à livrer : ${
+          this.resumeCommande.montantRestant
+        } DH`
       );
       return;
     }
@@ -232,12 +290,17 @@ export class BonsLivraison implements OnInit {
       dateLivraison: bon.dateLivraison,
       objet: bon.objet,
       statut: bon.statut,
+      montantLivraison: bon.montantLivraison,
       commande: {
         id: Number(
           bon.commande?.id ?? 0
         )
       }
     };
+
+    this.mettreAJourCommandeSelectionnee(
+      Number(bon.commande?.id ?? 0)
+    );
 
     window.scrollTo({
       top: 0,
@@ -429,6 +492,7 @@ export class BonsLivraison implements OnInit {
       dateLivraison: '',
       objet: '',
       statut: 'EN_PREPARATION',
+      montantLivraison: 0,
       commande: {
         id: 0
       }
