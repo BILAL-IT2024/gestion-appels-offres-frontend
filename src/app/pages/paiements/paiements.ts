@@ -5,12 +5,14 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
-
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
-import { Paiement, PaiementService } from '../../services/paiement';
 import {
-  FactureService,
-  ResumeFacturation
+  Paiement,
+  PaiementService,
+  ResumeFacture
+} from '../../services/paiement';
+import {
+  FactureService
 } from '../../services/facture';
 import { ToastService } from '../../services/toast';
 import { ConfirmDialogService } from '../../services/confirm-dialog';
@@ -22,6 +24,7 @@ import { ConfirmDialogService } from '../../services/confirm-dialog';
   templateUrl: './paiements.html',
   styleUrl: './paiements.css',
 })
+
 export class Paiements implements OnInit {
 
   showForm = false;
@@ -31,11 +34,7 @@ export class Paiements implements OnInit {
   paiements: any[] = [];
   keyword = '';
   factures: any[] = [];
-  resumeFacture: {
-    montantTTC: number;
-    montantPaye: number;
-    resteAPayer: number;
-  } | null = null;
+  resumeFacture: ResumeFacture | null = null;
 
   nouveauPaiement: Paiement = {
     datePaiement: '',
@@ -177,6 +176,7 @@ enregistrerPaiement(): void {
   if (
     this.resumeFacture &&
     !this.modeEdition &&
+    this.nouveauPaiement.statut === 'VALIDE' &&
     this.nouveauPaiement.montantPaiement >
       this.resumeFacture.resteAPayer
   ) {

@@ -324,6 +324,7 @@
             <th>Statut</th>
             <th>Facture</th>
             <th>Commande</th>
+            <th>Marché / Consultation</th>
             <th>Actions</th>
           </tr>
 
@@ -395,6 +396,29 @@
             <td>
               {{ paiement.commande?.numeroCommande || '—' }}
             </td>
+
+            <td>
+
+              @if (paiement.commande?.marche) {
+
+                 <span>
+                    {{ paiement.commande?.marche?.numeroMarche }}
+                 </span>
+
+              } @else if (paiement.commande?.consultation) {
+
+                  <span>
+                    {{ paiement.commande?.consultation?.reference }}
+                  </span>
+
+                } @else {
+
+                  <span>—</span>
+
+              }
+
+            </td>
+
 
             <td>
 

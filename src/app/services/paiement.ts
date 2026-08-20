@@ -24,6 +24,17 @@ export interface Paiement {
   commande?: {
     id: number;
     numeroCommande?: string;
+
+    marche?: {
+      id?: number;
+      numeroMarche?: string;
+    } | null;
+
+    consultation?: {
+      id?: number;
+      reference?: string;
+    } | null;
+
   } | null;
 }
 
