@@ -8,7 +8,10 @@ import { DecimalPipe } from '@angular/common';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Paiement, PaiementService } from '../../services/paiement';
-import { FactureService } from '../../services/facture';
+import {
+  FactureService,
+  ResumeFacturation
+} from '../../services/facture';
 import { ToastService } from '../../services/toast';
 import { ConfirmDialogService } from '../../services/confirm-dialog';
 

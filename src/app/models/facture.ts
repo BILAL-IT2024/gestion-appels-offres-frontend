@@ -27,6 +27,11 @@ export interface Facture {
         id?: number;
         numeroMarche?: string;
       };
+
+      consultation?: {
+        id?: number;
+        reference?: string;
+      };
     };
   };
 }

@@ -4,6 +4,12 @@ import { Observable } from 'rxjs';
 
 import { Facture } from '../models/facture';
 
+export interface ResumeFacturation {
+  montantLivre: number;
+  montantFacture: number;
+  montantRestant: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +25,15 @@ export class FactureService {
   getFactures(): Observable<Facture[]> {
     return this.http.get<Facture[]>(
       this.apiUrl
+    );
+  }
+
+  getResumeFacturation(
+    bonLivraisonId: number
+  ): Observable<ResumeFacturation> {
+
+    return this.http.get<ResumeFacturation>(
+      `${this.apiUrl}/bon-livraison/${bonLivraisonId}/resume`
     );
   }
 

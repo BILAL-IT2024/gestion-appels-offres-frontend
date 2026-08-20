@@ -153,6 +153,7 @@
             id="bonLivraison"
             class="form-control"
             [(ngModel)]="nouvelleFacture.bonLivraison.id"
+            (ngModelChange)="chargerResumeFacturation($event)"
           >
 
             <option [ngValue]="0">
@@ -177,6 +178,35 @@
           </select>
 
         </div>
+
+        @if (resumeFacturation) {
+
+        <div class="facturation-resume">
+
+          <div class="resume-item">
+            <span>Montant livré</span>
+            <strong>
+              {{ resumeFacturation.montantLivre | number }} DH
+            </strong>
+          </div>
+
+          <div class="resume-item">
+            <span>Déjà facturé</span>
+            <strong>
+              {{ resumeFacturation.montantFacture | number }} DH
+            </strong>
+          </div>
+
+          <div class="resume-item">
+            <span>Reste à facturer</span>
+            <strong>
+              {{ resumeFacturation.montantRestant | number }} DH
+            </strong>
+          </div>
+
+        </div>
+
+        }
 
         <div class="form-group">
 
@@ -221,6 +251,7 @@
             class="form-control"
             placeholder="Montant HT en DH"
             [(ngModel)]="nouvelleFacture.montantHT"
+            (ngModelChange)="calculerMontantTTC()"
           >
 
         </div>
@@ -238,11 +269,10 @@
             class="form-control"
             placeholder="Ex. 20"
             [(ngModel)]="nouvelleFacture.tva"
+            (ngModelChange)="calculerMontantTTC()"
           >
 
         </div>
-
-        @if (modeEdition && nouvelleFacture.montantTTC !== undefined) {
 
         <div class="form-group">
 
@@ -259,8 +289,6 @@
           >
 
         </div>
-
-        }
 
         <div class="form-group">
 
@@ -352,6 +380,7 @@
             <th>N° facture</th>
             <th>Bon livraison</th>
             <th>Commande</th>
+            <th>Marché / Consultation</th>
             <th>Date facture</th>
             <th>Échéance</th>
             <th>Montant HT</th>
@@ -390,6 +419,22 @@
             </td>
 
             <td>
+              @if (facture.bonLivraison.commande?.marche) {
+
+              {{ facture.bonLivraison.commande?.marche?.numeroMarche }}
+
+              } @else if (facture.bonLivraison.commande?.consultation) {
+
+              {{ facture.bonLivraison.commande?.consultation?.reference }}
+
+              } @else {
+
+              —
+
+              }
+            </td>
+
+            <td>
               {{ facture.dateFacture || '—' }}
             </td>
 
@@ -424,8 +469,9 @@
                   facture.statut === 'BROUILLON'
                 "
                 [class.status-info]="
-                  facture.statut === 'EMISE'
-                "
+                   facture.statut === 'EMISE' ||
+                   facture.statut === 'PARTIELLEMENT_PAYEE'
+                 "
                 [class.status-success]="
                   facture.statut === 'PAYEE'
                 "
@@ -435,21 +481,17 @@
               >
 
                 @if (facture.statut === 'BROUILLON') {
-                  Brouillon
-                } @else if (
-                  facture.statut === 'EMISE'
-                ) {
-                  Émise
-                } @else if (
-                  facture.statut === 'PAYEE'
-                ) {
-                  Payée
-                } @else if (
-                  facture.statut === 'ANNULEE'
-                ) {
-                  Annulée
+                     Brouillon
+                } @else if (facture.statut === 'EMISE') {
+                      Émise
+                } @else if (facture.statut === 'PARTIELLEMENT_PAYEE') {
+                      Partiellement payée
+                } @else if (facture.statut === 'PAYEE') {
+                      Payée
+                } @else if (facture.statut === 'ANNULEE') {
+                      Annulée
                 } @else {
-                  {{ facture.statut || '—' }}
+                {{ facture.statut }}
                 }
 
               </span>
@@ -495,7 +537,7 @@
           <tr>
 
             <td
-              colspan="10"
+              colspan="11"
               class="empty-state"
             >
               Aucune facture disponible.

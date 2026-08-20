@@ -10,7 +10,11 @@ import { DecimalPipe } from '@angular/common';
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 
 import { Facture } from '../../models/facture';
-import { FactureService } from '../../services/facture';
+
+import {
+  FactureService,
+  ResumeFacturation
+} from '../../services/facture';
 
 import {
   BonLivraisonService
@@ -42,6 +46,8 @@ export class Factures implements OnInit {
 
   factures: Facture[] = [];
   bonsLivraison: any[] = [];
+
+  resumeFacturation?: ResumeFacturation;
 
   keyword = '';
   filtreStatut = '';
@@ -128,6 +134,54 @@ export class Factures implements OnInit {
     });
   }
 
+  chargerResumeFacturation(
+    bonLivraisonId: number
+  ): void {
+
+    if (!bonLivraisonId || bonLivraisonId === 0) {
+      this.resumeFacturation = undefined;
+      return;
+    }
+
+    this.factureService
+      .getResumeFacturation(bonLivraisonId)
+      .subscribe({
+
+        next: (data) => {
+          this.resumeFacturation = data;
+          this.cd.detectChanges();
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Erreur chargement résumé facturation',
+            err
+          );
+
+          this.resumeFacturation = undefined;
+
+          this.toastService.error(
+            'Erreur lors du chargement du résumé de facturation'
+          );
+        }
+      });
+  }
+
+  calculerMontantTTC(): void {
+
+    const montantHT =
+      Number(this.nouvelleFacture.montantHT) || 0;
+
+    const tva =
+      Number(this.nouvelleFacture.tva) || 0;
+
+    this.nouvelleFacture.montantTTC =
+      Math.round(
+        montantHT * (1 + tva / 100) * 100
+      ) / 100;
+  }
+
   enregistrerFacture(): void {
 
     if (
@@ -145,6 +199,25 @@ export class Factures implements OnInit {
 
       return;
     }
+
+    const montantTTC =
+      this.nouvelleFacture.montantHT *
+      (1 + this.nouvelleFacture.tva / 100);
+
+      if (
+        !this.modeEdition &&
+        this.resumeFacturation &&
+        montantTTC > this.resumeFacturation.montantRestant
+      ) {
+
+        this.toastService.warning(
+          `Le montant TTC dépasse le reste à facturer : ${
+            this.resumeFacturation.montantRestant
+          } DH`
+        );
+
+        return;
+      }
 
     if (
       this.modeEdition &&
@@ -259,6 +332,10 @@ export class Factures implements OnInit {
         )
       }
     };
+
+    this.chargerResumeFacturation(
+      Number(facture.bonLivraison?.id ?? 0)
+    );
 
     window.scrollTo({
       top: 0,
