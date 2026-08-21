@@ -49,6 +49,7 @@ export interface DashboardStats {
 }
 
 export interface ChiffreAffaireMensuel {
+  annee: number;
   mois: number;
   total: number;
 }

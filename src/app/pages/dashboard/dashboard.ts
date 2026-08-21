@@ -59,7 +59,25 @@ export class DashboardComponent implements OnInit {
 
         console.log('CA MENSUEL = ', data);
 
-        const moisLabels = data.map(item => 'Mois ' + item.mois);
+        const nomsMois = [
+          '',
+          'Jan',
+          'Fév',
+          'Mar',
+          'Avr',
+          'Mai',
+          'Juin',
+          'Juil',
+          'Août',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Déc'
+        ];
+
+        const moisLabels = data.map(
+          item => `${nomsMois[item.mois]} ${item.annee}`
+        );
         const montants = data.map(item => item.total);
 
         setTimeout(() => {
