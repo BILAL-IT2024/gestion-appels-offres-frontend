@@ -4,6 +4,7 @@ import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import {
   DashboardService,
   DashboardStats,
+  DashboardDas,
   AlerteAppelOffre,
   TopClient
 } from '../../services/dashboard';
@@ -21,9 +22,12 @@ export class DashboardComponent implements OnInit {
   stats?: DashboardStats;
   alertes: AlerteAppelOffre[] = [];
   topClients: TopClient[] = [];
+  statsDas: DashboardDas[] = [];
+
   topClientsChart: any;
   chart: any;
   statutChart: any;
+  dasChart: any;
 
   constructor(
     private dashboardService: DashboardService,
@@ -33,6 +37,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       this.chargerStats();
+      this.chargerStatsDas();
       this.chargerChiffreAffaireMensuel();
       this.chargerAlertes();
       this.chargerTopClients();
@@ -51,6 +56,36 @@ export class DashboardComponent implements OnInit {
         console.log('Erreur dashboard stats', err);
       }
     });
+  }
+
+  chargerStatsDas(): void {
+
+    this.dashboardService
+      .getStatsDas()
+      .subscribe({
+
+        next: (data) => {
+
+          console.log(
+            'STATS DAS = ',
+            data
+          );
+
+          this.statsDas = data;
+          this.creerGraphiqueDas(data);
+
+          this.cd.detectChanges();
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Erreur chargement statistiques DAS',
+            err
+          );
+        }
+
+      });
   }
 
   chargerChiffreAffaireMensuel(): void {
@@ -210,6 +245,40 @@ chargerTopClients(): void {
     }
   });
 
+}
+
+creerGraphiqueDas(data: DashboardDas[]): void {
+
+  setTimeout(() => {
+
+    if (this.dasChart) {
+      this.dasChart.destroy();
+    }
+
+    this.dasChart = new Chart('dasChart', {
+      type: 'bar',
+
+      data: {
+        labels: data.map(item => item.das),
+
+        datasets: [
+          {
+            label: 'Commandes',
+            data: data.map(item => item.montantCommandes)
+          },
+          {
+            label: 'Facturé',
+            data: data.map(item => item.montantFacture)
+          },
+          {
+            label: 'Encaissé',
+            data: data.map(item => item.montantEncaisse)
+          }
+        ]
+      }
+    });
+
+  }, 500);
 }
 
 }

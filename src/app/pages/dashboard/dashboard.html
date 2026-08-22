@@ -259,7 +259,159 @@
 
     }
 
+    <!-- ============================= -->
+    <!-- PILOTAGE PAR DAS -->
+    <!-- ============================= -->
+
+    <section class="das-section">
+
+      <div class="das-section-header">
+        <div>
+          <h2>Pilotage par DAS</h2>
+          <p>
+            Suivi de l'activité par domaine d'activité stratégique
+          </p>
+        </div>
+      </div>
+
+      <div class="das-grid">
+
+        @for (item of statsDas; track item.das) {
+
+        <article class="dashboard-card das-card">
+
+          <div class="das-card-header">
+
+            <div>
+                <span class="das-label">
+                  DAS
+                </span>
+
+              <h3>
+                {{ item.das }}
+              </h3>
+            </div>
+
+          </div>
+
+          <div class="das-indicators">
+
+            <div class="das-indicator">
+              <span>Appels d'offres</span>
+              <strong>
+                {{ item.nombreAppelsOffres }}
+              </strong>
+              <small>
+                {{ item.montantAppelsOffres | number }} DH
+              </small>
+            </div>
+
+            <div class="das-indicator">
+              <span>Consultations</span>
+              <strong>
+                {{ item.nombreConsultations }}
+              </strong>
+              <small>
+                {{ item.montantConsultations | number }} DH
+              </small>
+            </div>
+
+            <div class="das-indicator">
+              <span>Offres</span>
+              <strong>
+                {{ item.nombreOffres }}
+              </strong>
+              <small>
+                {{ item.montantOffres | number }} DH
+              </small>
+            </div>
+
+            <div class="das-indicator">
+              <span>Marchés</span>
+              <strong>
+                {{ item.nombreMarches }}
+              </strong>
+              <small>
+                {{ item.montantMarches | number }} DH
+              </small>
+            </div>
+
+            <div class="das-indicator">
+              <span>Ordres de service</span>
+              <strong>
+                {{ item.nombreOrdresService }}
+              </strong>
+            </div>
+
+            <div class="das-indicator">
+              <span>Commandes</span>
+              <strong>
+                {{ item.nombreCommandes }}
+              </strong>
+              <small>
+                {{ item.montantCommandes | number }} DH
+              </small>
+            </div>
+
+          </div>
+
+          <div class="das-finance">
+
+            <div>
+              <span>Facturé</span>
+              <strong>
+                {{ item.montantFacture | number:'1.2-2' }} DH
+              </strong>
+            </div>
+
+            <div>
+              <span>Encaissé</span>
+              <strong>
+                {{ item.montantEncaisse | number:'1.2-2' }} DH
+              </strong>
+            </div>
+
+            <div>
+              <span>Reste à encaisser</span>
+              <strong>
+                {{ item.resteAEncaisser | number:'1.2-2' }} DH
+              </strong>
+            </div>
+
+          </div>
+
+        </article>
+
+        } @empty {
+
+        <article class="dashboard-card das-empty">
+          Aucune statistique DAS disponible.
+        </article>
+
+        }
+
+      </div>
+
+    </section>
+
     <section class="charts-grid">
+
+      <article class="dashboard-card chart-card chart-wide">
+
+        <div class="card-header">
+          <div>
+            <h2>Comparaison des DAS</h2>
+            <p>
+              Commandes, facturé et encaissé par DAS
+            </p>
+          </div>
+        </div>
+
+        <div class="chart-wrapper chart-wrapper-large">
+          <canvas id="dasChart"></canvas>
+        </div>
+
+      </article>
 
       <article class="dashboard-card chart-card chart-wide">
 

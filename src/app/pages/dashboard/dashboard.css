@@ -97,6 +97,154 @@
 }
 
 /* =====================================================
+   PILOTAGE PAR DAS
+===================================================== */
+
+.das-section {
+  margin-bottom: 28px;
+}
+
+.das-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.das-section-header h2 {
+  margin: 0;
+  color: #0b2e6d;
+  font-size: 24px;
+}
+
+.das-section-header p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.das-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.das-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.das-card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: #2563eb;
+  content: "";
+}
+
+.das-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-left: 6px;
+}
+
+.das-label {
+  display: block;
+  margin-bottom: 4px;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.das-card-header h3 {
+  margin: 0;
+  color: #0b2e6d;
+  font-size: 25px;
+}
+
+.das-indicators {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.das-indicator {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 11px;
+  background: #f8fafc;
+}
+
+.das-indicator span {
+  display: block;
+  margin-bottom: 8px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.das-indicator strong {
+  display: block;
+  color: #0b2e6d;
+  font-size: 23px;
+}
+
+.das-indicator small {
+  display: block;
+  margin-top: 5px;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.das-finance {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.das-finance > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: #f8fafc;
+}
+
+.das-finance span {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.das-finance strong {
+  color: #0b2e6d;
+  font-size: 15px;
+  text-align: right;
+}
+
+.das-empty {
+  grid-column: 1 / -1;
+  color: #64748b;
+  text-align: center;
+}
+
+/* =====================================================
    CARTES ET GRAPHIQUES
 ===================================================== */
 
@@ -259,6 +407,12 @@ canvas {
   .chart-wide {
     grid-column: auto;
   }
+
+  .das-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
 }
 
 @media (max-width: 750px) {
@@ -280,4 +434,13 @@ canvas {
   .chart-wrapper-pie {
     min-height: 280px;
   }
+
+  .das-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .das-indicators {
+    grid-template-columns: 1fr;
+  }
+
 }

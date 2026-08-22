@@ -69,6 +69,33 @@ export interface TopClient {
   total: number;
 }
 
+export interface DashboardDas {
+  das: string;
+
+  nombreAppelsOffres: number;
+  montantAppelsOffres: number;
+
+  nombreConsultations: number;
+  montantConsultations: number;
+
+  nombreOffres: number;
+  montantOffres: number;
+
+  nombreMarches: number;
+  montantMarches: number;
+
+  nombreOrdresService: number;
+
+  nombreCommandes: number;
+  montantCommandes: number;
+
+  montantFacture: number;
+
+  montantEncaisse: number;
+
+  resteAEncaisser: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -83,6 +110,14 @@ export class DashboardService {
       `${this.apiUrl}/stats`
     );
   }
+
+getStatsDas(): Observable<DashboardDas[]> {
+
+  return this.http.get<DashboardDas[]>(
+    `${this.apiUrl}/stats-das`
+  );
+
+}
 
 getChiffreAffaireMensuel(): Observable<ChiffreAffaireMensuel[]> {
 
