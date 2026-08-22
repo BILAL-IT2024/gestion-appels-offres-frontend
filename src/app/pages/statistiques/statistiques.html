@@ -1,0 +1,193 @@
+<div class="page-layout">
+
+  <app-sidebar></app-sidebar>
+
+  <main class="statistiques-page">
+
+    <header class="statistiques-header">
+      <div>
+        <h1>Statistiques</h1>
+        <p>
+          Analyse synthétique de l’activité et comparaison par DAS
+        </p>
+      </div>
+    </header>
+
+
+    <!-- ========================= -->
+    <!-- STATISTIQUES PAR DAS -->
+    <!-- ========================= -->
+
+    <section class="stats-section">
+
+      <div class="section-header">
+        <h2>Comparaison par DAS</h2>
+        <p>RDF, TELERELEVE et ASST</p>
+      </div>
+
+      <div class="das-grid">
+
+        @for (item of statsDas; track item.das) {
+
+        <article class="stat-card">
+
+          <h3>{{ item.das }}</h3>
+
+          <div class="stat-line">
+            <span>Commandes</span>
+            <strong>
+              {{ item.montantCommandes | number:'1.2-2' }} DH
+            </strong>
+          </div>
+
+          <div class="stat-line">
+            <span>Facturé</span>
+            <strong>
+              {{ item.montantFacture | number:'1.2-2' }} DH
+            </strong>
+          </div>
+
+          <div class="stat-line">
+            <span>Encaissé</span>
+            <strong>
+              {{ item.montantEncaisse | number:'1.2-2' }} DH
+            </strong>
+          </div>
+
+          <div class="stat-line">
+            <span>Reste à encaisser</span>
+            <strong>
+              {{ item.resteAEncaisser | number:'1.2-2' }} DH
+            </strong>
+          </div>
+
+        </article>
+
+        } @empty {
+
+        <div class="empty-state">
+          Aucune statistique DAS disponible.
+        </div>
+
+        }
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- CA MENSUEL -->
+    <!-- ========================= -->
+
+    <section class="stats-section">
+
+      <div class="section-header">
+        <h2>Chiffre d’affaires mensuel</h2>
+        <p>Évolution des paiements validés</p>
+      </div>
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+          <tr>
+            <th>Période</th>
+            <th>Montant</th>
+          </tr>
+          </thead>
+
+          <tbody>
+
+          @for (
+          item of chiffreAffaireMensuel;
+          track item.annee + '-' + item.mois
+          ) {
+
+          <tr>
+            <td>
+              {{ item.mois }}/{{ item.annee }}
+            </td>
+
+            <td>
+              {{ item.total | number:'1.2-2' }} DH
+            </td>
+          </tr>
+
+          } @empty {
+
+          <tr>
+            <td colspan="2">
+              Aucune donnée disponible.
+            </td>
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- TOP CLIENTS -->
+    <!-- ========================= -->
+
+    <section class="stats-section">
+
+      <div class="section-header">
+        <h2>Top clients</h2>
+        <p>Classement par chiffre d’affaires</p>
+      </div>
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+          <tr>
+            <th>Client</th>
+            <th>Chiffre d’affaires</th>
+          </tr>
+          </thead>
+
+          <tbody>
+
+          @for (client of topClients; track client.client) {
+
+          <tr>
+            <td>
+              {{ client.client }}
+            </td>
+
+            <td>
+              {{ client.total | number:'1.2-2' }} DH
+            </td>
+          </tr>
+
+          } @empty {
+
+          <tr>
+            <td colspan="2">
+              Aucun client disponible.
+            </td>
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>

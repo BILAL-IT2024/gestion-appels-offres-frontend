@@ -1,0 +1,231 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+/* =====================================================
+   PAGE
+===================================================== */
+
+.statistiques-page {
+  flex: 1;
+  min-width: 0;
+  padding: 32px;
+  background: #f4f7fc;
+}
+
+.statistiques-header {
+  margin-bottom: 28px;
+}
+
+.statistiques-header h1 {
+  margin: 0;
+  color: #0b2e6d;
+  font-size: clamp(32px, 3vw, 46px);
+  line-height: 1.1;
+}
+
+.statistiques-header p {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 15px;
+}
+
+
+/* =====================================================
+   SECTIONS
+===================================================== */
+
+.stats-section {
+  margin-bottom: 24px;
+  padding: 22px;
+  border: 1px solid #e2e8f0;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 5px 18px rgba(15, 31, 77, 0.07);
+}
+
+.section-header {
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  margin: 0;
+  color: #0b2e6d;
+  font-size: 21px;
+}
+
+.section-header p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   DAS
+===================================================== */
+
+.das-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.stat-card {
+  position: relative;
+  padding: 20px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 13px;
+  background: #f8fafc;
+}
+
+.stat-card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: #2563eb;
+  content: "";
+}
+
+.stat-card h3 {
+  margin: 0 0 20px;
+  padding-left: 5px;
+  color: #0b2e6d;
+  font-size: 23px;
+}
+
+.stat-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 12px 5px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.stat-line:last-child {
+  border-bottom: none;
+}
+
+.stat-line span {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stat-line strong {
+  color: #0b2e6d;
+  font-size: 14px;
+  text-align: right;
+}
+
+
+/* =====================================================
+   TABLEAUX
+===================================================== */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 11px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 14px 16px;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+th:last-child,
+td:last-child {
+  border-right: none;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+th {
+  background: #0b2e6d;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+td {
+  color: #334155;
+  font-size: 14px;
+}
+
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+td:last-child {
+  color: #0b2e6d;
+  font-weight: 700;
+}
+
+
+/* =====================================================
+   ETAT VIDE
+===================================================== */
+
+.empty-state {
+  grid-column: 1 / -1;
+  padding: 30px;
+  color: #64748b;
+  text-align: center;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1100px) {
+
+  .das-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 750px) {
+
+  .statistiques-page {
+    padding: 20px;
+  }
+
+  .stats-section {
+    padding: 18px;
+  }
+
+  .das-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-line {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .stat-line strong {
+    text-align: left;
+  }
+}

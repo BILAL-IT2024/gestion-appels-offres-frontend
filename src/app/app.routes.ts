@@ -12,6 +12,7 @@ import { Offres } from './pages/offres/offres';
 import { OrdresService } from './pages/ordres-service/ordres-service';
 import { BonsLivraison } from './pages/bons-livraison/bons-livraison';
 import { Factures } from './pages/factures/factures';
+import { Statistiques } from './pages/statistiques/statistiques';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -26,5 +27,6 @@ export const routes: Routes = [
   { path: 'paiements', component: Paiements },
   { path: 'clients', component: Clients },
   { path: 'consultations', component: Consultations },
-  { path: 'offres', component: Offres }
+  { path: 'offres', component: Offres },
+  { path: 'statistiques', component: Statistiques }
 ];
