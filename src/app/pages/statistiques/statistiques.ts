@@ -17,12 +17,15 @@ import {
 
 import Chart from 'chart.js/auto';
 
+import { Topbar } from '../../layout/topbar/topbar';
+
 @Component({
   selector: 'app-statistiques',
   standalone: true,
   imports: [
     SidebarComponent,
-    DecimalPipe
+    DecimalPipe,
+    Topbar
   ],
   templateUrl: './statistiques.html',
   styleUrl: './statistiques.css'

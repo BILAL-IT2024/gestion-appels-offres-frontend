@@ -4,6 +4,8 @@
 
   <main class="ordres-page">
 
+    <app-topbar titre="Ordres de service"></app-topbar>
+
     <header class="ordres-header">
 
       <div>
@@ -92,7 +94,7 @@
           type="button"
           class="form-close-button"
           aria-label="Fermer le formulaire"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"
         >
           ×
         </button>
@@ -234,7 +236,7 @@
         <button
           type="button"
           class="btn btn-outline"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"
         >
           Annuler
         </button>

@@ -22,13 +22,16 @@ import {
   ConfirmDialogService
 } from '../../services/confirm-dialog';
 
+import { Topbar } from '../../layout/topbar/topbar';
+
 @Component({
   selector: 'app-ordres-service',
   standalone: true,
   imports: [
     SidebarComponent,
     FormsModule,
-    DecimalPipe
+    DecimalPipe,
+    Topbar
   ],
   templateUrl: './ordres-service.html',
   styleUrl: './ordres-service.css',
@@ -125,6 +128,13 @@ export class OrdresService implements OnInit {
       top: 0,
       behavior: 'smooth'
     });
+  }
+
+  fermerFormulaire(): void {
+
+    this.showForm = false;
+    this.modeEdition = false;
+    this.idOrdreEnCours = undefined;
   }
 
   enregistrerOrdre(): void {

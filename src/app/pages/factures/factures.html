@@ -4,6 +4,8 @@
 
   <main class="factures-page">
 
+    <app-topbar titre="Factures"></app-topbar>
+
     <header class="factures-header">
 
       <div>
@@ -118,7 +120,7 @@
           type="button"
           class="form-close-button"
           aria-label="Fermer le formulaire"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"
         >
           ×
         </button>
@@ -329,7 +331,7 @@
         <button
           type="button"
           class="btn btn-outline"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"
         >
           Annuler
         </button>

@@ -4,6 +4,8 @@
 
   <main class="consultation-page">
 
+    <app-topbar titre="Consultations"></app-topbar>
+
     <header class="consultation-header">
 
       <div>
@@ -89,7 +91,7 @@
           type="button"
           class="form-close-button"
           aria-label="Fermer le formulaire"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"
         >
           ×
         </button>
@@ -251,7 +253,7 @@
         <button
           type="button"
           class="btn btn-outline"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"
         >
           Annuler
         </button>

@@ -8,11 +8,12 @@ import { MarcheService } from '../../services/marche';
 import { ConsultationService } from '../../services/consultation';
 import { ToastService } from '../../services/toast';
 import { ConfirmDialogService } from '../../services/confirm-dialog';
+import { Topbar } from '../../layout/topbar/topbar';
 
 @Component({
   selector: 'app-commandes',
   standalone: true,
-  imports: [SidebarComponent, FormsModule, DecimalPipe],
+  imports: [SidebarComponent, FormsModule, DecimalPipe,Topbar],
   templateUrl: './commandes.html',
   styleUrl: './commandes.css',
 })
@@ -264,6 +265,19 @@ ouvrirFormulaire(): void {
     this.resumeConsultation = null;
 
     this.showForm = true;
+  }
+
+  fermerFormulaire(): void {
+
+    this.showForm = false;
+    this.modeEdition = false;
+    this.idCommandeEnCours = undefined;
+
+    this.marcheSelectionne = null;
+    this.consultationSelectionnee = null;
+
+    this.resumeMarche = null;
+    this.resumeConsultation = null;
   }
 
 enregistrerCommande(): void {

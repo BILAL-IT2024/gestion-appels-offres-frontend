@@ -17,12 +17,15 @@ import {
   PaiementService
 } from '../../services/paiement';
 
+import { Topbar } from '../../layout/topbar/topbar';
+
 @Component({
   selector: 'app-notifications',
   standalone: true,
   imports: [
     SidebarComponent,
-    RouterLink
+    RouterLink,
+    Topbar
   ],
   templateUrl: './notifications.html',
   styleUrl: './notifications.css'

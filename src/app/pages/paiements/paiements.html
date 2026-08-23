@@ -4,6 +4,8 @@
 
   <main class="paiement-page">
 
+    <app-topbar titre="Paiements"></app-topbar>
+
     <header class="paiement-header">
 
       <div>
@@ -88,7 +90,7 @@
           type="button"
           class="form-close-button"
           aria-label="Fermer le formulaire"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"
         >
           ×
         </button>
@@ -273,7 +275,7 @@
         <button
           type="button"
           class="btn btn-outline"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"s
         >
           Annuler
         </button>

@@ -11,6 +11,7 @@ import { Client, ClientService } from '../../services/client';
 import { AppelOffresService } from '../../services/appel-offres';
 import { ToastService } from '../../services/toast';
 import { ConfirmDialogService } from '../../services/confirm-dialog';
+import { Topbar } from '../../layout/topbar/topbar';
 
 @Component({
   selector: 'app-appels-offres',
@@ -18,7 +19,8 @@ import { ConfirmDialogService } from '../../services/confirm-dialog';
   imports: [
     SidebarComponent,
     FormsModule,
-    DecimalPipe
+    DecimalPipe,
+    Topbar
   ],
   templateUrl: './appels-offres.html',
   styleUrl: './appels-offres.css',
@@ -78,6 +80,12 @@ export class AppelsOffresComponent implements OnInit {
     };
 
     this.showForm = true;
+  }
+
+  fermerFormulaire(): void {
+    this.showForm = false;
+    this.modeEdition = false;
+    this.idAppelOffreEnCours = undefined;
   }
 
   chargerClients(): void {

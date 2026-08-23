@@ -1,0 +1,101 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* =====================================================
+   TOPBAR
+===================================================== */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 64px;
+  padding: 12px 20px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 4px 16px
+    rgba(15, 31, 77, 0.05);
+
+  margin-bottom: 22px;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.topbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 38px;
+  padding: 8px 13px;
+
+  border: 1px solid #dbe3ef;
+  border-radius: 9px;
+
+  background: #f8fafc;
+  color: #334155;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.topbar-button:hover {
+  background: #eef4ff;
+  color: #0b2e6d;
+}
+
+.topbar-home {
+  color: #0b2e6d;
+}
+
+/* =====================================================
+   TITRE DE LA PAGE
+===================================================== */
+
+.topbar-title {
+  margin-left: 12px;
+
+  color: #0b2e6d;
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+@media (max-width: 700px) {
+
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .topbar-left {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .topbar-button {
+    width: 100%;
+  }
+
+  .topbar-title {
+    margin-left: 0;
+  }
+
+}

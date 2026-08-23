@@ -16,11 +16,12 @@ import {
 } from '../../services/facture';
 import { ToastService } from '../../services/toast';
 import { ConfirmDialogService } from '../../services/confirm-dialog';
+import { Topbar } from '../../layout/topbar/topbar';
 
 @Component({
   selector: 'app-paiements',
   standalone: true,
-  imports: [SidebarComponent, FormsModule, DecimalPipe],
+  imports: [SidebarComponent, FormsModule, DecimalPipe,Topbar],
   templateUrl: './paiements.html',
   styleUrl: './paiements.css',
 })
@@ -154,6 +155,15 @@ export class Paiements implements OnInit {
 
     this.showForm = true;
 
+  }
+
+  fermerFormulaire(): void {
+
+    this.showForm = false;
+    this.modeEdition = false;
+    this.idPaiementEnCours = undefined;
+
+    this.resumeFacture = null;
   }
 
 enregistrerPaiement(): void {

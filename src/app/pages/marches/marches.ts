@@ -7,11 +7,12 @@ import { Marche, MarcheService } from '../../services/marche';
 import { AppelOffresService } from '../../services/appel-offres';
 import { ToastService } from '../../services/toast';
 import { ConfirmDialogService } from '../../services/confirm-dialog';
+import { Topbar } from '../../layout/topbar/topbar';
 
 @Component({
   selector: 'app-marches',
   standalone: true,
-  imports: [SidebarComponent, FormsModule,  DecimalPipe],
+  imports: [SidebarComponent, FormsModule,  DecimalPipe, Topbar],
   templateUrl: './marches.html',
   styleUrl: './marches.css',
 })
@@ -115,6 +116,13 @@ ouvrirFormulaire(): void {
   };
 
   this.showForm = true;
+}
+
+fermerFormulaire(): void {
+
+  this.showForm = false;
+  this.modeEdition = false;
+  this.idMarcheEnCours = undefined;
 }
 
 enregistrerMarche(): void {

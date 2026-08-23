@@ -29,13 +29,16 @@ import {
 
 import { DecimalPipe } from '@angular/common';
 
+import { Topbar } from '../../layout/topbar/topbar';
+
 @Component({
   selector: 'app-offres',
   standalone: true,
   imports: [
     SidebarComponent,
     FormsModule,
-    DecimalPipe
+    DecimalPipe,
+    Topbar
   ],
   templateUrl: './offres.html',
   styleUrl: './offres.css',
@@ -151,6 +154,13 @@ export class Offres implements OnInit {
       this.creerOffreVide();
 
     this.showForm = true;
+  }
+
+  fermerFormulaire(): void {
+
+    this.showForm = false;
+    this.modeEdition = false;
+    this.idOffreEnCours = undefined;
   }
 
   changerTypeSource(): void {

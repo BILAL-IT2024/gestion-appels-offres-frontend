@@ -26,13 +26,16 @@ import {
   ConfirmDialogService
 } from '../../services/confirm-dialog';
 
+import { Topbar } from '../../layout/topbar/topbar';
+
 @Component({
   selector: 'app-factures',
   standalone: true,
   imports: [
     SidebarComponent,
     FormsModule,
-    DecimalPipe
+    DecimalPipe,
+    Topbar
   ],
   templateUrl: './factures.html',
   styleUrl: './factures.css',
@@ -132,6 +135,13 @@ export class Factures implements OnInit {
       top: 0,
       behavior: 'smooth'
     });
+  }
+
+  fermerFormulaire(): void {
+
+    this.showForm = false;
+    this.modeEdition = false;
+    this.idFactureEnCours = undefined;
   }
 
   chargerResumeFacturation(

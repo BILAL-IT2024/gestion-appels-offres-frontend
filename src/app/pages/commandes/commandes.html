@@ -4,6 +4,8 @@
 
   <main class="commande-page">
 
+    <app-topbar titre="Commandes"></app-topbar>
+
     <header class="commande-header">
 
       <div>
@@ -88,7 +90,7 @@
           type="button"
           class="form-close-button"
           aria-label="Fermer le formulaire"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"
         >
           ×
         </button>
@@ -388,7 +390,7 @@
         <button
           type="button"
           class="btn btn-outline"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"
         >
           Annuler
         </button>

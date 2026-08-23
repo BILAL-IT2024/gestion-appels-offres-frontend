@@ -1,4 +1,7 @@
-<aside class="sidebar">
+<aside
+  class="sidebar"
+  [class.collapsed]="sidebarCollapsed"
+>
 
   <header class="sidebar-brand">
 
@@ -10,6 +13,19 @@
       <strong>Gestion AO</strong>
       <span>Appels d’offres</span>
     </div>
+
+    <button
+      type="button"
+      class="sidebar-toggle"
+      (click)="toggleSidebar()"
+      [attr.aria-label]="
+    sidebarCollapsed
+      ? 'Ouvrir le menu'
+      : 'Réduire le menu'
+    "
+    >
+      {{ sidebarCollapsed ? '☰' : '‹' }}
+    </button>
 
   </header>
 

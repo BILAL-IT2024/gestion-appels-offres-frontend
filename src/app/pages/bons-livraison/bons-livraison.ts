@@ -26,13 +26,16 @@ import {
   ConfirmDialogService
 } from '../../services/confirm-dialog';
 
+import { Topbar } from '../../layout/topbar/topbar';
+
 @Component({
   selector: 'app-bons-livraison',
   standalone: true,
   imports: [
     SidebarComponent,
     FormsModule,
-    DecimalPipe
+    DecimalPipe,
+    Topbar
   ],
   templateUrl: './bons-livraison.html',
   styleUrl: './bons-livraison.css',
@@ -170,6 +173,14 @@ export class BonsLivraison implements OnInit {
       top: 0,
       behavior: 'smooth'
     });
+  }
+
+  fermerFormulaire(): void {
+
+    this.showForm = false;
+    this.modeEdition = false;
+    this.idBonEnCours = undefined;
+    this.resumeCommande = null;
   }
 
   enregistrerBon(): void {

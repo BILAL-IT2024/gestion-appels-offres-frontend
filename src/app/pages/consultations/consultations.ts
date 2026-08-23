@@ -26,13 +26,16 @@ import {
   ConfirmDialogService
 } from '../../services/confirm-dialog';
 
+import { Topbar } from '../../layout/topbar/topbar';
+
 @Component({
   selector: 'app-consultations',
   standalone: true,
   imports: [
     SidebarComponent,
     FormsModule,
-    DecimalPipe
+    DecimalPipe,
+    Topbar
   ],
   templateUrl: './consultations.html',
   styleUrl: './consultations.css'
@@ -122,6 +125,14 @@ export class Consultations implements OnInit {
       top: 0,
       behavior: 'smooth'
     });
+
+  }
+
+  fermerFormulaire(): void {
+
+    this.showForm = false;
+    this.modeEdition = false;
+    this.idConsultationEnCours = undefined;
 
   }
 

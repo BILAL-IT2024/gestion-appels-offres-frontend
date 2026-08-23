@@ -4,6 +4,8 @@
 
   <main class="marches-page">
 
+    <app-topbar titre="Marchés"></app-topbar>
+
     <header class="marches-header">
 
       <div>
@@ -87,7 +89,7 @@
         <button
           type="button"
           class="form-close-button"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"
           aria-label="Fermer le formulaire"
         >
           ×
@@ -241,7 +243,7 @@
         <button
           type="button"
           class="btn btn-outline"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"
         >
           Annuler
         </button>

@@ -93,8 +93,15 @@ export class SidebarComponent implements OnInit {
     });
   }
 
+  sidebarCollapsed = true;
+
+  toggleSidebar(): void {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     window.location.href = '/login';
   }
+
 }

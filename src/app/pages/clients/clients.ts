@@ -5,11 +5,12 @@ import { ToastService } from '../../services/toast';
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { Client, ClientService } from '../../services/client';
 import { ConfirmDialogService } from '../../services/confirm-dialog';
+import { Topbar } from '../../layout/topbar/topbar';
 
 @Component({
   selector: 'app-clients',
   standalone: true,
-  imports: [SidebarComponent, FormsModule],
+  imports: [SidebarComponent, FormsModule, Topbar],
   templateUrl: './clients.html',
   styleUrl: './clients.css',
 })
@@ -66,6 +67,12 @@ export class Clients implements OnInit {
     };
 
     this.showForm = true;
+  }
+
+  fermerFormulaire(): void {
+    this.showForm = false;
+    this.modeEdition = false;
+    this.idClientEnCours = undefined;
   }
 
 enregistrerClient(): void {

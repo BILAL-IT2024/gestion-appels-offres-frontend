@@ -4,6 +4,8 @@
 
   <main class="ao-page">
 
+    <app-topbar titre="Appels d'offres"></app-topbar>
+
     <!-- En-tête -->
     <header class="ao-header">
 
@@ -91,7 +93,7 @@
         <button
           type="button"
           class="form-close-button"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"
           aria-label="Fermer le formulaire"
         >
           ×
@@ -276,7 +278,7 @@
         <button
           type="button"
           class="btn btn-outline"
-          (click)="showForm = false"
+          (click)="fermerFormulaire()"
         >
           Annuler
         </button>
