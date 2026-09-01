@@ -4,275 +4,541 @@
 
   <main class="dashboard-page">
 
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
     <header class="dashboard-header">
+
       <div>
         <h1>Dashboard</h1>
-        <p>Vue d’ensemble de l’activité</p>
+
+        <p>
+          Vue d’ensemble de l’activité
+        </p>
       </div>
+
     </header>
+
+
+    <!-- =====================================================
+         SYNTHÈSE GÉNÉRALE
+    ====================================================== -->
 
     @if (stats) {
 
-    <section class="kpi-grid">
+    <section class="dashboard-summary">
 
-      <article class="kpi-card">
-        <span class="kpi-label">Total AO</span>
-        <strong class="kpi-value">
-          {{ stats.totalAppelsOffres }}
-        </strong>
-      </article>
+      <!-- =================================================
+           KPI PRINCIPAUX
+      ================================================== -->
 
-      <article class="kpi-card">
-        <span class="kpi-label">AO adjugés</span>
-        <strong class="kpi-value">
-          {{ stats.aoAdjuges }}
-        </strong>
-      </article>
+      <div class="summary-kpis">
 
-      <article class="kpi-card">
-        <span class="kpi-label">AO en cours</span>
-        <strong class="kpi-value">
-          {{ stats.aoEnCours }}
-        </strong>
-      </article>
+        <article class="summary-kpi">
 
-      <article class="kpi-card">
-        <span class="kpi-label">AO annulés</span>
-        <strong class="kpi-value">
-          {{ stats.aoAnnules }}
-        </strong>
-      </article>
+            <span>
+              Chiffre d’affaires
+            </span>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Montant total AO</span>
-        <strong class="kpi-value kpi-value-small">
-          {{ stats.montantTotalAO | number }} DH
-        </strong>
-      </article>
+          <strong>
+            {{ stats.chiffreAffaireTotal | number }} DH
+          </strong>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Taux de réussite</span>
-        <strong class="kpi-value">
-          {{ stats.tauxReussite }} %
-        </strong>
-      </article>
+          <small>
+            Encaissements validés
+          </small>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Top client</span>
-        <strong class="kpi-value kpi-value-small">
-          {{ stats.topClient || '—' }}
-        </strong>
-      </article>
+        </article>
 
-      <article class="kpi-card kpi-warning">
-        <span class="kpi-label">AO urgents</span>
-        <strong class="kpi-value">
-          {{ stats.aoUrgents }}
-        </strong>
-      </article>
 
-      <article class="kpi-card kpi-danger">
-        <span class="kpi-label">AO en retard</span>
-        <strong class="kpi-value">
-          {{ stats.aoEnRetard }}
-        </strong>
-      </article>
+        <article class="summary-kpi summary-kpi-warning">
 
-      <article class="kpi-card">
-        <span class="kpi-label">Total consultations</span>
-        <strong class="kpi-value">
-          {{ stats.totalConsultations }}
-        </strong>
-      </article>
+            <span>
+              Reste à encaisser
+            </span>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Consultations retenues</span>
-        <strong class="kpi-value">
-          {{ stats.consultationsRetenues }}
-        </strong>
-      </article>
+          <strong>
+            {{
+            stats.resteTotalAEncaisser
+            | number:'1.2-2'
+            }} DH
+          </strong>
 
-      <article class="kpi-card kpi-warning">
-        <span class="kpi-label">Consultations en cours</span>
-        <strong class="kpi-value">
-          {{ stats.consultationsEnCours }}
-        </strong>
-      </article>
+          <small>
+            Montant encore dû
+          </small>
 
-      <article class="kpi-card kpi-danger">
-        <span class="kpi-label">Consultations refusées</span>
-        <strong class="kpi-value">
-          {{ stats.consultationsRefusees }}
-        </strong>
-      </article>
+        </article>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Total marchés</span>
-        <strong class="kpi-value">
-          {{ stats.totalMarches }}
-        </strong>
-      </article>
 
-      <article class="kpi-card kpi-warning">
-        <span class="kpi-label">Marchés en cours</span>
-        <strong class="kpi-value">
-          {{ stats.marchesEnCours }}
-        </strong>
-      </article>
+        <article class="summary-kpi">
 
-      <article class="kpi-card">
-        <span class="kpi-label">Marchés terminés</span>
-        <strong class="kpi-value">
-          {{ stats.marchesTermines }}
-        </strong>
-      </article>
+            <span>
+              Marchés
+            </span>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Montant total marchés</span>
-        <strong class="kpi-value kpi-value-small">
-          {{ stats.montantTotalMarches | number }} DH
-        </strong>
-      </article>
+          <strong>
+            {{ stats.totalMarches }}
+          </strong>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Total commandes</span>
-        <strong class="kpi-value">
-          {{ stats.totalCommandes }}
-        </strong>
-      </article>
+          <small>
+            {{ stats.montantTotalMarches | number }} DH
+          </small>
 
-      <article class="kpi-card kpi-warning">
-        <span class="kpi-label">Commandes en cours</span>
-        <strong class="kpi-value">
-          {{ stats.commandesEnCours }}
-        </strong>
-      </article>
+        </article>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Commandes livrées</span>
-        <strong class="kpi-value">
-          {{ stats.commandesLivrees }}
-        </strong>
-      </article>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Montant total commandes</span>
-        <strong class="kpi-value kpi-value-small">
-          {{ stats.montantTotalCommandes | number }} DH
-        </strong>
-      </article>
+        <article class="summary-kpi">
 
-      <article class="kpi-card">
-        <span class="kpi-label">Total paiements</span>
-        <strong class="kpi-value">
-          {{ stats.totalPaiements }}
-        </strong>
-      </article>
+            <span>
+              Taux de réussite AO
+            </span>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Paiements validés</span>
-        <strong class="kpi-value">
-          {{ stats.paiementsValides }}
-        </strong>
-      </article>
+          <strong>
+            {{ stats.tauxReussite }} %
+          </strong>
 
-      <article class="kpi-card kpi-warning">
-        <span class="kpi-label">Paiements en attente</span>
-        <strong class="kpi-value">
-          {{ stats.paiementsEnAttente }}
-        </strong>
-      </article>
+          <small>
+            {{ stats.aoAdjuges }} AO adjugé(s)
+          </small>
 
-      <article class="kpi-card kpi-danger">
-        <span class="kpi-label">Paiements annulés</span>
-        <strong class="kpi-value">
-          {{ stats.paiementsAnnules }}
-        </strong>
-      </article>
+        </article>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Paiement moyen</span>
-        <strong class="kpi-value kpi-value-small">
-          {{ stats.paiementMoyen | number }} DH
-        </strong>
-      </article>
+      </div>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Chiffre d’affaires total</span>
-        <strong class="kpi-value kpi-value-small">
-          {{ stats.chiffreAffaireTotal | number }} DH
-        </strong>
-      </article>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Total factures</span>
-        <strong class="kpi-value">
-          {{ stats.totalFactures }}
-        </strong>
-      </article>
+      <!-- =================================================
+           SYNTHÈSE MÉTIER
 
-      <article class="kpi-card">
-        <span class="kpi-label">Factures payées</span>
-        <strong class="kpi-value">
-          {{ stats.facturesPayees }}
-        </strong>
-      </article>
+           ORDRE DE LECTURE :
+           1. AO
+           2. CONSULTATIONS
+           3. MARCHÉS & COMMANDES
+           4. FACTURATION & PAIEMENTS
+      ================================================== -->
 
-      <article class="kpi-card kpi-warning">
-  <span class="kpi-label">
-    Factures partiellement payées
-  </span>
-        <strong class="kpi-value">
-          {{ stats.facturesPartiellementPayees }}
-        </strong>
-      </article>
+      <div class="summary-groups">
 
-      <article class="kpi-card">
-        <span class="kpi-label">Factures émises</span>
-        <strong class="kpi-value">
-          {{ stats.facturesEmises }}
-        </strong>
-      </article>
 
-      <article class="kpi-card">
-        <span class="kpi-label">Montant total facturé</span>
-        <strong class="kpi-value kpi-value-small">
-          {{ stats.montantTotalFacture | number }} DH
-        </strong>
-      </article>
+        <!-- =================================================
+             1. APPELS D'OFFRES
+        ================================================== -->
 
-      <article class="kpi-card">
-        <span class="kpi-label">Total encaissé</span>
-        <strong class="kpi-value kpi-value-small">
-          {{ stats.totalEncaisse | number }} DH
-        </strong>
-      </article>
+        <section class="summary-panel">
 
-      <article class="kpi-card kpi-warning">
-        <span class="kpi-label">Reste à encaisser</span>
-        <strong class="kpi-value kpi-value-small">
-          {{ stats.resteTotalAEncaisser | number }} DH
-        </strong>
-      </article>
+          <div class="summary-panel-header">
+
+            <div>
+
+                <span class="summary-eyebrow">
+                  Commercial
+                </span>
+
+              <h2>
+                Appels d’offres
+              </h2>
+
+            </div>
+
+            <strong class="summary-total">
+              {{ stats.totalAppelsOffres }}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-list">
+
+            <div>
+
+                <span>
+                  Adjugés
+                </span>
+
+              <strong>
+                {{ stats.aoAdjuges }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                  En cours
+                </span>
+
+              <strong>
+                {{ stats.aoEnCours }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                  Annulés
+                </span>
+
+              <strong>
+                {{ stats.aoAnnules }}
+              </strong>
+
+            </div>
+
+
+            <div class="summary-line-danger">
+
+                <span>
+                  En retard
+                </span>
+
+              <strong>
+                {{ stats.aoEnRetard }}
+              </strong>
+
+            </div>
+
+
+            <div class="summary-line-warning">
+
+                <span>
+                  Urgents
+                </span>
+
+              <strong>
+                {{ stats.aoUrgents }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                  Montant total
+                </span>
+
+              <strong>
+                {{ stats.montantTotalAO | number }} DH
+              </strong>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- =================================================
+        2. CONSULTATIONS
+        =================================================== -->
+
+        <section class="summary-panel">
+
+          <div class="summary-panel-header">
+
+            <div>
+      <span class="summary-eyebrow">
+        Activité
+      </span>
+
+              <h2>
+                Consultations
+              </h2>
+            </div>
+
+            <strong class="summary-total">
+              {{ stats.totalConsultations }}
+            </strong>
+
+          </div>
+
+          <div class="summary-list">
+
+            <div>
+      <span>
+        Retenues
+      </span>
+
+              <strong>
+                {{ stats.consultationsRetenues }}
+              </strong>
+            </div>
+
+            <div>
+      <span>
+        En cours
+      </span>
+
+              <strong>
+                {{ stats.consultationsEnCours }}
+              </strong>
+            </div>
+
+            <div>
+      <span>
+        Refusées
+      </span>
+
+              <strong>
+                {{ stats.consultationsRefusees }}
+              </strong>
+            </div>
+
+            <div>
+      <span>
+        Top client
+      </span>
+
+              <strong>
+                {{ stats.topClient || '—' }}
+              </strong>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- =================================================
+        3. MARCHÉS & COMMANDES
+        ================================================== -->
+
+        <section class="summary-panel">
+
+          <div class="summary-panel-header">
+
+            <div>
+      <span class="summary-eyebrow">
+        Exécution
+      </span>
+
+              <h2>
+                Marchés & commandes
+              </h2>
+            </div>
+
+            <strong class="summary-total">
+              {{ stats.totalMarches }}
+            </strong>
+
+          </div>
+
+          <div class="summary-list">
+
+            <div>
+      <span>
+        Marchés en cours
+      </span>
+
+              <strong>
+                {{ stats.marchesEnCours }}
+              </strong>
+            </div>
+
+            <div>
+      <span>
+        Marchés terminés
+      </span>
+
+              <strong>
+                {{ stats.marchesTermines }}
+              </strong>
+            </div>
+
+            <div>
+      <span>
+        Total commandes
+      </span>
+
+              <strong>
+                {{ stats.totalCommandes }}
+              </strong>
+            </div>
+
+            <div>
+      <span>
+        Commandes en cours
+      </span>
+
+              <strong>
+                {{ stats.commandesEnCours }}
+              </strong>
+            </div>
+
+            <div>
+      <span>
+        Commandes livrées
+      </span>
+
+              <strong>
+                {{ stats.commandesLivrees }}
+              </strong>
+            </div>
+
+            <div>
+      <span>
+        Montant commandes
+      </span>
+
+              <strong>
+                {{ stats.montantTotalCommandes | number }} DH
+              </strong>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- =================================================
+             4. FACTURATION & PAIEMENTS
+        ================================================== -->
+
+        <section class="summary-panel">
+
+          <div class="summary-panel-header">
+
+            <div>
+
+                <span class="summary-eyebrow">
+                  Finance
+                </span>
+
+              <h2>
+                Facturation & paiements
+              </h2>
+
+            </div>
+
+            <strong class="summary-total">
+              {{ stats.totalFactures }}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-list">
+
+            <div>
+
+                <span>
+                  Montant facturé
+                </span>
+
+              <strong>
+                {{
+                stats.montantTotalFacture
+                | number:'1.2-2'
+                }} DH
+              </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                  Encaissé
+                </span>
+
+              <strong>
+                {{
+                stats.totalEncaisse
+                | number:'1.2-2'
+                }} DH
+              </strong>
+
+            </div>
+
+
+            <div class="summary-line-warning">
+
+                <span>
+                  Reste à encaisser
+                </span>
+
+              <strong>
+                {{
+                stats.resteTotalAEncaisser
+                | number:'1.2-2'
+                }} DH
+              </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                  Factures payées
+                </span>
+
+              <strong>
+                {{ stats.facturesPayees }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                  Paiements validés
+                </span>
+
+              <strong>
+                {{ stats.paiementsValides }}
+              </strong>
+
+            </div>
+
+
+            <div class="summary-line-warning">
+
+                <span>
+                  Paiements en attente
+                </span>
+
+              <strong>
+                {{ stats.paiementsEnAttente }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
 
     </section>
 
     }
 
-    <!-- ============================= -->
-    <!-- PILOTAGE PAR DAS -->
-    <!-- ============================= -->
+
+    <!-- =====================================================
+         PILOTAGE PAR DAS
+    ====================================================== -->
 
     <section class="das-section">
 
       <div class="das-section-header">
+
         <div>
-          <h2>Pilotage par DAS</h2>
+
+          <h2>
+            Pilotage par DAS
+          </h2>
+
           <p>
             Suivi de l'activité par domaine d'activité stratégique
           </p>
+
         </div>
+
       </div>
+
 
       <div class="das-grid">
 
@@ -283,6 +549,7 @@
           <div class="das-card-header">
 
             <div>
+
                 <span class="das-label">
                   DAS
                 </span>
@@ -290,92 +557,176 @@
               <h3>
                 {{ item.das }}
               </h3>
+
             </div>
 
           </div>
+
 
           <div class="das-indicators">
 
             <div class="das-indicator">
-              <span>Appels d'offres</span>
+
+                <span>
+                  Appels d'offres
+                </span>
+
               <strong>
                 {{ item.nombreAppelsOffres }}
               </strong>
+
               <small>
-                {{ item.montantAppelsOffres | number }} DH
+                {{
+                item.montantAppelsOffres
+                | number
+                }} DH
               </small>
+
             </div>
 
+
             <div class="das-indicator">
-              <span>Consultations</span>
+
+                <span>
+                  Consultations
+                </span>
+
               <strong>
                 {{ item.nombreConsultations }}
               </strong>
+
               <small>
-                {{ item.montantConsultations | number }} DH
+                {{
+                item.montantConsultations
+                | number
+                }} DH
               </small>
+
             </div>
 
+
             <div class="das-indicator">
-              <span>Offres</span>
+
+                <span>
+                  Offres
+                </span>
+
               <strong>
                 {{ item.nombreOffres }}
               </strong>
+
               <small>
-                {{ item.montantOffres | number }} DH
+                {{
+                item.montantOffres
+                | number
+                }} DH
               </small>
+
             </div>
 
+
             <div class="das-indicator">
-              <span>Marchés</span>
+
+                <span>
+                  Marchés
+                </span>
+
               <strong>
                 {{ item.nombreMarches }}
               </strong>
+
               <small>
-                {{ item.montantMarches | number }} DH
+                {{
+                item.montantMarches
+                | number
+                }} DH
               </small>
+
             </div>
 
+
             <div class="das-indicator">
-              <span>Ordres de service</span>
+
+                <span>
+                  Ordres de service
+                </span>
+
               <strong>
                 {{ item.nombreOrdresService }}
               </strong>
+
             </div>
 
+
             <div class="das-indicator">
-              <span>Commandes</span>
+
+                <span>
+                  Commandes
+                </span>
+
               <strong>
                 {{ item.nombreCommandes }}
               </strong>
+
               <small>
-                {{ item.montantCommandes | number }} DH
+                {{
+                item.montantCommandes
+                | number
+                }} DH
               </small>
+
             </div>
 
           </div>
 
+
           <div class="das-finance">
 
             <div>
-              <span>Facturé</span>
+
+                <span>
+                  Facturé
+                </span>
+
               <strong>
-                {{ item.montantFacture | number:'1.2-2' }} DH
+                {{
+                item.montantFacture
+                | number:'1.2-2'
+                }} DH
               </strong>
+
             </div>
 
-            <div>
-              <span>Encaissé</span>
-              <strong>
-                {{ item.montantEncaisse | number:'1.2-2' }} DH
-              </strong>
-            </div>
 
             <div>
-              <span>Reste à encaisser</span>
+
+                <span>
+                  Encaissé
+                </span>
+
               <strong>
-                {{ item.resteAEncaisser | number:'1.2-2' }} DH
+                {{
+                item.montantEncaisse
+                | number:'1.2-2'
+                }} DH
               </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                  Reste à encaisser
+                </span>
+
+              <strong>
+                {{
+                item.resteAEncaisser
+                | number:'1.2-2'
+                }} DH
+              </strong>
+
             </div>
 
           </div>
@@ -385,7 +736,9 @@
         } @empty {
 
         <article class="dashboard-card das-empty">
+
           Aucune statistique DAS disponible.
+
         </article>
 
         }
@@ -394,79 +747,159 @@
 
     </section>
 
+
+    <!-- =====================================================
+         GRAPHIQUES
+    ====================================================== -->
+
     <section class="charts-grid">
 
-      <article class="dashboard-card chart-card chart-wide">
+
+      <!-- COMPARAISON DAS -->
+
+      <article class="dashboard-card chart-card">
 
         <div class="card-header">
+
           <div>
-            <h2>Comparaison des DAS</h2>
+
+            <h2>
+              Comparaison des DAS
+            </h2>
+
             <p>
               Commandes, facturé et encaissé par DAS
             </p>
+
           </div>
+
         </div>
 
-        <div class="chart-wrapper chart-wrapper-large">
+        <div
+          class="chart-wrapper chart-wrapper-large"
+        >
+
           <canvas id="dasChart"></canvas>
+
         </div>
 
       </article>
 
-      <article class="dashboard-card chart-card chart-wide">
+
+      <!-- CA MENSUEL -->
+
+      <article class="dashboard-card chart-card">
 
         <div class="card-header">
+
           <div>
-            <h2>Chiffre d’affaires mensuel</h2>
-            <p>Évolution des paiements par mois</p>
+
+            <h2>
+              Chiffre d’affaires mensuel
+            </h2>
+
+            <p>
+              Évolution des paiements par mois
+            </p>
+
           </div>
+
         </div>
 
-        <div class="chart-wrapper chart-wrapper-large">
+        <div
+          class="chart-wrapper chart-wrapper-large"
+        >
+
           <canvas id="caMensuelChart"></canvas>
+
         </div>
 
       </article>
 
-      <article class="dashboard-card chart-card">
+
+      <!-- RÉPARTITION AO -->
+
+      <article
+        class="dashboard-card chart-card"
+      >
 
         <div class="card-header">
+
           <div>
-            <h2>Répartition des AO</h2>
-            <p>Par statut</p>
+
+            <h2>
+              Répartition des AO
+            </h2>
+
+            <p>
+              Par statut
+            </p>
+
           </div>
+
         </div>
 
-        <div class="chart-wrapper chart-wrapper-pie">
+        <div
+          class="chart-wrapper chart-wrapper-pie"
+        >
+
           <canvas id="statutChart"></canvas>
+
         </div>
 
       </article>
 
-      <article class="dashboard-card chart-card">
+
+      <!-- TOP CLIENTS -->
+
+      <article
+        class="dashboard-card chart-card"
+      >
 
         <div class="card-header">
+
           <div>
-            <h2>Top 5 clients</h2>
-            <p>Par chiffre d’affaires</p>
+
+            <h2>
+              Top 5 clients
+            </h2>
+
+            <p>
+              Par chiffre d’affaires
+            </p>
+
           </div>
+
         </div>
 
         <div class="chart-wrapper">
+
           <canvas id="topClientsChart"></canvas>
+
         </div>
 
       </article>
 
     </section>
 
+
+    <!-- =====================================================
+     ALERTES APPELS D'OFFRES
+===================================================== -->
+
     <section class="dashboard-card alerts-card">
 
-      <div class="card-header">
+      <div class="card-header alerts-header">
+
         <div>
           <h2>Alertes appels d’offres</h2>
           <p>Échéances urgentes ou dépassées</p>
         </div>
+
+        <div class="alerts-summary">
+          {{ alertes.length }} alerte(s)
+        </div>
+
       </div>
 
       <div class="alerts-table-wrapper">
@@ -478,7 +911,7 @@
             <th>Référence</th>
             <th>Objet</th>
             <th>Date limite</th>
-            <th>Jours restants</th>
+            <th>Jours</th>
             <th>État</th>
           </tr>
           </thead>
@@ -488,20 +921,45 @@
           @for (alerte of alertes; track alerte.id) {
 
           <tr>
-            <td>{{ alerte.reference }}</td>
-            <td>{{ alerte.objet }}</td>
-            <td>{{ alerte.dateLimite }}</td>
-            <td>{{ alerte.joursRestants }}</td>
+
             <td>
-                  <span
-                    class="alert-badge"
-                    [class.EN_RETARD]="alerte.etatAlerte === 'EN_RETARD'"
-                    [class.URGENT]="alerte.etatAlerte === 'URGENT'"
-                    [class.NORMAL]="alerte.etatAlerte === 'NORMAL'"
-                  >
-                    {{ alerte.etatAlerte }}
-                  </span>
+              <strong class="alert-reference">
+                {{ alerte.reference }}
+              </strong>
             </td>
+
+            <td>
+              {{ alerte.objet }}
+            </td>
+
+            <td>
+              {{ alerte.dateLimite }}
+            </td>
+
+            <td>
+
+              <strong
+                [class.days-danger]="alerte.joursRestants < 0"
+                [class.days-warning]="alerte.joursRestants >= 0 && alerte.joursRestants <= 7"
+              >
+                {{ alerte.joursRestants }}
+              </strong>
+
+            </td>
+
+            <td>
+
+              <span
+                class="alert-badge"
+                [class.EN_RETARD]="alerte.etatAlerte === 'EN_RETARD'"
+                [class.URGENT]="alerte.etatAlerte === 'URGENT'"
+                [class.NORMAL]="alerte.etatAlerte === 'NORMAL'"
+              >
+                {{ alerte.etatAlerte }}
+              </span>
+
+            </td>
+
           </tr>
 
           } @empty {
