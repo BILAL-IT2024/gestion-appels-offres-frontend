@@ -16,6 +16,7 @@ import { Statistiques } from './pages/statistiques/statistiques';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'notifications', component: Notifications },
   { path: 'appels-offres', component: AppelsOffresComponent },

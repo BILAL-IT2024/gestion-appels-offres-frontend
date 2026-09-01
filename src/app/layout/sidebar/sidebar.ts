@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 
 import {
+  Router,
   RouterLink,
   RouterLinkActive
 } from '@angular/router';
@@ -36,7 +37,8 @@ export class SidebarComponent implements OnInit {
   constructor(
     private dashboardService: DashboardService,
     private paiementService: PaiementService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -100,8 +102,10 @@ export class SidebarComponent implements OnInit {
   }
 
   logout(): void {
+
     localStorage.removeItem('token');
-    window.location.href = '/login';
+
+    this.router.navigateByUrl('/login');
   }
 
 }
