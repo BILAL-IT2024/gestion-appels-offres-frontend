@@ -210,24 +210,23 @@ export class Factures implements OnInit {
       return;
     }
 
-    const montantTTC =
-      this.nouvelleFacture.montantHT *
-      (1 + this.nouvelleFacture.tva / 100);
+    const montantHT =
+      Number(this.nouvelleFacture.montantHT) || 0;
 
-      if (
-        !this.modeEdition &&
-        this.resumeFacturation &&
-        montantTTC > this.resumeFacturation.montantRestant
-      ) {
+    if (
+      !this.modeEdition &&
+      this.resumeFacturation &&
+      montantHT > this.resumeFacturation.montantRestant
+    ) {
 
-        this.toastService.warning(
-          `Le montant TTC dépasse le reste à facturer : ${
-            this.resumeFacturation.montantRestant
-          } DH`
-        );
+      this.toastService.warning(
+        `Le montant HT dépasse le reste à facturer : ${
+          this.resumeFacturation.montantRestant
+        } DH HT`
+      );
 
-        return;
-      }
+      return;
+    }
 
     if (
       this.modeEdition &&

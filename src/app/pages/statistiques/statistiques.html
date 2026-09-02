@@ -36,16 +36,16 @@
           <h3>{{ item.das }}</h3>
 
           <div class="stat-line">
-            <span>Commandes</span>
+            <span>Commandes HT</span>
             <strong>
-              {{ item.montantCommandes | number:'1.2-2' }} DH
+              {{ item.montantCommandes | number:'1.2-2' }} DH HT
             </strong>
           </div>
 
           <div class="stat-line">
-            <span>Facturé</span>
+            <span>Facturé TTC</span>
             <strong>
-              {{ item.montantFacture | number:'1.2-2' }} DH
+              {{ item.montantFacture | number:'1.2-2' }} DH TTC
             </strong>
           </div>
 
@@ -85,8 +85,10 @@
     <section class="stats-section">
 
       <div class="section-header">
-        <h2>Chiffre d’affaires mensuel</h2>
-        <p>Évolution des paiements validés</p>
+        <h2>Chiffre d’affaires mensuel HT</h2>
+        <p>
+          Évolution du chiffre d’affaires hors taxes
+        </p>
       </div>
 
       <div class="table-wrapper">
@@ -96,7 +98,7 @@
           <thead>
           <tr>
             <th>Période</th>
-            <th>Montant</th>
+            <th>Montant HT</th>
           </tr>
           </thead>
 
@@ -108,13 +110,15 @@
           ) {
 
           <tr>
+
             <td>
               {{ item.mois }}/{{ item.annee }}
             </td>
 
             <td>
-              {{ item.total | number:'1.2-2' }} DH
+              {{ item.total | number:'1.2-2' }} DH HT
             </td>
+
           </tr>
 
           } @empty {
@@ -144,7 +148,9 @@
 
       <div class="section-header">
         <h2>Top clients</h2>
-        <p>Classement par chiffre d’affaires</p>
+        <p>
+          Classement par chiffre d’affaires HT
+        </p>
       </div>
 
       <div class="table-wrapper">
@@ -154,7 +160,7 @@
           <thead>
           <tr>
             <th>Client</th>
-            <th>Chiffre d’affaires</th>
+            <th>Chiffre d’affaires HT</th>
           </tr>
           </thead>
 
@@ -163,13 +169,15 @@
           @for (client of topClients; track client.client) {
 
           <tr>
+
             <td>
               {{ client.client }}
             </td>
 
             <td>
-              {{ client.total | number:'1.2-2' }} DH
+              {{ client.total | number:'1.2-2' }} DH HT
             </td>
+
           </tr>
 
           } @empty {

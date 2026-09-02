@@ -155,26 +155,26 @@
           <div class="commande-resume">
 
             <div>
-              <span>Montant commande</span>
+              <span>Montant commande HT</span>
 
               <strong>
-                {{ resumeCommande.montantCommande | number }} DH
+                {{ resumeCommande.montantCommande | number }} DH HT
               </strong>
             </div>
 
             <div>
-              <span>Déjà livré</span>
+              <span>Déjà livré HT</span>
 
               <strong>
-                {{ resumeCommande.montantLivre | number }} DH
+                {{ resumeCommande.montantLivre | number }} DH HT
               </strong>
             </div>
 
             <div>
-              <span>Reste à livrer</span>
+              <span>Reste à livrer HT</span>
 
               <strong>
-                {{ resumeCommande.montantRestant | number }} DH
+                {{ resumeCommande.montantRestant | number }} DH HT
               </strong>
             </div>
 
@@ -187,7 +187,7 @@
         <div class="form-group">
 
           <label for="montantLivraison">
-            Montant livré
+            Montant livré HT
           </label>
 
           <input
@@ -195,7 +195,7 @@
             type="number"
             min="0"
             class="form-control"
-            placeholder="Montant livré en DH"
+            placeholder="Montant livré HT en DH"
             [(ngModel)]="nouveauBon.montantLivraison"
             [max]="resumeCommande?.montantRestant ?? null"
             [disabled]="
@@ -337,7 +337,7 @@
             <th>Commande</th>
             <th>Marché / Consultation</th>
             <th>Date livraison</th>
-            <th>Montant livré</th>
+            <th>Montant livré HT</th>
             <th>Objet</th>
             <th>Statut</th>
             <th>Actions</th>
@@ -387,7 +387,7 @@
             </td>
 
             <td class="montant-cell">
-              {{ bon.montantLivraison | number }} DH
+              {{ bon.montantLivraison | number }} DH HT
             </td>
 
             <td>

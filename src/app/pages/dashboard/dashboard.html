@@ -37,16 +37,16 @@
 
         <article class="summary-kpi">
 
-            <span>
-              Chiffre d’affaires
-            </span>
+          <span>
+            Chiffre d’affaires HT
+          </span>
 
           <strong>
-            {{ stats.chiffreAffaireTotal | number }} DH
+            {{ stats.chiffreAffaireTotal | number:'1.2-2' }} DH HT
           </strong>
 
           <small>
-            Encaissements validés
+            Total des factures hors taxes
           </small>
 
         </article>
@@ -423,14 +423,14 @@
             <div>
 
                 <span>
-                  Montant facturé
+                  Montant facturé TTC
                 </span>
 
               <strong>
                 {{
                 stats.montantTotalFacture
                 | number:'1.2-2'
-                }} DH
+                }} DH TTC
               </strong>
 
             </div>
@@ -685,14 +685,14 @@
             <div>
 
                 <span>
-                  Facturé
+                  Facturé TTC
                 </span>
 
               <strong>
                 {{
                 item.montantFacture
                 | number:'1.2-2'
-                }} DH
+                }} DH TTC
               </strong>
 
             </div>
@@ -795,11 +795,11 @@
           <div>
 
             <h2>
-              Chiffre d’affaires mensuel
+              Chiffre d’affaires mensuel HT
             </h2>
 
             <p>
-              Évolution des paiements par mois
+              Évolution du chiffre d’affaires hors taxes par mois
             </p>
 
           </div>
@@ -865,7 +865,7 @@
             </h2>
 
             <p>
-              Par chiffre d’affaires
+              Par chiffre d’affaires HT
             </p>
 
           </div>

@@ -197,7 +197,7 @@
         <div class="form-group">
 
           <label for="montantEstime">
-            Montant estimé
+            Montant estimé HT
           </label>
 
           <input
@@ -205,7 +205,7 @@
             type="number"
             min="0"
             class="form-control"
-            placeholder="Montant en DH"
+            placeholder="Montant HT en DH"
             [(ngModel)]="nouvelAppelOffre.montantEstime"
           >
 
@@ -327,7 +327,7 @@
             <th>Objet</th>
             <th>Client</th>
             <th>DAS</th>
-            <th>Montant</th>
+            <th>Montant estimé HT</th>
             <th>Date limite</th>
             <th>Statut</th>
             <th>Actions</th>
@@ -373,7 +373,7 @@
             </td>
 
             <td>
-              {{ ao.montantEstime | number }} DH
+              {{ ao.montantEstime | number }} DH HT
             </td>
 
             <td>

@@ -233,12 +233,12 @@
 
             <div class="notification-details">
 
-                  <span>
-                    Montant :
-                    <strong>
-                      {{ paiement.montantPaiement }} DH
-                    </strong>
-                  </span>
+              <span>
+                  Montant :
+                  <strong>
+                   {{ paiement.montantPaiement | number:'1.2-2' }} DH
+                   </strong>
+                 </span>
 
               <span>
                     Date :
@@ -272,7 +272,7 @@
           <span
             class="notification-status status-warning"
           >
-                EN_ATTENTE
+                En attente
               </span>
 
         </article>

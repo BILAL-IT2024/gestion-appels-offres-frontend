@@ -137,7 +137,7 @@
         <div class="form-group">
 
           <label for="montantOffre">
-            Montant de l’offre
+            Montant de l’offre HT
           </label>
 
           <input
@@ -145,7 +145,7 @@
             type="number"
             min="0"
             class="form-control"
-            placeholder="Montant en DH"
+            placeholder="Montant HT en DH"
             [(ngModel)]="nouvelleOffre.montantOffre"
           >
 
@@ -355,7 +355,7 @@
             <th>Date</th>
             <th>Source</th>
             <th>DAS</th>
-            <th>Montant</th>
+            <th>Montant HT</th>
             <th>Statut</th>
             <th>Actions</th>
           </tr>
@@ -420,7 +420,7 @@
             </td>
 
             <td class="montant-cell">
-              {{ offre.montantOffre | number }} DH
+              {{ offre.montantOffre | number }} DH HT
             </td>
 
             <td>

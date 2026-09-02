@@ -19,13 +19,16 @@ import {
 
 import { Topbar } from '../../layout/topbar/topbar';
 
+import { DecimalPipe } from '@angular/common';
+
 @Component({
   selector: 'app-notifications',
   standalone: true,
   imports: [
     SidebarComponent,
     RouterLink,
-    Topbar
+    Topbar,
+    DecimalPipe
   ],
   templateUrl: './notifications.html',
   styleUrl: './notifications.css'

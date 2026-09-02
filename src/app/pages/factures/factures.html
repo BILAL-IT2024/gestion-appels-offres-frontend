@@ -64,6 +64,10 @@
             Émise
           </option>
 
+          <option value="PARTIELLEMENT_PAYEE">
+            Partiellement payée
+          </option>
+
           <option value="PAYEE">
             Payée
           </option>
@@ -186,23 +190,23 @@
         <div class="facturation-resume">
 
           <div class="resume-item">
-            <span>Montant livré</span>
+            <span>Montant livré HT</span>
             <strong>
-              {{ resumeFacturation.montantLivre | number }} DH
+              {{ resumeFacturation.montantLivre | number }} DH HT
             </strong>
           </div>
 
           <div class="resume-item">
-            <span>Déjà facturé</span>
+            <span>Déjà facturé HT</span>
             <strong>
-              {{ resumeFacturation.montantFacture | number }} DH
+              {{ resumeFacturation.montantFacture | number }} DH HT
             </strong>
           </div>
 
           <div class="resume-item">
-            <span>Reste à facturer</span>
+            <span>Reste à facturer HT</span>
             <strong>
-              {{ resumeFacturation.montantRestant | number }} DH
+              {{ resumeFacturation.montantRestant | number }} DH HT
             </strong>
           </div>
 
@@ -286,6 +290,7 @@
             id="montantTTC"
             type="number"
             class="form-control"
+            placeholder="Calculé automatiquement"
             [ngModel]="nouvelleFacture.montantTTC"
             readonly
           >
@@ -445,7 +450,7 @@
             </td>
 
             <td class="montant-cell">
-              {{ facture.montantHT | number }} DH
+              {{ facture.montantHT | number }} DH HT
             </td>
 
             <td>
@@ -458,8 +463,9 @@
               ? (facture.montantTTC | number)
               : '—'
               }}
+
               @if (facture.montantTTC !== undefined) {
-              DH
+              DH TTC
               }
             </td>
 

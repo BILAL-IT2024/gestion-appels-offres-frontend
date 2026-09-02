@@ -3,16 +3,25 @@ import { FormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
+import { Topbar } from '../../layout/topbar/topbar';
+
 import { Marche, MarcheService } from '../../services/marche';
 import { AppelOffresService } from '../../services/appel-offres';
+import { OffreService } from '../../services/offre';
+
 import { ToastService } from '../../services/toast';
 import { ConfirmDialogService } from '../../services/confirm-dialog';
-import { Topbar } from '../../layout/topbar/topbar';
+
 
 @Component({
   selector: 'app-marches',
   standalone: true,
-  imports: [SidebarComponent, FormsModule,  DecimalPipe, Topbar],
+  imports: [
+    SidebarComponent,
+    FormsModule,
+    DecimalPipe,
+    Topbar
+  ],
   templateUrl: './marches.html',
   styleUrl: './marches.css',
 })
@@ -23,8 +32,10 @@ export class Marches implements OnInit {
   idMarcheEnCours?: number;
 
   marches: any[] = [];
-  keyword = '';
   appelsOffres: any[] = [];
+  offres: any[] = [];
+
+  keyword = '';
 
   nouveauMarche: Marche = {
     numeroMarche: '',
@@ -39,206 +50,314 @@ export class Marches implements OnInit {
     }
   };
 
+
   constructor(
     private marcheService: MarcheService,
     private appelOffresService: AppelOffresService,
+    private offreService: OffreService,
     private cd: ChangeDetectorRef,
     private toastService: ToastService,
     private confirmDialogService: ConfirmDialogService
   ) {}
 
+
   ngOnInit(): void {
+
     this.chargerMarches();
     this.chargerAppelsOffres();
+    this.chargerOffres();
   }
+
+
+  // =====================================================
+  // CHARGEMENT DES MARCHÉS
+  // =====================================================
 
   chargerMarches(): void {
+
     this.marcheService.getMarches().subscribe({
+
       next: (data) => {
+
         this.marches = data;
+
         this.cd.detectChanges();
       },
+
       error: (err) => {
-        console.log('Erreur chargement marchés', err);
+
+        console.log(
+          'Erreur chargement marchés',
+          err
+        );
       }
+
     });
   }
+
+
+  // =====================================================
+  // CHARGEMENT DES APPELS D'OFFRES
+  // =====================================================
 
   chargerAppelsOffres(): void {
-    this.appelOffresService.getAppelsOffres().subscribe({
-      next: (data) => {
-        this.appelsOffres = data;
-      },
-      error: (err) => {
-        console.log('Erreur chargement AO', err);
-      }
-    });
-  }
 
-mettreAJourDepuisAO(idAppelOffre: number): void {
-
-  const appelOffreSelectionne =
-    this.appelsOffres.find(
-      ao => Number(ao.id) === Number(idAppelOffre)
-    );
-
-  if (!appelOffreSelectionne) {
-    this.nouveauMarche.das = '';
-    this.nouveauMarche.montantMarche = 0;
-    return;
-  }
-
-  this.nouveauMarche.das =
-    appelOffreSelectionne.das ?? '';
-
-  this.nouveauMarche.montantMarche =
-    Number(
-      appelOffreSelectionne.montantEstime ?? 0
-    );
-}
-
-ouvrirFormulaire(): void {
-
-  this.modeEdition = false;
-  this.idMarcheEnCours = undefined;
-
-  this.nouveauMarche = {
-    numeroMarche: '',
-    dateDebut: '',
-    dateFin: '',
-    montantMarche: 0,
-    tauxExecution: 0,
-    statut: 'EN_COURS',
-    das: '',
-    appelDoffres: {
-      id: 0
-    }
-  };
-
-  this.showForm = true;
-}
-
-fermerFormulaire(): void {
-
-  this.showForm = false;
-  this.modeEdition = false;
-  this.idMarcheEnCours = undefined;
-}
-
-enregistrerMarche(): void {
-
-   this.mettreAJourDepuisAO(
-     this.nouveauMarche.appelDoffres.id
-   );
-
-  if (this.nouveauMarche.appelDoffres.id === 0) {
-    this.toastService.warning(
-       'Veuillez sélectionner un appel d’offres adjugé'
-    );
-    return;
-     }
-
-  if (!this.nouveauMarche.das) {
-    this.toastService.warning(
-       'L’appel d’offres sélectionné ne possède pas de DAS'
-     );
-    return;
-    }
-
-  if (
-    this.modeEdition &&
-    this.idMarcheEnCours !== undefined
-  ) {
-
-    this.marcheService
-      .updateMarche(
-        this.idMarcheEnCours,
-        this.nouveauMarche
-      )
+    this.appelOffresService
+      .getAppelsOffres()
       .subscribe({
 
-        next: () => {
+        next: (data) => {
 
-          this.toastService.success(
-            'Marché modifié avec succès'
+          this.appelsOffres = data;
+        },
+
+        error: (err) => {
+
+          console.log(
+            'Erreur chargement AO',
+            err
           );
+        }
 
-          this.showForm = false;
-          this.modeEdition = false;
-          this.idMarcheEnCours = undefined;
+      });
+  }
 
-          this.chargerMarches();
+
+  // =====================================================
+  // CHARGEMENT DES OFFRES
+  // =====================================================
+
+  chargerOffres(): void {
+
+    this.offreService
+      .getOffres()
+      .subscribe({
+
+        next: (data) => {
+
+          this.offres = data;
         },
 
         error: (err) => {
 
           console.error(
-            'Erreur modification marché',
+            'Erreur chargement offres',
             err
           );
-
-          this.toastService.error(
-            'Erreur lors de la modification du marché'
-          );
         }
-      });
 
-    return;
+      });
   }
 
-  this.marcheService
-    .saveMarche(this.nouveauMarche)
-    .subscribe({
 
-      next: () => {
+  // =====================================================
+  // MISE À JOUR AUTOMATIQUE DEPUIS L'AO
+  // =====================================================
 
-        this.toastService.success(
-          'Marché enregistré avec succès'
-        );
+  mettreAJourDepuisAO(
+    idAppelOffre: number
+  ): void {
 
-        this.showForm = false;
+    const appelOffreSelectionne =
+      this.appelsOffres.find(
+        ao =>
+          Number(ao.id) ===
+          Number(idAppelOffre)
+      );
 
-        this.chargerMarches();
-      },
 
-      error: (err) => {
+    // AO introuvable
+    if (!appelOffreSelectionne) {
 
-        console.error(
-          'Erreur enregistrement marché',
-          err
-        );
+      this.nouveauMarche.das = '';
 
-        this.toastService.error(
-          'Erreur lors de l’enregistrement du marché'
-        );
+      this.nouveauMarche.montantMarche = 0;
+
+      return;
+    }
+
+
+    // ===================================================
+    // DAS
+    // Le DAS vient de l'appel d'offres
+    // ===================================================
+
+    this.nouveauMarche.das =
+      appelOffreSelectionne.das ?? '';
+
+
+    // ===================================================
+    // MONTANT DU MARCHÉ
+    // Il vient de l'offre ACCEPTÉE liée à cet AO
+    // ===================================================
+
+    const offreAcceptee =
+      this.offres.find(
+        offre =>
+
+          Number(
+            offre.appelDoffres?.id
+          ) === Number(idAppelOffre)
+
+          &&
+
+          offre.statut === 'ACCEPTEE'
+      );
+
+
+    // Aucune offre acceptée
+    if (!offreAcceptee) {
+
+      this.nouveauMarche.montantMarche = 0;
+
+      return;
+    }
+
+
+    // Montant HT de l'offre acceptée
+    this.nouveauMarche.montantMarche =
+      Number(
+        offreAcceptee.montantOffre ?? 0
+      );
+  }
+
+
+  // =====================================================
+  // OUVRIR LE FORMULAIRE
+  // =====================================================
+
+  ouvrirFormulaire(): void {
+
+    this.modeEdition = false;
+
+    this.idMarcheEnCours = undefined;
+
+    this.nouveauMarche = {
+
+      numeroMarche: '',
+
+      dateDebut: '',
+
+      dateFin: '',
+
+      montantMarche: 0,
+
+      tauxExecution: 0,
+
+      statut: 'EN_COURS',
+
+      das: '',
+
+      appelDoffres: {
+        id: 0
       }
-    });
-}
 
-supprimerMarche(id: number): void {
+    };
 
-  this.confirmDialogService.open({
+    this.showForm = true;
+  }
 
-    title: 'Supprimer le marché',
 
-    message:
-      'Voulez-vous vraiment supprimer ce marché ? Cette action est irréversible.',
+  // =====================================================
+  // FERMER LE FORMULAIRE
+  // =====================================================
 
-    confirmText: 'Supprimer',
+  fermerFormulaire(): void {
 
-    cancelText: 'Annuler',
+    this.showForm = false;
 
-    onConfirm: () => {
+    this.modeEdition = false;
+
+    this.idMarcheEnCours = undefined;
+  }
+
+
+  // =====================================================
+  // ENREGISTRER / MODIFIER LE MARCHÉ
+  // =====================================================
+
+  enregistrerMarche(): void {
+
+    // Recharge automatiquement le DAS
+    // et le montant depuis l'offre acceptée
+    this.mettreAJourDepuisAO(
+      this.nouveauMarche.appelDoffres.id
+    );
+
+
+    // ===================================================
+    // VALIDATION AO
+    // ===================================================
+
+    if (
+      this.nouveauMarche.appelDoffres.id === 0
+    ) {
+
+      this.toastService.warning(
+        'Veuillez sélectionner un appel d’offres adjugé'
+      );
+
+      return;
+    }
+
+
+    // ===================================================
+    // VALIDATION DAS
+    // ===================================================
+
+    if (!this.nouveauMarche.das) {
+
+      this.toastService.warning(
+        'L’appel d’offres sélectionné ne possède pas de DAS'
+      );
+
+      return;
+    }
+
+
+    // ===================================================
+    // VALIDATION OFFRE ACCEPTÉE
+    // ===================================================
+
+    if (
+      this.nouveauMarche.montantMarche <= 0
+    ) {
+
+      this.toastService.warning(
+        'Aucune offre acceptée trouvée pour cet appel d’offres'
+      );
+
+      return;
+    }
+
+
+    // ===================================================
+    // MODE MODIFICATION
+    // ===================================================
+
+    if (
+      this.modeEdition &&
+      this.idMarcheEnCours !== undefined
+    ) {
 
       this.marcheService
-        .deleteMarche(id)
+        .updateMarche(
+          this.idMarcheEnCours,
+          this.nouveauMarche
+        )
         .subscribe({
 
           next: () => {
 
             this.toastService.success(
-              'Marché supprimé avec succès'
+              'Marché modifié avec succès'
             );
+
+            this.showForm = false;
+
+            this.modeEdition = false;
+
+            this.idMarcheEnCours = undefined;
 
             this.chargerMarches();
           },
@@ -246,168 +365,343 @@ supprimerMarche(id: number): void {
           error: (err) => {
 
             console.error(
-              'Erreur suppression marché',
+              'Erreur modification marché',
               err
             );
 
             this.toastService.error(
-              'Erreur lors de la suppression du marché'
+              'Erreur lors de la modification du marché'
             );
           }
+
         });
+
+      return;
     }
-  });
-}
 
-modifierMarche(marche: any): void {
 
-  this.modeEdition = true;
-  this.idMarcheEnCours = marche.id;
-  this.showForm = true;
+    // ===================================================
+    // MODE CRÉATION
+    // ===================================================
 
-  this.nouveauMarche = {
-    numeroMarche: marche.numeroMarche,
-    dateDebut: marche.dateDebut,
-    dateFin: marche.dateFin,
-    montantMarche: marche.montantMarche,
-    tauxExecution: marche.tauxExecution,
-    statut: marche.statut,
-    das:
-      marche.das
-      ?? marche.appelDoffres?.das
-      ?? '',
-    appelDoffres: {
-      id: Number(
-        marche.appelDoffres?.id ?? 0
+    this.marcheService
+      .saveMarche(
+        this.nouveauMarche
       )
-    }
-  };
+      .subscribe({
 
-}
+        next: () => {
 
-rechercherMarches(): void {
+          this.toastService.success(
+            'Marché enregistré avec succès'
+          );
 
-  const recherche = this.keyword.trim();
+          this.showForm = false;
 
-  if (!recherche) {
-    this.chargerMarches();
-    return;
-  }
+          this.chargerMarches();
+        },
 
-  this.marcheService
-    .searchMarches(recherche)
-    .subscribe({
+        error: (err) => {
 
-      next: (data) => {
+          console.error(
+            'Erreur enregistrement marché',
+            err
+          );
 
-        this.marches = data;
-
-        this.cd.detectChanges();
-
-        if (data.length === 0) {
-          this.toastService.info(
-            'Aucun marché trouvé'
+          this.toastService.error(
+            'Erreur lors de l’enregistrement du marché'
           );
         }
-      },
 
-      error: (err) => {
+      });
+  }
 
-        console.error(
-          'Erreur recherche marchés',
-          err
-        );
 
-        this.toastService.error(
-          'Erreur lors de la recherche des marchés'
-        );
+  // =====================================================
+  // SUPPRIMER
+  // =====================================================
+
+  supprimerMarche(
+    id: number
+  ): void {
+
+    this.confirmDialogService.open({
+
+      title:
+        'Supprimer le marché',
+
+      message:
+        'Voulez-vous vraiment supprimer ce marché ? Cette action est irréversible.',
+
+      confirmText:
+        'Supprimer',
+
+      cancelText:
+        'Annuler',
+
+      onConfirm: () => {
+
+        this.marcheService
+          .deleteMarche(id)
+          .subscribe({
+
+            next: () => {
+
+              this.toastService.success(
+                'Marché supprimé avec succès'
+              );
+
+              this.chargerMarches();
+            },
+
+            error: (err) => {
+
+              console.error(
+                'Erreur suppression marché',
+                err
+              );
+
+              this.toastService.error(
+                'Erreur lors de la suppression du marché'
+              );
+            }
+
+          });
       }
+
     });
-}
+  }
 
-reinitialiserRecherche(): void {
-  this.keyword = '';
-  this.chargerMarches();
-}
 
-exporterExcel(): void {
+  // =====================================================
+  // MODIFIER
+  // =====================================================
 
-  this.marcheService
-    .exportExcel()
-    .subscribe({
+  modifierMarche(
+    marche: any
+  ): void {
 
-      next: (blob) => {
+    this.modeEdition = true;
 
-        const url =
-          window.URL.createObjectURL(blob);
+    this.idMarcheEnCours =
+      marche.id;
 
-        const lien =
-          document.createElement('a');
+    this.showForm = true;
 
-        lien.href = url;
-        lien.download = 'marches.xlsx';
 
-        lien.click();
+    this.nouveauMarche = {
 
-        window.URL.revokeObjectURL(url);
+      numeroMarche:
+        marche.numeroMarche,
 
-        this.toastService.success(
-          'Export Excel téléchargé avec succès'
-        );
-      },
+      dateDebut:
+        marche.dateDebut,
 
-      error: (err) => {
+      dateFin:
+        marche.dateFin,
 
-        console.error(
-          'Erreur export Excel Marchés',
-          err
-        );
+      montantMarche:
+        marche.montantMarche,
 
-        this.toastService.error(
-          'Erreur lors de l’export Excel des marchés'
-        );
+      tauxExecution:
+        marche.tauxExecution,
+
+      statut:
+        marche.statut,
+
+      das:
+        marche.das
+        ?? marche.appelDoffres?.das
+        ?? '',
+
+      appelDoffres: {
+
+        id: Number(
+          marche.appelDoffres?.id ?? 0
+        )
+
       }
-    });
-}
 
-exporterPdf(id: number): void {
+    };
+  }
 
-  this.marcheService
-    .exportPdf(id)
-    .subscribe({
 
-      next: (blob) => {
+  // =====================================================
+  // RECHERCHE
+  // =====================================================
 
-        const url =
-          window.URL.createObjectURL(blob);
+  rechercherMarches(): void {
 
-        const lien =
-          document.createElement('a');
+    const recherche =
+      this.keyword.trim();
 
-        lien.href = url;
-        lien.download = `marche_${id}.pdf`;
 
-        lien.click();
+    if (!recherche) {
 
-        window.URL.revokeObjectURL(url);
+      this.chargerMarches();
 
-        this.toastService.success(
-          'PDF téléchargé avec succès'
-        );
-      },
+      return;
+    }
 
-      error: (err) => {
 
-        console.error(
-          'Erreur export PDF Marché',
-          err
-        );
+    this.marcheService
+      .searchMarches(recherche)
+      .subscribe({
 
-        this.toastService.error(
-          'Erreur lors de l’export PDF du marché'
-        );
-      }
-    });
-}
+        next: (data) => {
+
+          this.marches = data;
+
+          this.cd.detectChanges();
+
+
+          if (
+            data.length === 0
+          ) {
+
+            this.toastService.info(
+              'Aucun marché trouvé'
+            );
+          }
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Erreur recherche marchés',
+            err
+          );
+
+          this.toastService.error(
+            'Erreur lors de la recherche des marchés'
+          );
+        }
+
+      });
+  }
+
+
+  // =====================================================
+  // RÉINITIALISER LA RECHERCHE
+  // =====================================================
+
+  reinitialiserRecherche(): void {
+
+    this.keyword = '';
+
+    this.chargerMarches();
+  }
+
+
+  // =====================================================
+  // EXPORT EXCEL
+  // =====================================================
+
+  exporterExcel(): void {
+
+    this.marcheService
+      .exportExcel()
+      .subscribe({
+
+        next: (blob) => {
+
+          const url =
+            window.URL.createObjectURL(
+              blob
+            );
+
+          const lien =
+            document.createElement(
+              'a'
+            );
+
+          lien.href = url;
+
+          lien.download =
+            'marches.xlsx';
+
+          lien.click();
+
+          window.URL.revokeObjectURL(
+            url
+          );
+
+
+          this.toastService.success(
+            'Export Excel téléchargé avec succès'
+          );
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Erreur export Excel Marchés',
+            err
+          );
+
+          this.toastService.error(
+            'Erreur lors de l’export Excel des marchés'
+          );
+        }
+
+      });
+  }
+
+
+  // =====================================================
+  // EXPORT PDF
+  // =====================================================
+
+  exporterPdf(
+    id: number
+  ): void {
+
+    this.marcheService
+      .exportPdf(id)
+      .subscribe({
+
+        next: (blob) => {
+
+          const url =
+            window.URL.createObjectURL(
+              blob
+            );
+
+          const lien =
+            document.createElement(
+              'a'
+            );
+
+          lien.href = url;
+
+          lien.download =
+            `marche_${id}.pdf`;
+
+          lien.click();
+
+          window.URL.revokeObjectURL(
+            url
+          );
+
+
+          this.toastService.success(
+            'PDF téléchargé avec succès'
+          );
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Erreur export PDF Marché',
+            err
+          );
+
+          this.toastService.error(
+            'Erreur lors de l’export PDF du marché'
+          );
+        }
+
+      });
+  }
 
 }

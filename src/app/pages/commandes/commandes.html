@@ -172,7 +172,7 @@
 
             <option [ngValue]="marche.id">
               {{ marche.numeroMarche }}
-              — {{ marche.montantMarche | number }} DH
+              — {{ marche.montantMarche | number }} DH HT
             </option>
 
             }
@@ -187,28 +187,28 @@
           <div class="marche-resume">
 
             <div>
-              <span>Montant du marché</span>
+              <span>Montant du marché HT</span>
 
               <strong>
-                {{ resumeMarche.montantMarche | number }} DH
+                {{ resumeMarche.montantMarche | number }} DH HT
               </strong>
             </div>
 
 
             <div>
-              <span>Déjà commandé</span>
+              <span>Déjà commandé HT</span>
 
               <strong>
-                {{ resumeMarche.montantCommande | number }} DH
+                {{ resumeMarche.montantCommande | number }} DH HT
               </strong>
             </div>
 
 
             <div>
-              <span>Reste disponible</span>
+              <span>Reste disponible HT</span>
 
               <strong>
-                {{ resumeMarche.montantRestant | number }} DH
+                {{ resumeMarche.montantRestant | number }} DH HT
               </strong>
             </div>
 
@@ -258,26 +258,26 @@
           <div class="marche-resume">
 
             <div>
-              <span>Montant de la consultation</span>
+              <span>Montant de la consultation HT</span>
 
               <strong>
-                {{ resumeConsultation.montantConsultation | number }} DH
+                {{ resumeConsultation.montantConsultation | number }} DH HT
               </strong>
             </div>
 
             <div>
-              <span>Déjà commandé</span>
+              <span>Déjà commandé HT</span>
 
               <strong>
-                {{ resumeConsultation.montantCommande | number }} DH
+                {{ resumeConsultation.montantCommande | number }} DH HT
               </strong>
             </div>
 
             <div>
-              <span>Reste disponible</span>
+              <span>Reste disponible HT</span>
 
               <strong>
-                {{ resumeConsultation.montantRestant | number }} DH
+                {{ resumeConsultation.montantRestant | number }} DH HT
               </strong>
             </div>
 
@@ -306,7 +306,7 @@
         <div class="form-group">
 
           <label for="montantCommande">
-            Montant de la commande
+            Montant de la commande HT
           </label>
 
           <input
@@ -314,7 +314,7 @@
             type="number"
             min="0"
             class="form-control"
-            placeholder="Montant en DH"
+            placeholder="Montant HT en DH"
             [(ngModel)]="nouvelleCommande.montantCommande"
             [max]="
               origineCommande === 'MARCHE'
@@ -437,7 +437,7 @@
             <th>N° commande</th>
             <th>Marché / Consultation</th>
             <th>Date commande</th>
-            <th>Montant</th>
+            <th>Montant HT</th>
             <th>Statut</th>
             <th>Actions</th>
           </tr>
@@ -479,7 +479,7 @@
             </td>
 
             <td class="montant-cell">
-              {{ commande.montantCommande | number }} DH
+              {{ commande.montantCommande | number }} DH HT
             </td>
 
             <td>

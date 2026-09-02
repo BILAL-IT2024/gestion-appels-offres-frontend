@@ -177,7 +177,7 @@
         <div class="form-group">
 
           <label for="montantMarche">
-            Montant du marché
+            Montant du marché HT
           </label>
 
           <input
@@ -185,7 +185,7 @@
             type="number"
             min="0"
             class="form-control"
-            placeholder="Montant chargé automatiquement"
+            placeholder="Montant HT chargé automatiquement"
             [(ngModel)]="nouveauMarche.montantMarche"
             readonly
           >
@@ -292,7 +292,7 @@
             <th>DAS</th>
             <th>Date début</th>
             <th>Date fin</th>
-            <th>Montant</th>
+            <th>Montant HT</th>
             <th>Taux d’exécution</th>
             <th>Statut</th>
             <th>Actions</th>
@@ -336,7 +336,7 @@
             </td>
 
             <td>
-              {{ marche.montantMarche | number }} DH
+              {{ marche.montantMarche | number }} DH HT
             </td>
 
             <td>

@@ -281,11 +281,13 @@
                       client.typeClient === 'PRIVE'
                     "
                   >
-                    {{
-                      client.typeClient === 'PUBLIC'
-                        ? 'Public'
-                        : 'Privé'
-                    }}
+                    @if (client.typeClient === 'PUBLIC') {
+                      Public
+                     } @else if (client.typeClient === 'PRIVE') {
+                      Privé
+                     } @else {
+                       —
+                     }
                   </span>
 
             </td>
