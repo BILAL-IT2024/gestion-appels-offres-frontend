@@ -13,21 +13,23 @@ import { OrdresService } from './pages/ordres-service/ordres-service';
 import { BonsLivraison } from './pages/bons-livraison/bons-livraison';
 import { Factures } from './pages/factures/factures';
 import { Statistiques } from './pages/statistiques/statistiques';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'notifications', component: Notifications },
-  { path: 'appels-offres', component: AppelsOffresComponent },
-  { path: 'marches', component: Marches },
-  { path: 'ordres-service', component: OrdresService },
-  { path: 'commandes', component: Commandes },
-  { path: 'bons-livraison', component: BonsLivraison },
-  { path: 'factures', component: Factures },
-  { path: 'paiements', component: Paiements },
-  { path: 'clients', component: Clients },
-  { path: 'consultations', component: Consultations },
-  { path: 'offres', component: Offres },
-  { path: 'statistiques', component: Statistiques }
+
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  { path: 'notifications', component: Notifications, canActivate: [authGuard] },
+  { path: 'appels-offres', component: AppelsOffresComponent, canActivate: [authGuard] },
+  { path: 'marches', component: Marches, canActivate: [authGuard] },
+  { path: 'ordres-service', component: OrdresService, canActivate: [authGuard] },
+  { path: 'commandes', component: Commandes, canActivate: [authGuard] },
+  { path: 'bons-livraison', component: BonsLivraison, canActivate: [authGuard] },
+  { path: 'factures', component: Factures, canActivate: [authGuard] },
+  { path: 'paiements', component: Paiements, canActivate: [authGuard] },
+  { path: 'clients', component: Clients, canActivate: [authGuard] },
+  { path: 'consultations', component: Consultations, canActivate: [authGuard] },
+  { path: 'offres', component: Offres, canActivate: [authGuard] },
+  { path: 'statistiques', component: Statistiques, canActivate: [authGuard] }
 ];
