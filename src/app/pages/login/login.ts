@@ -49,6 +49,11 @@ export class LoginComponent {
             response.token
           );
 
+          localStorage.setItem(
+            'role',
+            response.role
+          );
+
           this.toastService.success(
             'Connexion réussie'
           );

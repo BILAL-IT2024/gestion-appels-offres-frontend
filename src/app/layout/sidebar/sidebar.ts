@@ -33,6 +33,8 @@ import {
 export class SidebarComponent implements OnInit {
 
   nombreNotifications = 0;
+  currentUsername = '';
+  isAdmin = false;
 
   constructor(
     private dashboardService: DashboardService,
@@ -42,6 +44,9 @@ export class SidebarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    this.lireUtilisateurConnecte();
+
     this.chargerNotifications();
   }
 
@@ -104,8 +109,36 @@ export class SidebarComponent implements OnInit {
   logout(): void {
 
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
 
     this.router.navigateByUrl('/login');
+  }
+
+  private lireUtilisateurConnecte(): void {
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return;
+    }
+
+    try {
+
+      const payload = JSON.parse(
+        atob(token.split('.')[1])
+      );
+
+      this.currentUsername =
+        payload.sub || '';
+
+      this.isAdmin =
+        localStorage.getItem('role') === 'ADMIN';
+
+    } catch {
+
+      this.currentUsername = '';
+      this.isAdmin = false;
+    }
   }
 
 }

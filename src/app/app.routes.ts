@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login';
+import { Utilisateurs } from './pages/utilisateurs/utilisateurs';
 import { DashboardComponent } from './pages/dashboard/dashboard';
 import { AppelsOffresComponent } from './pages/appels-offres/appels-offres';
 import { Marches } from './pages/marches/marches';
@@ -18,7 +19,7 @@ import { authGuard } from './guards/auth-guard';
 export const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
-
+  { path: 'utilisateurs', component: Utilisateurs, canActivate: [authGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
   { path: 'notifications', component: Notifications, canActivate: [authGuard] },
   { path: 'appels-offres', component: AppelsOffresComponent, canActivate: [authGuard] },
