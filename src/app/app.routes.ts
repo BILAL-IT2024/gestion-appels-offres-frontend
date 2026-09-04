@@ -15,11 +15,12 @@ import { BonsLivraison } from './pages/bons-livraison/bons-livraison';
 import { Factures } from './pages/factures/factures';
 import { Statistiques } from './pages/statistiques/statistiques';
 import { authGuard } from './guards/auth-guard';
+import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'utilisateurs', component: Utilisateurs, canActivate: [authGuard] },
+  { path: 'utilisateurs', component: Utilisateurs, canActivate: [authGuard, adminGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
   { path: 'notifications', component: Notifications, canActivate: [authGuard] },
   { path: 'appels-offres', component: AppelsOffresComponent, canActivate: [authGuard] },

@@ -9,6 +9,7 @@ interface LoginRequest {
 
 interface LoginResponse {
   token: string;
+  role: string;
 }
 
 @Injectable({
