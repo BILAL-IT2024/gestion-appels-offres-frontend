@@ -5,7 +5,6 @@ import {
 } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { DecimalPipe } from '@angular/common';
 
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 
@@ -30,7 +29,6 @@ import { Topbar } from '../../layout/topbar/topbar';
   imports: [
     SidebarComponent,
     FormsModule,
-    DecimalPipe,
     Topbar
   ],
   templateUrl: './ordres-service.html',
