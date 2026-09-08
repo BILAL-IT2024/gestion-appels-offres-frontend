@@ -36,6 +36,126 @@
 }
 
 /* =====================================================
+   FILTRE PAR PERIODE
+===================================================== */
+
+.dashboard-period {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  margin-bottom: 24px;
+  padding: 18px 20px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 5px 18px
+    rgba(15, 31, 77, 0.06);
+}
+
+.period-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.period-eyebrow {
+  color: #2563eb;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+
+.period-info strong {
+  color: #0b2e6d;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.period-info small {
+  margin-top: 2px;
+
+  color: #64748b;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.period-filters {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+
+  flex-shrink: 0;
+}
+
+.period-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.period-field label {
+  color: #64748b;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.period-field select {
+  min-width: 145px;
+  height: 42px;
+
+  padding: 0 36px 0 12px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+
+  background: #f8fafc;
+  color: #0b2e6d;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.period-field select:hover {
+  border-color: #93c5fd;
+  background: #ffffff;
+}
+
+.period-field select:focus {
+  border-color: #2563eb;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(37, 99, 235, 0.12);
+}
+
+/* =====================================================
    SYNTHÈSE DASHBOARD
 ===================================================== */
 
@@ -641,6 +761,23 @@ canvas {
 @media (max-width: 750px) {
   .dashboard-page {
     padding: 20px;
+  }
+
+  .dashboard-period {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .period-filters {
+    width: 100%;
+  }
+
+  .period-field {
+    flex: 1;
+  }
+
+  .period-field select {
+    width: 100%;
   }
 
   .summary-kpis {

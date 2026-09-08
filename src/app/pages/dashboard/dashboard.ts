@@ -9,20 +9,51 @@ import {
   TopClient
 } from '../../services/dashboard';
 import Chart from 'chart.js/auto';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [SidebarComponent, DecimalPipe],
+  imports: [SidebarComponent, DecimalPipe, FormsModule],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
+
 export class DashboardComponent implements OnInit {
 
   stats?: DashboardStats;
   alertes: AlerteAppelOffre[] = [];
   topClients: TopClient[] = [];
   statsDas: DashboardDas[] = [];
+
+  // =========================================================
+  // FILTRE PAR PERIODE
+  // =========================================================
+
+  anneeSelectionnee: number = new Date().getFullYear();
+  moisSelectionne: number | null = null;
+
+  annees: number[] = [
+    2026,
+    2025,
+    2024,
+    2023
+  ];
+
+  mois = [
+    { numero: 1, nom: 'Janvier' },
+    { numero: 2, nom: 'Février' },
+    { numero: 3, nom: 'Mars' },
+    { numero: 4, nom: 'Avril' },
+    { numero: 5, nom: 'Mai' },
+    { numero: 6, nom: 'Juin' },
+    { numero: 7, nom: 'Juillet' },
+    { numero: 8, nom: 'Août' },
+    { numero: 9, nom: 'Septembre' },
+    { numero: 10, nom: 'Octobre' },
+    { numero: 11, nom: 'Novembre' },
+    { numero: 12, nom: 'Décembre' }
+  ];
 
   topClientsChart: any;
   chart: any;
@@ -45,17 +76,56 @@ export class DashboardComponent implements OnInit {
   }
 
   chargerStats(): void {
-    this.dashboardService.getStats().subscribe({
-      next: (data) => {
-        console.log('STATS DASHBOARD = ', data);
-        this.stats = data;
-        this.creerGraphiqueStatuts(data);
-        this.cd.detectChanges();
-      },
-      error: (err) => {
-        console.log('Erreur dashboard stats', err);
-      }
-    });
+
+    this.dashboardService
+      .getStats(
+        this.anneeSelectionnee,
+        this.moisSelectionne ?? undefined
+      )
+      .subscribe({
+
+        next: (data) => {
+
+          console.log('STATS DASHBOARD = ', data);
+
+          this.stats = data;
+
+          this.creerGraphiqueStatuts(data);
+
+          this.cd.detectChanges();
+        },
+
+        error: (err) => {
+
+          console.log(
+            'Erreur dashboard stats',
+            err
+          );
+        }
+
+      });
+  }
+
+  changerPeriode(): void {
+    this.chargerStats();
+  }
+
+  selectionnerVueAnnuelle(): void {
+    this.moisSelectionne = null;
+    this.chargerStats();
+  }
+
+  get libellePeriode(): string {
+
+    if (this.moisSelectionne === null) {
+      return `Vue annuelle — ${this.anneeSelectionnee}`;
+    }
+
+    const mois = this.mois.find(
+      m => m.numero === Number(this.moisSelectionne)
+    );
+
+    return `Vue mensuelle — ${mois?.nom ?? ''} ${this.anneeSelectionnee}`;
   }
 
   chargerStatsDas(): void {

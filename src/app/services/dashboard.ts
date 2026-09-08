@@ -105,10 +105,28 @@ export class DashboardService {
 
   constructor(private http: HttpClient) {}
 
-  getStats(): Observable<DashboardStats> {
-    return this.http.get<DashboardStats>(
-      `${this.apiUrl}/stats`
-    );
+ getStats(
+    annee?: number,
+    mois?: number
+  ): Observable<DashboardStats> {
+
+    let url = `${this.apiUrl}/stats`;
+
+    const params: string[] = [];
+
+    if (annee !== undefined && annee !== null) {
+      params.push(`annee=${annee}`);
+    }
+
+    if (mois !== undefined && mois !== null) {
+      params.push(`mois=${mois}`);
+    }
+
+    if (params.length > 0) {
+      url += `?${params.join('&')}`;
+    }
+
+    return this.http.get<DashboardStats>(url);
   }
 
 getStatsDas(): Observable<DashboardDas[]> {

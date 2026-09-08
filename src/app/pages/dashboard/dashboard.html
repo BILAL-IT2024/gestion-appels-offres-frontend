@@ -20,6 +20,84 @@
 
     </header>
 
+    <!-- =====================================================
+     FILTRE PAR PERIODE
+====================================================== -->
+
+    <section class="dashboard-period">
+
+      <div class="period-info">
+
+    <span class="period-eyebrow">
+      Période analysée
+    </span>
+
+        <strong>
+          {{ libellePeriode }}
+        </strong>
+
+        <small>
+          Les indicateurs principaux sont calculés
+          selon la période sélectionnée.
+        </small>
+
+      </div>
+
+      <div class="period-filters">
+
+        <div class="period-field">
+
+          <label for="annee">
+            Année
+          </label>
+
+          <select
+            id="annee"
+            [(ngModel)]="anneeSelectionnee"
+            (change)="changerPeriode()"
+          >
+
+            @for (annee of annees; track annee) {
+            <option [ngValue]="annee">
+              {{ annee }}
+            </option>
+            }
+
+          </select>
+
+        </div>
+
+
+        <div class="period-field">
+
+          <label for="mois">
+            Mois
+          </label>
+
+          <select
+            id="mois"
+            [(ngModel)]="moisSelectionne"
+            (change)="changerPeriode()"
+          >
+
+            <option [ngValue]="null">
+              Tous les mois
+            </option>
+
+            @for (item of mois; track item.numero) {
+            <option [ngValue]="item.numero">
+              {{ item.nom }}
+            </option>
+            }
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </section>
+
 
     <!-- =====================================================
          SYNTHÈSE GÉNÉRALE
