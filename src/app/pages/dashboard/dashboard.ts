@@ -108,6 +108,8 @@ export class DashboardComponent implements OnInit {
 
   changerPeriode(): void {
     this.chargerStats();
+    this.chargerChiffreAffaireMensuel();
+    this.chargerTopClients();
   }
 
   selectionnerVueAnnuelle(): void {
@@ -159,7 +161,7 @@ export class DashboardComponent implements OnInit {
   }
 
   chargerChiffreAffaireMensuel(): void {
-    this.dashboardService.getChiffreAffaireMensuel().subscribe({
+    this.dashboardService.getChiffreAffaireMensuel(this.anneeSelectionnee).subscribe({
       next: (data) => {
 
         console.log('CA MENSUEL = ', data);
@@ -180,10 +182,17 @@ export class DashboardComponent implements OnInit {
           'Déc'
         ];
 
-        const moisLabels = data.map(
-          item => `${nomsMois[item.mois]} ${item.annee}`
-        );
-        const montants = data.map(item => item.total);
+        const moisLabels = [
+          'Jan', 'Fév', 'Mar', 'Avr',
+          'Mai', 'Juin', 'Juil', 'Août',
+          'Sep', 'Oct', 'Nov', 'Déc'
+        ];
+
+        const montants = Array(12).fill(0);
+
+        data.forEach(item => {
+          montants[item.mois - 1] = item.total;
+        });
 
         setTimeout(() => {
 
@@ -262,7 +271,12 @@ creerGraphiqueStatuts(stats: DashboardStats): void {
 
 chargerTopClients(): void {
 
-  this.dashboardService.getTopClients().subscribe({
+  this.dashboardService
+    .getTopClients(
+      this.anneeSelectionnee,
+      this.moisSelectionne ?? undefined
+    )
+    .subscribe({
     next: (data) => {
 
       console.log('TOP CLIENTS = ', data);

@@ -137,12 +137,17 @@ getStatsDas(): Observable<DashboardDas[]> {
 
 }
 
-getChiffreAffaireMensuel(): Observable<ChiffreAffaireMensuel[]> {
+getChiffreAffaireMensuel(
+  annee?: number
+): Observable<ChiffreAffaireMensuel[]> {
 
-  return this.http.get<ChiffreAffaireMensuel[]>(
-    `${this.apiUrl}/chiffre-affaire-mensuel`
-  );
+  let url = `${this.apiUrl}/chiffre-affaire-mensuel`;
 
+  if (annee !== undefined && annee !== null) {
+    url += `?annee=${annee}`;
+  }
+
+  return this.http.get<ChiffreAffaireMensuel[]>(url);
 }
 
 getAlertesAppelsOffres(): Observable<AlerteAppelOffre[]> {
@@ -153,10 +158,27 @@ getAlertesAppelsOffres(): Observable<AlerteAppelOffre[]> {
 
 }
 
-getTopClients(): Observable<TopClient[]> {
-  return this.http.get<TopClient[]>(
-    `${this.apiUrl}/top-clients`
-  );
+getTopClients(
+  annee?: number,
+  mois?: number
+): Observable<TopClient[]> {
+
+  let url = `${this.apiUrl}/top-clients`;
+  const params: string[] = [];
+
+  if (annee !== undefined && annee !== null) {
+    params.push(`annee=${annee}`);
+  }
+
+  if (mois !== undefined && mois !== null) {
+    params.push(`mois=${mois}`);
+  }
+
+  if (params.length > 0) {
+    url += `?${params.join('&')}`;
+  }
+
+  return this.http.get<TopClient[]>(url);
 }
 
 }
