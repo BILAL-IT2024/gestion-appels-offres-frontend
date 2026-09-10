@@ -35,6 +35,8 @@ export class Statistiques implements OnInit {
   statsDas: DashboardDas[] = [];
   chiffreAffaireMensuel: ChiffreAffaireMensuel[] = [];
   topClients: TopClient[] = [];
+  anneeSelectionnee: number = new Date().getFullYear();
+  moisSelectionne: number | null = null;
 
   dasChart: any;
   caChart: any;
@@ -56,15 +58,20 @@ export class Statistiques implements OnInit {
 
   chargerStatsDas(): void {
 
-    this.dashboardService.getStatsDas().subscribe({
-      next: (data) => {
-        this.statsDas = data;
-        this.cd.detectChanges();
-      },
-      error: (err) => {
-        console.error('Erreur stats DAS', err);
-      }
-    });
+    this.dashboardService
+      .getStatsDas(
+        this.anneeSelectionnee,
+        this.moisSelectionne ?? undefined
+      )
+      .subscribe({
+        next: (data) => {
+          this.statsDas = data;
+          this.cd.detectChanges();
+        },
+        error: (err) => {
+          console.error('Erreur stats DAS', err);
+        }
+      });
   }
 
   chargerChiffreAffaireMensuel(): void {

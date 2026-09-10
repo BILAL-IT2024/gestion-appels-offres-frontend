@@ -110,6 +110,7 @@ export class DashboardComponent implements OnInit {
     this.chargerStats();
     this.chargerChiffreAffaireMensuel();
     this.chargerTopClients();
+    this.chargerStatsDas();
   }
 
   selectionnerVueAnnuelle(): void {
@@ -133,7 +134,10 @@ export class DashboardComponent implements OnInit {
   chargerStatsDas(): void {
 
     this.dashboardService
-      .getStatsDas()
+      .getStatsDas(
+        this.anneeSelectionnee,
+        this.moisSelectionne ?? undefined
+      )
       .subscribe({
 
         next: (data) => {

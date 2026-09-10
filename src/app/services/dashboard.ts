@@ -129,12 +129,27 @@ export class DashboardService {
     return this.http.get<DashboardStats>(url);
   }
 
-getStatsDas(): Observable<DashboardDas[]> {
+getStatsDas(
+  annee?: number,
+  mois?: number
+): Observable<DashboardDas[]> {
 
-  return this.http.get<DashboardDas[]>(
-    `${this.apiUrl}/stats-das`
-  );
+  let url = `${this.apiUrl}/stats-das`;
+  const params: string[] = [];
 
+  if (annee !== undefined && annee !== null) {
+    params.push(`annee=${annee}`);
+  }
+
+  if (mois !== undefined && mois !== null) {
+    params.push(`mois=${mois}`);
+  }
+
+  if (params.length > 0) {
+    url += `?${params.join('&')}`;
+  }
+
+  return this.http.get<DashboardDas[]>(url);
 }
 
 getChiffreAffaireMensuel(
