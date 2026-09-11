@@ -20,17 +20,18 @@
 
     </header>
 
+
     <!-- =====================================================
-     FILTRE PAR PERIODE
-====================================================== -->
+         FILTRE PAR PERIODE
+    ====================================================== -->
 
     <section class="dashboard-period">
 
       <div class="period-info">
 
-    <span class="period-eyebrow">
-      Période analysée
-    </span>
+        <span class="period-eyebrow">
+          Période analysée
+        </span>
 
         <strong>
           {{ libellePeriode }}
@@ -42,6 +43,7 @@
         </small>
 
       </div>
+
 
       <div class="period-filters">
 
@@ -115,9 +117,9 @@
 
         <article class="summary-kpi">
 
-          <span>
-            Chiffre d’affaires HT
-          </span>
+            <span>
+              Chiffre d’affaires HT
+            </span>
 
           <strong>
             {{ stats.chiffreAffaireTotal | number:'1.2-2' }} DH HT
@@ -188,12 +190,6 @@
 
       <!-- =================================================
            SYNTHÈSE MÉTIER
-
-           ORDRE DE LECTURE :
-           1. AO
-           2. CONSULTATIONS
-           3. MARCHÉS & COMMANDES
-           4. FACTURATION & PAIEMENTS
       ================================================== -->
 
       <div class="summary-groups">
@@ -309,22 +305,25 @@
 
         </section>
 
+
         <!-- =================================================
-        2. CONSULTATIONS
-        =================================================== -->
+             2. CONSULTATIONS
+        ================================================== -->
 
         <section class="summary-panel">
 
           <div class="summary-panel-header">
 
             <div>
-      <span class="summary-eyebrow">
-        Activité
-      </span>
+
+                <span class="summary-eyebrow">
+                  Activité
+                </span>
 
               <h2>
                 Consultations
               </h2>
+
             </div>
 
             <strong class="summary-total">
@@ -333,54 +332,67 @@
 
           </div>
 
+
           <div class="summary-list">
 
             <div>
-      <span>
-        Retenues
-      </span>
+
+                <span>
+                  Retenues
+                </span>
 
               <strong>
                 {{ stats.consultationsRetenues }}
               </strong>
+
             </div>
 
+
             <div>
-      <span>
-        En cours
-      </span>
+
+                <span>
+                  En cours
+                </span>
 
               <strong>
                 {{ stats.consultationsEnCours }}
               </strong>
+
             </div>
 
+
             <div>
-      <span>
-        Refusées
-      </span>
+
+                <span>
+                  Refusées
+                </span>
 
               <strong>
                 {{ stats.consultationsRefusees }}
               </strong>
+
             </div>
 
+
             <div>
-      <span>
-        Top client
-      </span>
+
+                <span>
+                  Top client
+                </span>
 
               <strong>
                 {{ stats.topClient || '—' }}
               </strong>
+
             </div>
 
           </div>
 
         </section>
 
+
         <!-- =================================================
-        3. MARCHÉS & COMMANDES
+             3. MARCHÉS & COMMANDES
         ================================================== -->
 
         <section class="summary-panel">
@@ -388,13 +400,15 @@
           <div class="summary-panel-header">
 
             <div>
-      <span class="summary-eyebrow">
-        Exécution
-      </span>
+
+                <span class="summary-eyebrow">
+                  Exécution
+                </span>
 
               <h2>
                 Marchés & commandes
               </h2>
+
             </div>
 
             <strong class="summary-total">
@@ -403,71 +417,90 @@
 
           </div>
 
+
           <div class="summary-list">
 
             <div>
-      <span>
-        Marchés en cours
-      </span>
+
+                <span>
+                  Marchés en cours
+                </span>
 
               <strong>
                 {{ stats.marchesEnCours }}
               </strong>
+
             </div>
 
+
             <div>
-      <span>
-        Marchés terminés
-      </span>
+
+                <span>
+                  Marchés terminés
+                </span>
 
               <strong>
                 {{ stats.marchesTermines }}
               </strong>
+
             </div>
 
+
             <div>
-      <span>
-        Total commandes
-      </span>
+
+                <span>
+                  Total commandes
+                </span>
 
               <strong>
                 {{ stats.totalCommandes }}
               </strong>
+
             </div>
 
+
             <div>
-      <span>
-        Commandes en cours
-      </span>
+
+                <span>
+                  Commandes en cours
+                </span>
 
               <strong>
                 {{ stats.commandesEnCours }}
               </strong>
+
             </div>
 
+
             <div>
-      <span>
-        Commandes livrées
-      </span>
+
+                <span>
+                  Commandes livrées
+                </span>
 
               <strong>
                 {{ stats.commandesLivrees }}
               </strong>
+
             </div>
 
+
             <div>
-      <span>
-        Montant commandes
-      </span>
+
+                <span>
+                  Montant commandes
+                </span>
 
               <strong>
                 {{ stats.montantTotalCommandes | number }} DH
               </strong>
+
             </div>
 
           </div>
 
         </section>
+
 
         <!-- =================================================
              4. FACTURATION & PAIEMENTS
@@ -517,7 +550,7 @@
             <div>
 
                 <span>
-                 Encaissé pendant la période
+                  Encaissé pendant la période
                 </span>
 
               <strong>
@@ -779,7 +812,7 @@
             <div>
 
                 <span>
-                  Encaissé
+                  Encaissé pendant la période
                 </span>
 
               <strong>
@@ -795,7 +828,7 @@
             <div>
 
                 <span>
-                  Reste à encaisser
+                  Reste actuel à encaisser
                 </span>
 
               <strong>
@@ -814,9 +847,7 @@
         } @empty {
 
         <article class="dashboard-card das-empty">
-
           Aucune statistique DAS disponible.
-
         </article>
 
         }
@@ -853,12 +884,8 @@
 
         </div>
 
-        <div
-          class="chart-wrapper chart-wrapper-large"
-        >
-
+        <div class="chart-wrapper chart-wrapper-large">
           <canvas id="dasChart"></canvas>
-
         </div>
 
       </article>
@@ -884,12 +911,8 @@
 
         </div>
 
-        <div
-          class="chart-wrapper chart-wrapper-large"
-        >
-
+        <div class="chart-wrapper chart-wrapper-large">
           <canvas id="caMensuelChart"></canvas>
-
         </div>
 
       </article>
@@ -897,9 +920,7 @@
 
       <!-- RÉPARTITION AO -->
 
-      <article
-        class="dashboard-card chart-card"
-      >
+      <article class="dashboard-card chart-card">
 
         <div class="card-header">
 
@@ -917,12 +938,8 @@
 
         </div>
 
-        <div
-          class="chart-wrapper chart-wrapper-pie"
-        >
-
+        <div class="chart-wrapper chart-wrapper-pie">
           <canvas id="statutChart"></canvas>
-
         </div>
 
       </article>
@@ -930,9 +947,7 @@
 
       <!-- TOP CLIENTS -->
 
-      <article
-        class="dashboard-card chart-card"
-      >
+      <article class="dashboard-card chart-card">
 
         <div class="card-header">
 
@@ -951,9 +966,7 @@
         </div>
 
         <div class="chart-wrapper">
-
           <canvas id="topClientsChart"></canvas>
-
         </div>
 
       </article>
@@ -962,16 +975,23 @@
 
 
     <!-- =====================================================
-     ALERTES APPELS D'OFFRES
-===================================================== -->
+         ALERTES APPELS D'OFFRES
+    ====================================================== -->
 
     <section class="dashboard-card alerts-card">
 
       <div class="card-header alerts-header">
 
         <div>
-          <h2>Alertes appels d’offres</h2>
-          <p>Échéances urgentes ou dépassées</p>
+
+          <h2>
+            Alertes actuelles — Appels d’offres
+          </h2>
+
+          <p>
+            Échéances urgentes ou dépassées calculées à la date du jour
+          </p>
+
         </div>
 
         <div class="alerts-summary">
@@ -980,11 +1000,13 @@
 
       </div>
 
+
       <div class="alerts-table-wrapper">
 
         <table class="alertes-table">
 
           <thead>
+
           <tr>
             <th>Référence</th>
             <th>Objet</th>
@@ -992,7 +1014,9 @@
             <th>Jours</th>
             <th>État</th>
           </tr>
+
           </thead>
+
 
           <tbody>
 
@@ -1001,9 +1025,11 @@
           <tr>
 
             <td>
+
               <strong class="alert-reference">
                 {{ alerte.reference }}
               </strong>
+
             </td>
 
             <td>
@@ -1027,14 +1053,14 @@
 
             <td>
 
-              <span
-                class="alert-badge"
-                [class.EN_RETARD]="alerte.etatAlerte === 'EN_RETARD'"
-                [class.URGENT]="alerte.etatAlerte === 'URGENT'"
-                [class.NORMAL]="alerte.etatAlerte === 'NORMAL'"
-              >
-                {{ alerte.etatAlerte }}
-              </span>
+                  <span
+                    class="alert-badge"
+                    [class.EN_RETARD]="alerte.etatAlerte === 'EN_RETARD'"
+                    [class.URGENT]="alerte.etatAlerte === 'URGENT'"
+                    [class.NORMAL]="alerte.etatAlerte === 'NORMAL'"
+                  >
+                    {{ alerte.etatAlerte }}
+                  </span>
 
             </td>
 
@@ -1043,9 +1069,11 @@
           } @empty {
 
           <tr>
+
             <td colspan="5" class="empty-state">
               Aucune alerte disponible.
             </td>
+
           </tr>
 
           }
