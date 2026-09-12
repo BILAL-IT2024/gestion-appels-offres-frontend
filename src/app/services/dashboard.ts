@@ -173,7 +173,7 @@ getChiffreAffaireMensuel(
 getAlertesAppelsOffres(): Observable<AlerteAppelOffre[]> {
 
   return this.http.get<AlerteAppelOffre[]>(
-    `${this.apiUrl}/alertes/appels-offres`
+    'http://localhost:9091/api/alertes'
   );
 
 }
