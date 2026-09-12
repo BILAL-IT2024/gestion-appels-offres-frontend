@@ -96,6 +96,11 @@ export interface DashboardDas {
   resteAEncaisser: number;
 }
 
+export interface ChiffreAffaireAnnuel {
+  annee: number;
+  total: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -194,6 +199,12 @@ getTopClients(
   }
 
   return this.http.get<TopClient[]>(url);
+}
+
+getChiffreAffaireAnnuel(): Observable<ChiffreAffaireAnnuel[]> {
+  return this.http.get<ChiffreAffaireAnnuel[]>(
+    `${this.apiUrl}/chiffre-affaire-annuel`
+  );
 }
 
 }

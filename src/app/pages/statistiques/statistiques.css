@@ -4,6 +4,7 @@
   min-width: 0;
 }
 
+
 /* =====================================================
    PAGE
 ===================================================== */
@@ -16,7 +17,7 @@
 }
 
 .statistiques-header {
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .statistiques-header h1 {
@@ -24,12 +25,105 @@
   color: #0b2e6d;
   font-size: clamp(32px, 3vw, 46px);
   line-height: 1.1;
+  font-weight: 800;
 }
 
 .statistiques-header p {
   margin: 8px 0 0;
   color: #64748b;
   font-size: 15px;
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   FILTRE PERIODE
+===================================================== */
+
+.stats-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  margin-bottom: 24px;
+  padding: 20px 22px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 15px;
+
+  background: #ffffff;
+
+  box-shadow: 0 5px 18px rgba(15, 31, 77, 0.07);
+}
+
+.filter-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.filter-info span {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.filter-info strong {
+  color: #0b2e6d;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.filter-controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.filter-field label {
+  color: #475569;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.filter-field select {
+  min-width: 150px;
+  height: 42px;
+
+  padding: 0 38px 0 12px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #0f172a;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.filter-field select:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+.filter-field select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 
@@ -40,89 +134,35 @@
 .stats-section {
   margin-bottom: 24px;
   padding: 22px;
+
   border: 1px solid #e2e8f0;
   border-radius: 15px;
+
   background: #ffffff;
+
   box-shadow: 0 5px 18px rgba(15, 31, 77, 0.07);
 }
 
 .section-header {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .section-header h2 {
   margin: 0;
+
   color: #0b2e6d;
+
   font-size: 21px;
+  font-weight: 800;
 }
 
 .section-header p {
   margin: 6px 0 0;
+
   color: #64748b;
+
   font-size: 13px;
-}
-
-
-/* =====================================================
-   DAS
-===================================================== */
-
-.das-grid {
-  display: grid;
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.stat-card {
-  position: relative;
-  padding: 20px;
-  overflow: hidden;
-  border: 1px solid #e2e8f0;
-  border-radius: 13px;
-  background: #f8fafc;
-}
-
-.stat-card::before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 100%;
-  background: #2563eb;
-  content: "";
-}
-
-.stat-card h3 {
-  margin: 0 0 20px;
-  padding-left: 5px;
-  color: #0b2e6d;
-  font-size: 23px;
-}
-
-.stat-line {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  padding: 12px 5px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.stat-line:last-child {
-  border-bottom: none;
-}
-
-.stat-line span {
-  color: #64748b;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.stat-line strong {
-  color: #0b2e6d;
-  font-size: 14px;
-  text-align: right;
+  line-height: 1.5;
 }
 
 
@@ -132,22 +172,31 @@
 
 .table-wrapper {
   width: 100%;
+
   overflow-x: auto;
+
   border: 1px solid #e2e8f0;
   border-radius: 11px;
+
+  background: #ffffff;
 }
 
 table {
   width: 100%;
+  min-width: 650px;
+
   border-collapse: collapse;
 }
 
 th,
 td {
   padding: 14px 16px;
+
   border-right: 1px solid #e2e8f0;
   border-bottom: 1px solid #e2e8f0;
+
   text-align: left;
+  vertical-align: middle;
 }
 
 th:last-child,
@@ -162,13 +211,21 @@ tbody tr:last-child td {
 th {
   background: #0b2e6d;
   color: #ffffff;
+
   font-size: 13px;
   font-weight: 700;
+
+  white-space: nowrap;
 }
 
 td {
   color: #334155;
+
   font-size: 14px;
+}
+
+tbody tr {
+  transition: background 0.2s ease;
 }
 
 tbody tr:hover {
@@ -182,50 +239,197 @@ td:last-child {
 
 
 /* =====================================================
-   ETAT VIDE
+   TOTAL CA
 ===================================================== */
 
-.empty-state {
-  grid-column: 1 / -1;
-  padding: 30px;
-  color: #64748b;
-  text-align: center;
+tfoot td {
+  background: #f8fafc;
+
+  color: #0b2e6d;
+
+  font-weight: 800;
+
+  border-bottom: none;
 }
 
 
 /* =====================================================
-   RESPONSIVE
+   MOYENNE ANNUELLE
 ===================================================== */
 
-@media (max-width: 1100px) {
+.moyenne-annuelle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 
-  .das-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+  margin: 16px;
+  padding: 15px 18px;
+
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+
+  background: #f8fafc;
+}
+
+.moyenne-annuelle strong {
+  color: #0b2e6d;
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.moyenne-annuelle span {
+  color: #0b2e6d;
+
+  font-size: 15px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   ETAT VIDE
+===================================================== */
+
+.empty-state {
+  padding: 30px;
+
+  color: #64748b;
+
+  text-align: center;
+
+  font-size: 14px;
+}
+
+
+/* =====================================================
+   DETAILS VISUELS
+===================================================== */
+
+.stats-section:first-of-type {
+  margin-top: 0;
+}
+
+.stats-section table strong {
+  color: #0b2e6d;
+}
+
+.stats-section + .stats-section {
+  margin-top: 0;
+}
+
+
+/* =====================================================
+   RESPONSIVE TABLETTE
+===================================================== */
+
+@media (max-width: 1000px) {
+
+  .statistiques-page {
+    padding: 24px;
+  }
+
+  .stats-filter {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .filter-controls {
+    width: 100%;
+  }
+
+  .filter-field {
+    flex: 1;
+  }
+
+  .filter-field select {
+    width: 100%;
   }
 }
 
-@media (max-width: 750px) {
+
+/* =====================================================
+   RESPONSIVE MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
 
   .statistiques-page {
-    padding: 20px;
+    padding: 16px;
+  }
+
+  .statistiques-header {
+    margin-bottom: 18px;
+  }
+
+  .statistiques-header h1 {
+    font-size: 30px;
+  }
+
+  .stats-filter {
+    padding: 16px;
+  }
+
+  .filter-info strong {
+    font-size: 16px;
+  }
+
+  .filter-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
   }
 
   .stats-section {
-    padding: 18px;
+    padding: 16px;
+    border-radius: 12px;
   }
 
-  .das-grid {
-    grid-template-columns: 1fr;
+  .section-header h2 {
+    font-size: 18px;
   }
 
-  .stat-line {
+  th,
+  td {
+    padding: 12px 13px;
+  }
+
+  .moyenne-annuelle {
     align-items: flex-start;
     flex-direction: column;
-    gap: 5px;
+
+    margin: 12px;
+    padding: 14px;
   }
 
-  .stat-line strong {
-    text-align: left;
+  .moyenne-annuelle span {
+    white-space: normal;
+  }
+}
+
+
+/* =====================================================
+   TRES PETITS ECRANS
+===================================================== */
+
+@media (max-width: 480px) {
+
+  .statistiques-page {
+    padding: 12px;
+  }
+
+  .stats-filter,
+  .stats-section {
+    border-radius: 10px;
+  }
+
+  .filter-field select {
+    min-width: 0;
+  }
+
+  table {
+    min-width: 560px;
   }
 }

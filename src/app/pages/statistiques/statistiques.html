@@ -10,72 +10,128 @@
       <div>
         <h1>Statistiques</h1>
         <p>
-          Analyse synthétique de l’activité et comparaison par DAS
+          Analyse détaillée du chiffre d’affaires et des performances commerciales
         </p>
       </div>
     </header>
 
+    <section class="stats-filter">
 
-    <!-- ========================= -->
-    <!-- STATISTIQUES PAR DAS -->
-    <!-- ========================= -->
-
-    <section class="stats-section">
-
-      <div class="section-header">
-        <h2>Comparaison par DAS</h2>
-        <p>RDF, TELERELEVE et ASST</p>
+      <div class="filter-info">
+        <span>Période analysée</span>
+        <strong>
+          {{ libellePeriode }}
+        </strong>
       </div>
 
-      <div class="das-grid">
+      <div class="filter-controls">
 
-        @for (item of statsDas; track item.das) {
+        <div class="filter-field">
+          <label for="anneeStats">
+            Année
+          </label>
 
-        <article class="stat-card">
-
-          <h3>{{ item.das }}</h3>
-
-          <div class="stat-line">
-            <span>Commandes HT</span>
-            <strong>
-              {{ item.montantCommandes | number:'1.2-2' }} DH HT
-            </strong>
-          </div>
-
-          <div class="stat-line">
-            <span>Facturé TTC</span>
-            <strong>
-              {{ item.montantFacture | number:'1.2-2' }} DH TTC
-            </strong>
-          </div>
-
-          <div class="stat-line">
-            <span>Encaissé</span>
-            <strong>
-              {{ item.montantEncaisse | number:'1.2-2' }} DH
-            </strong>
-          </div>
-
-          <div class="stat-line">
-            <span>Reste à encaisser</span>
-            <strong>
-              {{ item.resteAEncaisser | number:'1.2-2' }} DH
-            </strong>
-          </div>
-
-        </article>
-
-        } @empty {
-
-        <div class="empty-state">
-          Aucune statistique DAS disponible.
+          <select
+            id="anneeStats"
+            [(ngModel)]="anneeSelectionnee"
+            (change)="changerPeriode()"
+          >
+            @for (annee of annees; track annee) {
+            <option [ngValue]="annee">
+              {{ annee }}
+            </option>
+            }
+          </select>
         </div>
 
-        }
+
+        <div class="filter-field">
+          <label for="moisStats">
+            Mois
+          </label>
+
+          <select
+            id="moisStats"
+            [(ngModel)]="moisSelectionne"
+            (change)="changerPeriode()"
+          >
+            <option [ngValue]="null">
+              Tous les mois
+            </option>
+
+            @for (item of mois; track item.numero) {
+            <option [ngValue]="item.numero">
+              {{ item.nom }}
+            </option>
+            }
+          </select>
+        </div>
 
       </div>
 
     </section>
+
+    @if (meilleurMois) {
+
+    <section class="stats-section">
+
+      <div class="section-header">
+        <h2>Meilleur mois</h2>
+        <p>
+          Mois ayant généré le chiffre d’affaires HT le plus élevé
+        </p>
+      </div>
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+          <tr>
+            <th>Indicateur</th>
+            <th>Période</th>
+            <th>Montant HT</th>
+          </tr>
+          </thead>
+
+          <tbody>
+
+          <tr>
+            <td>
+              Meilleur mois
+            </td>
+
+            <td>
+              {{ getNomMois(meilleurMois.mois) }} {{ meilleurMois.annee }}
+            </td>
+
+            <td>
+              {{ meilleurMois.total | number:'1.2-2' }} DH HT
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              CA mensuel moyen
+            </td>
+
+            <td>
+              {{ anneeSelectionnee }}
+            </td>
+
+            <td>
+              {{ chiffreAffaireMensuelMoyen | number:'1.2-2' }} DH HT
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+
+    </section>
+
+    }
 
 
     <!-- ========================= -->
@@ -133,7 +189,113 @@
 
           </tbody>
 
+          <tfoot>
+
+          <tr>
+
+            <td>
+              <strong>
+                Total CA {{ anneeSelectionnee }}
+              </strong>
+            </td>
+
+            <td>
+              <strong>
+                {{ totalChiffreAffairesAnnuel | number:'1.2-2' }} DH HT
+              </strong>
+            </td>
+
+          </tr>
+
+          </tfoot>
+
         </table>
+
+      </div>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- CA ANNUEL -->
+    <!-- ========================= -->
+
+    <section class="stats-section">
+
+      <div class="section-header">
+        <h2>Chiffre d’affaires annuel HT</h2>
+        <p>
+          Évolution du chiffre d’affaires par année
+        </p>
+      </div>
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+          <tr>
+            <th>Année</th>
+            <th>Chiffre d’affaires HT</th>
+            <th>Évolution</th>
+          </tr>
+          </thead>
+
+          <tbody>
+
+          @for (
+          item of chiffreAffaireAnnuel;
+          track item.annee;
+          let i = $index
+          ) {
+
+          <tr>
+
+            <td>
+              {{ item.annee }}
+            </td>
+
+            <td>
+              {{ item.total | number:'1.2-2' }} DH HT
+            </td>
+
+            <td>
+              @if (calculerEvolutionAnnuelle(i) !== null) {
+
+              {{ calculerEvolutionAnnuelle(i) | number:'1.2-2' }} %
+
+              } @else {
+
+              —
+
+              }
+            </td>
+
+          </tr>
+
+          } @empty {
+
+          <tr>
+            <td colspan="3">
+              Aucune donnée annuelle disponible.
+            </td>
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+        <div class="moyenne-annuelle">
+
+          <strong>
+            CA moyen sur 4 années (2023–2026)
+          </strong>
+
+          <span>
+           {{ moyenneChiffreAffaireQuatreAns | number:'1.2-2' }} DH HT
+        </span>
+
+        </div>
 
       </div>
 
@@ -161,6 +323,7 @@
           <tr>
             <th>Client</th>
             <th>Chiffre d’affaires HT</th>
+            <th>Part du CA</th>
           </tr>
           </thead>
 
@@ -178,12 +341,16 @@
               {{ client.total | number:'1.2-2' }} DH HT
             </td>
 
+            <td>
+              {{ calculerPartClient(client.total) | number:'1.2-2' }} %
+            </td>
+
           </tr>
 
           } @empty {
 
           <tr>
-            <td colspan="2">
+            <td colspan="3">
               Aucun client disponible.
             </td>
           </tr>
